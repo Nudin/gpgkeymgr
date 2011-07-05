@@ -6,7 +6,7 @@
 using namespace std;
 
 const char* program_name="Schlüsselwärter";
-const char* program_version="0.1";
+const char* program_version="0.1.1";
 
 int remove_key(gpgme_ctx_t ctx, gpgme_key_t key);
 void print_key(gpgme_key_t key);
@@ -17,8 +17,8 @@ int main(int argc, char *argv[]) {
    /* First: get arguments */
    bool revoked = false;
    bool expired = false;
-   bool novalid = false;
-   bool notrust = false;
+   bool novalid = false; int max_valid = 0;
+   bool notrust = false; int max_trust = 0;
    bool altern = false;
    for(int i=1;i<argc;i++) {
 	if ( strlen(argv[i]) != 2 )
@@ -28,8 +28,22 @@ int main(int argc, char *argv[]) {
 	{
 	case 'r': revoked = true; break;
 	case 'e': expired = true; break;
-	case 'v': novalid = true; break;
-	case 't': notrust = true; break;
+	case 'v':
+	   novalid = true;
+	   if ( i+1 < argc ) {
+	     max_valid = atoi(argv[i+1]);
+	     if ( max_valid != 0 )
+	   	i++;
+	   }
+	   break;
+	case 't':
+	   notrust = true;
+	   if ( i+1 < argc ) {
+	     max_trust = atoi(argv[i+1]);
+	     if ( max_valid != 0 )
+	   	i++;
+	   }
+	   break;
 	case 'o': altern = true; break;
 	case 'h': help(); return 0;
 	}
@@ -38,7 +52,7 @@ int main(int argc, char *argv[]) {
 	help();
 	return 7;
 	}
-   cout << "Arguments: " << revoked << expired << novalid << notrust;
+   cout << "Arguments: " << revoked << expired << novalid << notrust << max_valid << max_trust << endl;
 
    /* Now set up to use GPGME */
    char *p;
@@ -96,18 +110,18 @@ int main(int argc, char *argv[]) {
 		if ( expired && key->expired ) {
 			print_key(key);
 			remove_key(ctx, key); }
-		if ( novalid && key->uids->validity == 0 ) {
+		if ( novalid && key->uids->validity <= max_valid ) {
 			print_key(key);
 			remove_key(ctx, key); }
-		if ( notrust && key->owner_trust == 0 ) {
+		if ( notrust && key->owner_trust <= max_trust  ) {
 			print_key(key);
 			remove_key(ctx, key); }
 	     }
 	     else { // all given kriteria together induce deletion
 		if ( 	(!revoked || ( revoked && key->revoked ) ) &&
 			(!expired || ( expired && key->expired ) ) &&
-			(!novalid || ( novalid && key->uids->validity == 0 ) ) &&
-			(!notrust || ( notrust && key->owner_trust == 0 ) )	) {
+			(!novalid || ( novalid && key->uids->validity <= max_valid ) ) &&
+			(!notrust || ( notrust && key->owner_trust <= max_trust ) )	) {
 			   print_key(key);
 			   remove_key(ctx, key);
 			}
@@ -168,7 +182,7 @@ void help() {
 	cout << "\t-o\tremove key already if one given criteria is maching" << endl;
 	cout << "\t-r\tremove revoked keys" << endl;
 	cout << "\t-e\tremove expired keys" << endl;
-	cout << "\t-v\tremove not-valid keys" << endl;
-	cout << "\t-t\tremove not-trusted keys" << endl;
+	cout << "\t-v [N]\tremove not-valid keys" << endl;
+	cout << "\t-t [N]\tremove not-trusted keys" << endl;
 }
 
