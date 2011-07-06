@@ -6,10 +6,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: german\n"
+"Project-Id-Version: schluesselwaerter\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-07-06 22:37+0200\n"
-"PO-Revision-Date: 2011-07-06 22:39+0100\n"
+"POT-Creation-Date: 2011-07-07 00:43+0200\n"
+"PO-Revision-Date: 2011-07-07 00:51+0100\n"
 "Last-Translator: Michael F. Schönitzer <michael@schoenitzer.de>\n"
 "Language-Team: German\n"
 "Language: de\n"
@@ -17,97 +17,103 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-Language: German\n"
+"X-Poedit-Country: GERMANY\n"
+"X-Poedit-SourceCharset: utf-8\n"
 
-#: schluesselwaerter.cpp:218
-msgid "\t-e\tremove expired keys"
-msgstr ""
+#: schluesselwaerter.cpp:89
+msgid "Arguments: "
+msgstr "Argumente: "
 
-#: schluesselwaerter.cpp:214
-msgid "\t-o\tremove key already if one given criteria is maching"
-msgstr ""
-
-#: schluesselwaerter.cpp:215
-msgid "\t-q\tdon't print out so much"
-msgstr ""
-
-#: schluesselwaerter.cpp:217
-msgid "\t-r\tremove revoked keys"
-msgstr ""
-
-#: schluesselwaerter.cpp:220
-msgid "\t-t [N]\tremove not-trusted keys"
-msgstr ""
-
-#: schluesselwaerter.cpp:219
-msgid "\t-v [N]\tremove not-valid keys"
-msgstr ""
-
-#: schluesselwaerter.cpp:196
-msgid "\t=> Skipping secret key"
-msgstr ""
-
-#: schluesselwaerter.cpp:199
-msgid "\t=> deleted key"
-msgstr ""
-
-#: schluesselwaerter.cpp:202
-msgid "\t=> unknown Error occurred"
-msgstr ""
-
-#: schluesselwaerter.cpp:209
-msgid "\tVersion: "
-msgstr "\tVersion:"
-
-#: schluesselwaerter.cpp:185
-#, c-format
-msgid " expired"
-msgstr ""
-
-#: schluesselwaerter.cpp:183
-#, c-format
-msgid " revoked"
-msgstr ""
-
-#: schluesselwaerter.cpp:172
+#: schluesselwaerter.cpp:173
 #, c-format
 msgid "Deleted %i key(s).\n"
-msgstr ""
+msgstr "%i Schlüssel wurden gelöscht.\n"
 
-#: schluesselwaerter.cpp:210
+#: schluesselwaerter.cpp:211
 msgid "Note: this is still an experimental version. Before use, please backup your ~/.gnupg directory.\n"
-msgstr ""
+msgstr "Hinweis: Dies ist eine noch experimentelle Version. Machen sie vor der Verwendung ein Backup ihres ~/.gnupg Ordners.\n"
 
-#: schluesselwaerter.cpp:105
+#: schluesselwaerter.cpp:106
 #, c-format
 msgid "Protocol name: %s\n"
 msgstr "Protokollname: %s\n"
 
-#: schluesselwaerter.cpp:216
+#: schluesselwaerter.cpp:197
+msgid "Skipping secret key"
+msgstr "Überspringe privaten Schlüssel"
+
+#: schluesselwaerter.cpp:217
 msgid "TESTs: "
-msgstr ""
+msgstr "TESTs:"
 
-#: schluesselwaerter.cpp:211
+#: schluesselwaerter.cpp:212
 msgid "Use: "
-msgstr ""
+msgstr "Benutzung:"
 
-#: schluesselwaerter.cpp:98
+#: schluesselwaerter.cpp:210
+msgid "Version: "
+msgstr "Version:"
+
+#: schluesselwaerter.cpp:99
 #, c-format
 msgid "Version=%s\n"
 msgstr "Version: %s\n"
 
-#: schluesselwaerter.cpp:169
+#: schluesselwaerter.cpp:170
 #, c-format
 msgid "can not list keys: %s\n"
-msgstr ""
+msgstr "Kann Schlüsselliste nicht abfragen: %s\n"
 
-#: schluesselwaerter.cpp:110
+#: schluesselwaerter.cpp:200
+msgid "deleted key"
+msgstr "Schlüssel gelöscht"
+
+#: schluesselwaerter.cpp:216
+msgid "don't print out so much"
+msgstr "Weniger Text ausgeben"
+
+#: schluesselwaerter.cpp:186
+msgid "expired"
+msgstr "Abgelaufen"
+
+#: schluesselwaerter.cpp:111
 #, c-format
 msgid ""
 "file=%s, home=%s\n"
 "\n"
 msgstr "Datei=%s, Heimverzeichnis=%s\n"
 
-#: schluesselwaerter.cpp:212
-msgid "schluesselwaerter [-o] [-q] TEST [MORE TESTS…]\n"
-msgstr ""
+#: schluesselwaerter.cpp:219
+msgid "remove expired keys"
+msgstr "Abgelaufene Schlüssel löschen"
+
+#: schluesselwaerter.cpp:215
+msgid "remove key already if one given criteria is maching"
+msgstr "Schlüssel entfernen sobald eines der Kriterien zutrifft"
+
+#: schluesselwaerter.cpp:221
+msgid "remove not-trusted keys"
+msgstr "Schlüssel denen ich nicht vertraue entfernen"
+
+#: schluesselwaerter.cpp:220
+msgid "remove not-valid keys"
+msgstr "Schlüssel deren Gültigkeit nicht überprüft wurde entfernen"
+
+#: schluesselwaerter.cpp:218
+msgid "remove revoked keys"
+msgstr "Wiederrufene Schlüssel löschen"
+
+#: schluesselwaerter.cpp:184
+msgid "revoked"
+msgstr "Wiederrufen"
+
+#: schluesselwaerter.cpp:203
+msgid "unknown Error occurred"
+msgstr "Ein unbekannter Fehler trat auf."
+
+#: schluesselwaerter.cpp:220
+#: schluesselwaerter.cpp:221
+msgid "with N you can increase the maximum level"
+msgstr "mit N können Sie die Grenze erhöhen"
 

@@ -41,6 +41,11 @@ bool quiet = false; // For quiet-mode
 int main(int argc, char *argv[]) {
    int count = 0; // count number of key's deleted
 
+   /* i18n */
+   setlocale( LC_ALL, "" );
+   bindtextdomain( "schluesselwaerter", "locale" );
+   textdomain( "schluesselwaerter" );
+
    /* First: get arguments */
    bool revoked = false;
    bool expired = false;
@@ -81,7 +86,7 @@ int main(int argc, char *argv[]) {
       return 7;
       }
    if (!quiet)
-      cout << "Arguments: " << revoked << expired << novalid << notrust << max_valid << max_trust << endl;
+      cout << gettext("Arguments: ") << revoked << expired << novalid << notrust << max_valid << max_trust << endl;
 
    /* Now set up to use GPGME */
    char *p;
@@ -90,10 +95,6 @@ int main(int argc, char *argv[]) {
    gpgme_error_t err = gpgme_new (&ctx);
    gpgme_engine_info_t enginfo;
    
-   setlocale( LC_ALL, "" );
-   bindtextdomain( "schluesselwaerter", "locale" );
-   textdomain( "schluesselwaerter" );
-
    p = (char *) gpgme_check_version(NULL);
    if (!quiet) printf(gettext("Version=%s\n"),p);
 
@@ -180,9 +181,9 @@ void print_key(gpgme_key_t key) {
    if (key->uids->email)
       printf (" <%s>", key->uids->email);
    if (key->revoked)
-      printf (gettext(" revoked"));
+      cout << " " << gettext("revoked");
    if (key->expired)
-      printf (gettext(" expired"));
+      cout << " " << gettext("expired");
    printf (" [%i|", key->uids->validity);
    printf ("%i]", key->owner_trust);
    putchar ('\n');
@@ -193,30 +194,31 @@ int remove_key(gpgme_ctx_t ctx, gpgme_key_t key) {
    gpgme_error_t err = gpgme_new (&ctx);
    err = gpgme_op_delete (ctx, key, 0 );
    if (gpg_err_code (err) == GPG_ERR_CONFLICT ) {
-      cout << gettext("\t=> Skipping secret key") << endl;
+      cout << "\t=> " <<  gettext("Skipping secret key") << endl;
       return 1; }
    else if ( gpg_err_code (err) == GPG_ERR_NO_ERROR ) {
-      if (!quiet)  cout << gettext("\t=> deleted key") << endl;
+      if (!quiet)  cout << "\t=> " << gettext("deleted key") << endl;
       return 0; }
    else {
-      cout << gettext("\t=> unknown Error occurred") << endl;
+      cout << "\t=> " << gettext("unknown Error occurred") << endl;
       return 2; }
 }
 
 /* Print out help-Text */
 void help() {
    cout << program_name << endl;
-   cout << gettext("\tVersion: ") << program_version << endl;
+   cout << "\t" << gettext("Version: ") << program_version << endl;
    cout << gettext("Note: this is still an experimental version. Before use, please backup your ~/.gnupg directory.\n") << endl;
    cout << gettext("Use: ");
-   cout << gettext("schluesselwaerter [-o] [-q] TEST [MORE TESTS…]\n");
+   cout << "schluesselwaerter [-o] [-q] TEST [MORE TESTS…]\n";
 
-   cout << gettext("\t-o\tremove key already if one given criteria is maching") << endl;
-   cout << gettext("\t-q\tdon't print out so much") << endl;
+   cout << "\t-o\t" << gettext("remove key already if one given criteria is maching") << endl;
+   cout << "\t-q\t" << gettext("don't print out so much") << endl;
    cout << gettext("TESTs: ") << endl;
-   cout << gettext("\t-r\tremove revoked keys") << endl;
-   cout << gettext("\t-e\tremove expired keys") << endl;
-   cout << gettext("\t-v [N]\tremove not-valid keys") << endl;
-   cout << gettext("\t-t [N]\tremove not-trusted keys") << endl;
+   cout << "\t-r\t" << gettext("remove revoked keys") << endl;
+   cout << "\t-e\t" << gettext("remove expired keys") << endl;
+   cout << "\t-v [N]\t" << gettext("remove not-valid keys") << endl;
+   cout << "\t-t [N]\t" << gettext("remove not-trusted keys") << endl;
+   cout << "\t\t\t" << gettext("with N you can increase the maximum level") << endl;
 }
 
