@@ -5,16 +5,16 @@ lang="de_DE"
 langname="german"
 
 if [ "$1" = "--locale" ] ; then
- sed --in-place schluesselwaerter.cpp --expression='s!/usr/share/locale!locale!'
- location="locale"
- shift
+	sed --in-place schluesselwaerter.cpp --expression='s!/usr/share/locale!locale!'
+	location="locale"
+	shift
 elif [ "$1" = "--install" ] ; then
- sed --in-place schluesselwaerter.cpp --expression='s!locale!/usr/share/locale!'
- location="/usr/share/locale"
- shift
+	sed --in-place schluesselwaerter.cpp --expression='s!locale!/usr/share/locale!'
+	location="/usr/share/locale"
+	shift
 else
- sed --in-place schluesselwaerter.cpp --expression='s!/usr/share/locale!locale!'
- location="locale"
+	sed --in-place schluesselwaerter.cpp --expression='s!/usr/share/locale!locale!'
+	location="locale"
 fi
 if [ "$1" = "de" ] ; then
 	lang="de_DE"
