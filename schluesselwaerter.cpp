@@ -25,13 +25,14 @@
 using namespace std;
 
 const char* program_name="Schlüsselwärter";
-const char* program_version="0.1.1";
+const char* program_version="0.1.2";
 
 int remove_key(gpgme_ctx_t ctx, gpgme_key_t key);
 void print_key(gpgme_key_t key);
 void help();
 
 int main(int argc, char *argv[]) {
+   int count = 0; // count number of key's deleted
 
    /* First: get arguments */
    bool revoked = false;
@@ -113,6 +114,7 @@ int main(int argc, char *argv[]) {
          err = gpgme_op_keylist_start (ctx, NULL, 0);
          while (!err)
            {
+	     bool fail = true;
              err = gpgme_op_keylist_next (ctx, &key);
              if (err) {
                gpgme_key_release (key);
@@ -125,16 +127,16 @@ int main(int argc, char *argv[]) {
 	     if ( altern ) { // any given kriteria induce deletion
 		if ( revoked && key->revoked ) {
 			print_key(key);
-			remove_key(ctx, key); }
-		if ( expired && key->expired ) {
+			fail = remove_key(ctx, key); }
+		else if ( expired && key->expired ) {
 			print_key(key);
-			remove_key(ctx, key); }
-		if ( novalid && key->uids->validity <= max_valid ) {
+			fail = remove_key(ctx, key); }
+		else if ( novalid && key->uids->validity <= max_valid ) {
 			print_key(key);
-			remove_key(ctx, key); }
-		if ( notrust && key->owner_trust <= max_trust  ) {
+			fail = remove_key(ctx, key); }
+		else if ( notrust && key->owner_trust <= max_trust  ) {
 			print_key(key);
-			remove_key(ctx, key); }
+			fail = remove_key(ctx, key); }
 	     }
 	     else { // all given kriteria together induce deletion
 		if ( 	(!revoked || ( revoked && key->revoked ) ) &&
@@ -142,12 +144,13 @@ int main(int argc, char *argv[]) {
 			(!novalid || ( novalid && key->uids->validity <= max_valid ) ) &&
 			(!notrust || ( notrust && key->owner_trust <= max_trust ) )	) {
 			   print_key(key);
-			   remove_key(ctx, key);
+			   fail = remove_key(ctx, key);
 			}
 	     }
 
-
             gpgme_key_release (key);
+	    if ( !fail )
+		count++;
            }
          gpgme_release (ctx);
        }
@@ -156,6 +159,7 @@ int main(int argc, char *argv[]) {
          fprintf (stderr, "can not list keys: %s\n", gpgme_strerror (err));
          exit (1);
        }
+printf("Deleted %i keys.\n", count);
 } // end main
 
 /* Print out information about key */

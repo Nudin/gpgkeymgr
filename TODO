@@ -1,4 +1,3 @@
-- Quiet + (realqiet?) mode
-- Count number of deleted keys
+- Quiet + (realquiet?) mode
 - Keyserver sync
-
+- clean up unnecessary code
