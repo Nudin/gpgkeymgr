@@ -22,6 +22,11 @@
 #include <gpgme.h>
 #include <string.h>
 
+
+#include <libintl.h>
+#include <locale.h>
+
+
 using namespace std;
 
 const char* program_name="Schlüsselwärter";
@@ -84,6 +89,10 @@ int main(int argc, char *argv[]) {
    gpgme_key_t key;
    gpgme_error_t err = gpgme_new (&ctx);
    gpgme_engine_info_t enginfo;
+   
+   setlocale( LC_ALL, "" );
+   bindtextdomain( "schluesselwaerter", "/home/gaf/nudin/git/GnuPGP-Tools" );
+   textdomain( "schluesselwaerter" );
 
    p = (char *) gpgme_check_version(NULL);
    if (!quiet) printf("Version=%s\n",p);
