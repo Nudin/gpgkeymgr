@@ -91,11 +91,11 @@ int main(int argc, char *argv[]) {
    gpgme_engine_info_t enginfo;
    
    setlocale( LC_ALL, "" );
-   bindtextdomain( "schluesselwaerter", "/home/gaf/nudin/git/GnuPGP-Tools" );
+   bindtextdomain( "schluesselwaerter", "locale" );
    textdomain( "schluesselwaerter" );
 
    p = (char *) gpgme_check_version(NULL);
-   if (!quiet) printf("Version=%s\n",p);
+   if (!quiet) printf(gettext("Version=%s\n"),p);
 
    /* check for OpenPGP support */
    err = gpgme_engine_check_version(GPGME_PROTOCOL_OpenPGP);
@@ -107,7 +107,7 @@ int main(int argc, char *argv[]) {
    /* get engine information */
    err = gpgme_get_engine_info(&enginfo);
    if(err != GPG_ERR_NO_ERROR) return 2;
-   if (!quiet) printf("file=%s, home=%s\n\n",enginfo->file_name,enginfo->home_dir);
+   if (!quiet) printf(gettext("file=%s, home=%s\n\n"),enginfo->file_name,enginfo->home_dir);
 
    /* create our own context */
    err = gpgme_new(&ctx);
@@ -166,10 +166,10 @@ int main(int argc, char *argv[]) {
    }
    if (gpg_err_code (err) != GPG_ERR_EOF)
    {
-      fprintf (stderr, "can not list keys: %s\n", gpgme_strerror (err));
+      fprintf (stderr, gettext("can not list keys: %s\n"), gpgme_strerror (err));
       exit (1);
    }
-printf("Deleted %i key(s).\n", count);
+printf(gettext("Deleted %i key(s).\n"), count);
 } // end main
 
 /* Print out information about key */
@@ -180,9 +180,9 @@ void print_key(gpgme_key_t key) {
    if (key->uids->email)
       printf (" <%s>", key->uids->email);
    if (key->revoked)
-      printf (" revoked");
+      printf (gettext(" revoked"));
    if (key->expired)
-      printf (" expired");
+      printf (gettext(" expired"));
    printf (" [%i|", key->uids->validity);
    printf ("%i]", key->owner_trust);
    putchar ('\n');
@@ -193,30 +193,30 @@ int remove_key(gpgme_ctx_t ctx, gpgme_key_t key) {
    gpgme_error_t err = gpgme_new (&ctx);
    err = gpgme_op_delete (ctx, key, 0 );
    if (gpg_err_code (err) == GPG_ERR_CONFLICT ) {
-      cout << "\t=> Skipping secret key" << endl;
+      cout << gettext("\t=> Skipping secret key") << endl;
       return 1; }
    else if ( gpg_err_code (err) == GPG_ERR_NO_ERROR ) {
-      if (!quiet)  cout << "\t=> deleted key" << endl;
+      if (!quiet)  cout << gettext("\t=> deleted key") << endl;
       return 0; }
    else {
-      cout << "\t=> unknown Error occurred" << endl;
+      cout << gettext("\t=> unknown Error occurred") << endl;
       return 2; }
 }
 
 /* Print out help-Text */
 void help() {
    cout << program_name << endl;
-   cout << "\tVersion: " << program_version << endl;
-   cout << "Note: this is still an experimental version. Before use, please backup your ~/.gnupg directory.\n" << endl;
-   cout << "Use: ";
-   cout << "schluesselwaerter [-o] [-q] TEST [MORE TESTS…]\n";
+   cout << gettext("\tVersion: ") << program_version << endl;
+   cout << gettext("Note: this is still an experimental version. Before use, please backup your ~/.gnupg directory.\n") << endl;
+   cout << gettext("Use: ");
+   cout << gettext("schluesselwaerter [-o] [-q] TEST [MORE TESTS…]\n");
 
-   cout << "\t-o\tremove key already if one given criteria is maching" << endl;
-   cout << "\t-q\tdon't print out so much" << endl;
-   cout << "TESTs: " << endl;
-   cout << "\t-r\tremove revoked keys" << endl;
-   cout << "\t-e\tremove expired keys" << endl;
-   cout << "\t-v [N]\tremove not-valid keys" << endl;
-   cout << "\t-t [N]\tremove not-trusted keys" << endl;
+   cout << gettext("\t-o\tremove key already if one given criteria is maching") << endl;
+   cout << gettext("\t-q\tdon't print out so much") << endl;
+   cout << gettext("TESTs: ") << endl;
+   cout << gettext("\t-r\tremove revoked keys") << endl;
+   cout << gettext("\t-e\tremove expired keys") << endl;
+   cout << gettext("\t-v [N]\tremove not-valid keys") << endl;
+   cout << gettext("\t-t [N]\tremove not-trusted keys") << endl;
 }
 
