@@ -1,0 +1,32 @@
+\documentclass[10pt,a4paper,landscape,oneside,onecolumn,notitlepage]{article}
+\usepackage{longtable}
+\usepackage{layout,alltt}
+\pagestyle{headings}
+% Based on page 84-85 of _The LaTeX Companion_ ISBN 0-201-54199-8
+\setlength{\hoffset}{-2cm}		% Remove the one inch default
+\setlength{\voffset}{-2cm}		% that is "added" to these two
+\setlength{\textwidth}{\paperwidth}	% Use the entire page for the body
+\addtolength{\textwidth}{-1.5cm}	%     ... minus 1.5cm
+\setlength{\textheight}{\paperheight}	% Use the entire page for the body
+\addtolength{\textheight}{-1.5cm}	%     ... minus 1.5cm
+\setlength{\headheight}{0.5cm}		% Fit in the page number
+\renewcommand{\baselinestretch}{1.1}	% Increase line spacing
+\setlength{\oddsidemargin}{0cm}		% ...
+\setlength{\headsep}{0cm}		% ...
+\setlength{\marginparsep}{0cm}		% ... All other values
+\setlength{\marginparwidth}{0cm}	% ... are set to zero
+\setlength{\footskip}{0cm}		% ...
+\setlength{\headsep}{0cm}		% ...
+\setlength{\topmargin}{0cm}		% ...
+\begin{document}
+GPG Keying printed on \today
+\setlongtables
+\begin{longtable}[c]{|l|p{11cm}|l|c|c|c|}
+\hline
+ID & Owner & Fingerprint & Type & \makebox[1.3cm][c]{Key ?} & \makebox[1.3cm][c]{Owner ?} \\ \hline
+\endhead
+
+\end{longtable}
+Last page of the GPG Keying printed \today.  This was produced by
+\verb!$Id: key-party-table-latex,v 1.2 2003/10/07 02:32:59 suter Exp $!.
+\end{document}
