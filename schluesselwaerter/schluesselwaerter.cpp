@@ -31,13 +31,14 @@ using namespace std;
 
 const char* program_name="Schlüsselwärter";
 const char* program_version="0.1.3";
-const char* textpath="/usr/share/locale"
+const char* textpath="/usr/share/locale";
 
 int remove_key(gpgme_ctx_t ctx, gpgme_key_t key);
 void print_key(gpgme_key_t key);
 void help();
 
 bool quiet = false; // For quiet-mode
+bool yes = false; // For 'yes-mode'
 
 int main(int argc, char *argv[]) {
    int count = 0; // count number of key's deleted
@@ -79,6 +80,7 @@ int main(int argc, char *argv[]) {
             break;
          case 'o': altern = true; break;
          case 'q': quiet = true; break;
+         case 'y': yes = true; break;
          case 'h': help(); return 0;
    }
    }
@@ -88,6 +90,16 @@ int main(int argc, char *argv[]) {
       }
    if (!quiet)
       cout << gettext("Arguments: ") << revoked << expired << novalid << notrust << max_valid << max_trust << endl;
+
+   if (!yes)
+   {
+   cout << gettext("Do you realy want to delete the keys? [y/n] ");
+   char c;
+   cin >> c;
+   if (c != 'y')
+   	cout << "By" << endl;
+   	return 0;
+   }
 
    /* Now set up to use GPGME */
    char *p;
@@ -215,6 +227,7 @@ void help() {
 
    cout << "\t-o\t" << gettext("remove key already if one given criteria is maching") << endl;
    cout << "\t-q\t" << gettext("don't print out so much") << endl;
+   cout << "\t-y\t" << gettext("Answer all questions with yes") << endl;
    cout << gettext("TESTs: ") << endl;
    cout << "\t-r\t" << gettext("remove revoked keys") << endl;
    cout << "\t-e\t" << gettext("remove expired keys") << endl;
