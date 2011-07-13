@@ -2,6 +2,5 @@
 - remove unnecessary code (ok?)
 - clean up code (ok?)
 - Backup funktion
-- Sicherheits Rückfrage
--- Option '-y'
 - dry-mode
+- clean up error-codes

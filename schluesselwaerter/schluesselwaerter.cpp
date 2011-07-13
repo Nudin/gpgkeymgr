@@ -97,7 +97,7 @@ int main(int argc, char *argv[]) {
    char c;
    cin >> c;
    if (c != 'y')
-   	cout << "By" << endl;
+   	cout << gettext("By") << endl;
    	return 0;
    }
 
