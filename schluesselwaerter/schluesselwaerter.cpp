@@ -31,6 +31,7 @@ using namespace std;
 
 const char* program_name="Schlüsselwärter";
 const char* program_version="0.1.3";
+const char* textpath="/usr/share/locale"
 
 int remove_key(gpgme_ctx_t ctx, gpgme_key_t key);
 void print_key(gpgme_key_t key);
@@ -43,7 +44,7 @@ int main(int argc, char *argv[]) {
 
    /* i18n */
    setlocale( LC_ALL, "" );
-   bindtextdomain( "schluesselwaerter", "locale" );
+   bindtextdomain( "schluesselwaerter", "/usr/share/locale" );
    textdomain( "schluesselwaerter" );
 
    /* First: get arguments */
