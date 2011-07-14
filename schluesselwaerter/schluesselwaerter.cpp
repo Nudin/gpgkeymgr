@@ -276,6 +276,7 @@ void help() {
    cout << gettext("Use: ");
    cout << "schluesselwaerter [-o] [-q] TEST [MORE TESTS…]\n";
 
+   cout << "\t-b\t" << gettext("Backup public keyring") << endl;
    cout << "\t-o\t" << gettext("remove key already if one given criteria is maching") << endl;
    cout << "\t-q\t" << gettext("don't print out so much") << endl;
    cout << "\t-y\t" << gettext("Answer all questions with yes") << endl;
