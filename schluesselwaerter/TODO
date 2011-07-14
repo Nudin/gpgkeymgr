@@ -1,6 +1,9 @@
 - Keyserver sync
 - remove unnecessary code (ok?)
 - clean up code (ok?)
-- Backup funktion
+- improve Backup funktion
+  - support ~
+  - support relative paths
+  - create dictory if not exists
 - dry-mode
 - clean up error-codes

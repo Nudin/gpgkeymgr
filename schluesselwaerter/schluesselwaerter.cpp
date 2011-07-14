@@ -18,9 +18,14 @@
 */
 
 #include <iostream>
+#include <fstream>
 #include <cstdlib>
 #include <gpgme.h>
 #include <string.h>
+#include <sys/stat.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <pwd.h>
 
 
 #include <libintl.h>
@@ -33,12 +38,15 @@ const char* program_name="Schlüsselwärter";
 const char* program_version="0.1.3";
 const char* textpath="/usr/share/locale";
 
+int mycopy(string dir, string filename, string destination);
+int backup();
 int remove_key(gpgme_ctx_t ctx, gpgme_key_t key);
 void print_key(gpgme_key_t key);
 void help();
 
 bool quiet = false; // For quiet-mode
 bool yes = false; // For 'yes-mode'
+bool dobackup = false;
 
 int main(int argc, char *argv[]) {
    int count = 0; // count number of key's deleted
@@ -81,12 +89,17 @@ int main(int argc, char *argv[]) {
          case 'o': altern = true; break;
          case 'q': quiet = true; break;
          case 'y': yes = true; break;
+         case 'b': dobackup=true; backup(); break;
          case 'h': help(); return 0;
    }
    }
    if ( !revoked && !expired && !novalid && !notrust ) {
-      help();
-      return 7;
+      if ( dobackup )
+         retrun 0;
+      else {
+         help();
+         return 7;
+         }
       }
    if (!quiet)
       cout << gettext("Arguments: ") << revoked << expired << novalid << notrust << max_valid << max_trust << endl;
@@ -96,9 +109,10 @@ int main(int argc, char *argv[]) {
    cout << gettext("Do you realy want to delete the keys? [y/n] ");
    char c;
    cin >> c;
-   if (c != 'y')
+   if (c != 'y') {
    	cout << gettext("By") << endl;
    	return 0;
+   	}
    }
 
    /* Now set up to use GPGME */
@@ -215,6 +229,43 @@ int remove_key(gpgme_ctx_t ctx, gpgme_key_t key) {
    else {
       cout << "\t=> " << gettext("unknown Error occurred") << endl;
       return 2; }
+}
+
+int mycopy(string dir, string filename, string destination)
+{
+   struct passwd *pw = getpwuid(getuid()); // Get home-Directory
+   const string homedir = pw->pw_dir;
+   string strFilename = homedir + dir + filename; // Put file name together
+   string strDestFilename = destination + filename;
+   
+   struct stat stFileInfo;
+   int intStat;
+   intStat = stat(strFilename.c_str(),&stFileInfo); // Test if file exists
+   if(intStat == 0) {
+      ifstream ifs(strFilename.c_str(), ios::binary);
+      ofstream ofs(strDestFilename.c_str(), ios::binary);
+      ofs << ifs.rdbuf();
+      return 0;
+   }
+   else {
+    cout << gettext("failed to open file: ") << strFilename << endl;
+    return 1;
+    }
+}
+
+int backup()
+{
+   string destination = "";
+   cout << gettext("Where should I put the backup? (Directory must exist and path mus be absolute) ");
+   cin >> destination;
+   if ( destination == "" )
+      destination="/backup/";
+   if ( mycopy("/.gnupg/", "pubring.gpg", destination) )
+      return 1;
+   if ( mycopy("/.gnupg/", "pubring.kbx", destination) )
+      return 1;
+   cout << gettext("Succesfully backuped pubring.gpg and pubring.kbx") << endl;
+   return 0;
 }
 
 /* Print out help-Text */
