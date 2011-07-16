@@ -20,7 +20,8 @@
     h1 .small { font-size: 0.4em; }
     h1 a { text-decoration: none }
     h2 { font-size: 1.5em; color: #163950; }
-    h3 { text-align: center; color: #163950; }
+    .bigger { font-size: 2.0em; color: #163950; }
+    h3 { color: #163950; }
     a { color: #163950; }
     .description { font-size: 1.2em; margin-bottom: 30px; margin-top: 30px; font-style: italic;}
     .download { float: right; }
@@ -43,24 +44,46 @@
     </div>
 
     <h1><a href="http://github.com/Nudin/GnuPGP-Tools">GnuPGP-Tools</a>
-      <span class="small">by <a href="http://github.com/Nudin">Nudin</a></span></h1>
+      <span class="small">by 
+      <a href="http://github.com/Nudin">Michael F. Schönitzer</a></span></h1>
 
     <div class="description">
       some tools for GnuPGP (GPG)
     </div>
 
-    <p>I'm writing some tools for GnuPGP (GPG) to make live simpler for both: beginners and advanced user of encryption with Gnu's free PGP implementation.
+    <p>
+    I'm writing some tools for GnuPGP (GPG) to make live simpler for both:
+    beginners and advanced user of encryption with Gnu's free PGP
+    implementation.
 
-Already available is the Tool "schluesselwaerter". With schluesselwaerter you can clean up your keyring, by removing old and unnecessary keys.</p><h2>Dependencies</h2>
+<h2 class="bigger">Schluesselwaerter</h2>
+With schluesselwaerter you can clean up your keyring,
+by removing old and unnecessary keys.</p>
+<p>
+Features:
+<ul>
+<li> remove expired keys</li>
+<li> remove revoked keys</li>
+<li> remove not-valid keys, optional with given level</li>
+<li> remove not-trusted keys, optional with given level</li>
+<li> AND or OR mode for key choosing</li>
+<li> secret key will not be toutched</li>
+</ul>
+Note: the name is temporary an might change in future.
+
+<h3>Dependencies</h3>
 <p>GnuPGP, gpgme</p>
-<h2>Install</h2>
+<h3>Install</h3>
 <p>See instructions in package</p>
-<h2>License</h2>
+<h3>License</h3>
 <p>Gnu Lesser Public License v. 3.0</p>
+
+<br>
+
 <h2>Authors</h2>
-<p>Michael F. Schönitzer (michael@schoenitzer.de)<br/><br/>      </p>
+<p>Michael F. Schönitzer (michael [@] schoenitzer.de)<br/><br/>      </p>
 <h2>Contact</h2>
-<p>Michael F. Schönitzer (michael@schoenitzer.de)<br/>      </p>
+<p>Michael F. Schönitzer (michael [@] schoenitzer.de)<br/>      </p>
 
 
     <h2>Download</h2>
