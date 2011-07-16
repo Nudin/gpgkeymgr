@@ -27,7 +27,6 @@
 #include <sys/types.h>
 #include <pwd.h>
 
-
 #include <libintl.h>
 #include <locale.h>
 
@@ -35,9 +34,10 @@
 using namespace std;
 
 const char* program_name="Schlüsselwärter";
-const char* program_version="0.1.3";
+const char* program_version="0.1.4";
 const char* textpath="/usr/share/locale";
 
+string replace_string(string input, const string &search, const string &replace);
 int mycopy(string dir, string filename, string destination);
 int backup();
 int remove_key(gpgme_ctx_t ctx, gpgme_key_t key);
@@ -46,7 +46,7 @@ void help();
 
 bool quiet = false; // For quiet-mode
 bool yes = false; // For 'yes-mode'
-bool dobackup = false;
+bool dry = false; // For dry-mode
 
 int main(int argc, char *argv[]) {
    int count = 0; // count number of key's deleted
@@ -62,6 +62,7 @@ int main(int argc, char *argv[]) {
    bool novalid = false; int max_valid = 0;
    bool notrust = false; int max_trust = 0;
    bool altern = false;
+   bool dobackup = false;
    for(int i=1;i<argc;i++) {
       if ( strlen(argv[i]) != 2 )
          { help(); return 7; }
@@ -89,20 +90,19 @@ int main(int argc, char *argv[]) {
          case 'o': altern = true; break;
          case 'q': quiet = true; break;
          case 'y': yes = true; break;
+         case 'd': dry = true; break;
          case 'b': dobackup=true; backup(); break;
          case 'h': help(); return 0;
    }
    }
    if ( !revoked && !expired && !novalid && !notrust ) {
       if ( dobackup )
-         retrun 0;
+         return 0;
       else {
          help();
          return 7;
          }
       }
-   if (!quiet)
-      cout << gettext("Arguments: ") << revoked << expired << novalid << notrust << max_valid << max_trust << endl;
 
    if (!yes)
    {
@@ -123,7 +123,7 @@ int main(int argc, char *argv[]) {
    gpgme_engine_info_t enginfo;
    
    p = (char *) gpgme_check_version(NULL);
-   if (!quiet) printf(gettext("Version=%s\n"),p);
+   if (!quiet) printf(gettext("GPG-Version=%s\n"),p);
 
    /* check for OpenPGP support */
    err = gpgme_engine_check_version(GPGME_PROTOCOL_OpenPGP);
@@ -165,16 +165,16 @@ int main(int argc, char *argv[]) {
          if ( altern ) { // any given kriteria induce deletion
             if ( revoked && key->revoked ) {
                if (!quiet) print_key(key);
-                  fail = remove_key(ctx, key); }
+               if (!dry) fail = remove_key(ctx, key); }
             else if ( expired && key->expired ) {
                if (!quiet) print_key(key);
-                  fail = remove_key(ctx, key); }
+               if (!dry) fail = remove_key(ctx, key); }
             else if ( novalid && key->uids->validity <= max_valid ) {
                if (!quiet) print_key(key);
-                  fail = remove_key(ctx, key); }
+               if (!dry) fail = remove_key(ctx, key); }
             else if ( notrust && key->owner_trust <= max_trust  ) {
                if (!quiet) print_key(key);
-                  fail = remove_key(ctx, key); }
+               if (!dry) fail = remove_key(ctx, key); }
          }
          else { // all given kriteria together induce deletion
             if ( 	(!revoked || ( revoked && key->revoked ) ) &&
@@ -182,7 +182,7 @@ int main(int argc, char *argv[]) {
                   (!novalid || ( novalid && key->uids->validity <= max_valid ) ) &&
                   (!notrust || ( notrust && key->owner_trust <= max_trust ) )	) {
                      if (!quiet) print_key(key);
-                     fail = remove_key(ctx, key);
+                     if (!dry) fail = remove_key(ctx, key);
                   }
          }
 
@@ -200,7 +200,10 @@ int main(int argc, char *argv[]) {
 printf(gettext("Deleted %i key(s).\n"), count);
 } // end main
 
-/* Print out information about key */
+
+/*
+Print out information about key
+*/
 void print_key(gpgme_key_t key) {
    printf ("%s:", key->subkeys->keyid);
    if (key->uids->name)
@@ -216,7 +219,9 @@ void print_key(gpgme_key_t key) {
    putchar ('\n');
 }
 
-/* Delete key from pubring */ 
+/*
+Delete key 'key' from pubring via context 'ctx'
+*/ 
 int remove_key(gpgme_ctx_t ctx, gpgme_key_t key) {
    gpgme_error_t err = gpgme_new (&ctx);
    err = gpgme_op_delete (ctx, key, 0 );
@@ -231,32 +236,63 @@ int remove_key(gpgme_ctx_t ctx, gpgme_key_t key) {
       return 2; }
 }
 
+/*
+Replace 'search' with 'replace' ind 'input'
+*/
+string replace_string(string input, const string &search, const string &replace)
+{
+        string::size_type pos = input.find(search, 0);
+        int searchlength = search.length();
+        int replacelength = replace.length();
+
+        while(string::npos != pos)
+        {
+                input.replace(pos, searchlength, replace);
+                pos = input.find(search, pos + replacelength);
+        }
+
+        return input;
+}
+
+/*
+Will copy a <home>/dir/filename to destination/filename 
+equivalent to `cp ~/$dir/$filename $destination/filename` on unix
+destination must already exist
+*/
 int mycopy(string dir, string filename, string destination)
 {
-   struct passwd *pw = getpwuid(getuid()); // Get home-Directory
+   // Get home-Directory
+   struct passwd *pw = getpwuid(getuid());
    const string homedir = pw->pw_dir;
-   string strFilename = homedir + dir + filename; // Put file name together
-   string strDestFilename = destination + filename;
-   
+   // Put filenames together
+   string full_filename = homedir + dir + filename;
+   if ( destination.substr(destination.length(),0) != "/" )
+	destination = destination + "/";
+   destination = replace_string(destination,"~",homedir);
+   string full_destination = destination + filename;
+
    struct stat stFileInfo;
    int intStat;
-   intStat = stat(strFilename.c_str(),&stFileInfo); // Test if file exists
+   intStat = stat(full_filename.c_str(),&stFileInfo); // Test if file exists
    if(intStat == 0) {
-      ifstream ifs(strFilename.c_str(), ios::binary);
-      ofstream ofs(strDestFilename.c_str(), ios::binary);
+      ifstream ifs(full_filename.c_str(), ios::binary);
+      ofstream ofs(full_destination.c_str(), ios::binary);
       ofs << ifs.rdbuf();
       return 0;
    }
    else {
-    cout << gettext("failed to open file: ") << strFilename << endl;
+    cout << gettext("failed to open file: ") << full_filename << endl;
     return 1;
     }
 }
 
+/*
+Backup keyring-files to a directory given by the user
+*/
 int backup()
 {
    string destination = "";
-   cout << gettext("Where should I put the backup? (Directory must exist and path mus be absolute) ");
+   cout << gettext("Where should I put the backup? (Directory must exist) ");
    cin >> destination;
    if ( destination == "" )
       destination="/backup/";
@@ -268,18 +304,21 @@ int backup()
    return 0;
 }
 
-/* Print out help-Text */
+/*
+Print out help-Text
+*/
 void help() {
    cout << program_name << endl;
    cout << "\t" << gettext("Version: ") << program_version << endl;
    cout << gettext("Note: this is still an experimental version. Before use, please backup your ~/.gnupg directory.\n") << endl;
    cout << gettext("Use: ");
-   cout << "schluesselwaerter [-o] [-q] TEST [MORE TESTS…]\n";
+   cout << "schluesselwaerter [-o] [-qyb] TEST [MORE TESTS…]\n";
 
    cout << "\t-b\t" << gettext("Backup public keyring") << endl;
    cout << "\t-o\t" << gettext("remove key already if one given criteria is maching") << endl;
    cout << "\t-q\t" << gettext("don't print out so much") << endl;
    cout << "\t-y\t" << gettext("Answer all questions with yes") << endl;
+   cout << "\t-y\t" << gettext("Don't realy do anything") << endl;
    cout << gettext("TESTs: ") << endl;
    cout << "\t-r\t" << gettext("remove revoked keys") << endl;
    cout << "\t-e\t" << gettext("remove expired keys") << endl;

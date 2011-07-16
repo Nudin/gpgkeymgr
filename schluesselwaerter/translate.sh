@@ -24,14 +24,14 @@ l)	sed --in-place schluesselwaerter.cpp --expression='s!textpath="/usr/share/loc
 	location="locale";;
 i)	sed --in-place schluesselwaerter.cpp --expression='s!textpath="locale"!textpath="/usr/share/locale"!'
 	location="/usr/share/locale";;
-h)	echo -e "./translate [-f] [-l|-i] lang_LANG";;
-[?]) echo "./translate [-f] [-l|-i]";;
+h)	echo -e "./translate [-f] [-l|-i] lang_LANG";exit;;
+[?]) echo "./translate [-f] [-l|-i]";exit;;
 esac
 done
 shift $(($OPTIND-1))
 echo $@
 
-if [ "$1" = "de" ] ; then
+if [ "$1" = "de" -o "$1" = "de_DE" ] ; then
 	lang="de_DE"
 	langname="german"
 elif [ "$1" != "" ] ; then
@@ -42,7 +42,7 @@ else
 	read -p "Language-name: " langname
 fi
 
-if [ $location = "" ] ; then	# Default Location
+if [ "$location" = "" ] ; then	# Default Location
 	sed --in-place schluesselwaerter.cpp --expression='s!/textpath="/usr/share/locale"!textpath="locale"!'
 	location="locale"
 fi
