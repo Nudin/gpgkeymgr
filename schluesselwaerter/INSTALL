@@ -1,0 +1,29 @@
+== Dependecies ==
+ - GPG
+ - GPGME
+ - C++-compiler (I used g++) and GPGME-devel-packages for compiling
+
+== Compile & Install ==
+
+How to compile & install:
+	$ cd schluesselwaerter
+	$ g++ schluesselwaerter.cpp -lgpgme -o schluesselwaerter
+	$ cp schluesselwaerter /usr/bin
+   How to install language-support:
+	$ cp translations/schluesselwaerter-<wished language>.mo /usr/share/locale/<wished language>/LC_MESSAGES/
+How to compile for 'portable' use with language support:
+	$ cd schluesselwaerter
+	$ sed --in-place schluesselwaerter.cpp --expression='s!textpath="/usr/share/locale"!textpath="locale"!'
+	$ g++ schluesselwaerter.cpp -lgpgme -o schluesselwaerter
+	$ mkdir locale/<wished language>/LC_MESSAGES
+	$ cp translations/schluesselwaerter-<wished language>.mo locale/<wished language>/LC_MESSAGES/
+How to translate and install:
+	$ cd schluesselwaerter
+	$ ./translate -i <lang_LANG>
+	$ g++ schluesselwaerter.cpp -lgpgme -o schluesselwaerter
+	$ ./translate -f -i <lang_LANG>
+	$ cp schluesselwaerter /usr/bin
+	$ cp translations/schluesselwaerter-<lang_LANG>.mo /usr/share/locale/<lang_LANG>/LC_MESSAGES/
+How to translate for 'portable' use:
+	comming next
+
