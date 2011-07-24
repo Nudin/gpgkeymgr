@@ -64,8 +64,8 @@ else	# Create .mo out of .po and put it to wished palce
    msgfmt -c -v -o schluesselwaerter.mo ${langname}.po
    mkdir -p ${location}/${lang}/LC_MESSAGES
    mv schluesselwaerter.mo ${location}/${lang}/LC_MESSAGES
-   rm *.po~ *pot > /dev/null
-   mkdir translations
+   mkdir translations 2> /dev/null
    mv schluesselwaerter.mo translations/schluesselwaerter-${lang}.mo
+   rm *.po~ *pot 2> /dev/null
    echo "Finished. You may compile now."
 fi

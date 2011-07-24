@@ -1,8 +1,8 @@
 - Keyserver sync
-- remove unnecessary code (ok?)
-- clean up code (ok?)
+- clean up code
 - improve Backup funktion
   - create dictory if not exists
-- clean up error-codes
+  - test if file already exists
+- clean up error-codes!
 - support exclude-file with keyids as test
-- support short uids
+- more usefull question

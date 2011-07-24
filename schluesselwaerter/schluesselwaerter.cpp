@@ -38,9 +38,10 @@
 using namespace std;
 
 const char* program_name="Schlüsselwärter";
-const char* program_version="0.1.5";
+const char* program_version="0.1.6";
 const char* textpath="/usr/share/locale";
 
+string shortenuid(string longuid);
 int searchvector(vector<string> str, string key);
 int readvector(string file, vector<string>& vector);
 string replace_string(string input, const string &search, const string &replace);
@@ -125,7 +126,7 @@ int main(int argc, char *argv[]) {
 
    if (!yes)
    {
-   cout << gettext("Do you realy want to delete the keys? [y/n] ");
+   cout << gettext("Do you really want to delete the keys? [y/n] ");
    char c;
    cin >> c;
    if (c != 'y') {
@@ -181,7 +182,7 @@ int main(int argc, char *argv[]) {
             break;
 
          /* Test if to remove key */
-         if ( altern ) { // any given kriteria induce deletion
+         if ( altern ) { // any given criteria induce deletion
             if ( revoked && key->revoked ) {
                if (!quiet) print_key(key);
                if (!dry) fail = remove_key(ctx, key); }
@@ -194,19 +195,20 @@ int main(int argc, char *argv[]) {
             else if ( notrust && key->owner_trust <= max_trust  ) {
                if (!quiet) print_key(key);
                if (!dry) fail = remove_key(ctx, key); }
-            else if ( poslist && searchvector(list, key->subkeys->keyid)  ) {
+            else if ( poslist && searchvector(list, shortenuid(key->subkeys->keyid))  ) {
                if (!quiet) print_key(key);
                if (!dry) fail = remove_key(ctx, key); }
          }
-         else { // all given kriteria together induce deletion
-            if ( 	(!revoked || ( revoked && key->revoked ) ) &&
+         else { // all given criteria together induce deletion
+            if (  (!revoked || ( revoked && key->revoked ) ) &&
                   (!expired || ( expired && key->expired ) ) &&
                   (!novalid || ( novalid && key->uids->validity <= max_valid ) ) &&
                   (!notrust || ( notrust && key->owner_trust <= max_trust ) ) &&
-                  (!poslist || ( poslist && searchvector(list, key->subkeys->keyid) ) )	) {
+                  (!poslist || ( poslist && searchvector(list, shortenuid(key->subkeys->keyid)) ) )
+               ) {
                      if (!quiet) print_key(key);
                      if (!dry) fail = remove_key(ctx, key);
-                  }
+                 }
          }
 
          gpgme_key_release (key);
@@ -220,7 +222,7 @@ int main(int argc, char *argv[]) {
       fprintf (stderr, gettext("can not list keys: %s\n"), gpgme_strerror (err));
       exit (1);
    }
-printf(gettext("Deleted %i key(s).\n"), count);
+   printf(gettext("Deleted %i key(s).\n"), count);
 } // end main
 
 
@@ -228,7 +230,7 @@ printf(gettext("Deleted %i key(s).\n"), count);
 Print out information about key
 */
 void print_key(gpgme_key_t key) {
-   printf ("%s:", key->subkeys->keyid);
+   printf ("%s:", shortenuid(key->subkeys->keyid).c_str());
    if (key->uids->name)
       printf (" %s", key->uids->name);
    if (key->uids->email)
@@ -255,7 +257,7 @@ int remove_key(gpgme_ctx_t ctx, gpgme_key_t key) {
       if (!quiet)  cout << "\t=> " << gettext("deleted key") << endl;
       return 0; }
    else {
-      cout << "\t=> " << gettext("unknown Error occurred") << endl;
+      cerr << "\t=> " << gettext("unknown Error occurred") << endl;
       return 2; }
 }
 
@@ -278,7 +280,23 @@ string replace_string(string input, const string &search, const string &replace)
 }
 
 /*
+Returns the short-UID
+*/
+string shortenuid(string longuid)
+{
+   if ( longuid.size() == 16 )
+      return longuid.substr(8,16);
+   else if ( longuid.size() == 8 )
+      return longuid;
+   else {
+      cerr << gettext("UID in wrong format, skipping");
+      return "";
+   }
+}
+
+/*
 Search if an value is included in the string list
+We use binary search as search algorithm
 */
 int searchvector(vector<string> str, string key)
 {
@@ -291,9 +309,9 @@ int searchvector(vector<string> str, string key)
 	   mid = (low+high)/2;
 	   if (key < str[mid]) high = mid-1;
 	   else if (key > str[mid]) low = mid+1;
-	   else return 1;  // gefunden
+	   else return 1;  // found
 	}
-	return 0; // nicht gefunden
+	return 0; // not found
 }
 
 /*
@@ -307,13 +325,15 @@ int readvector(string file, vector<string>& vector)
 
   // check if the file is open
   if (! ifs) {
-    cerr << "FAILED to open " << file << endl;
+    cerr << gettext("FAILED to open ") << file << endl;
     return 1;
   }
 
   while(getline(ifs, s)) {
     line_counter++;
-    vector.push_back(s);
+    s = shortenuid(s);
+    if ( s != "" )
+       vector.push_back(s);
   }
 
   ifs.close();
@@ -348,7 +368,7 @@ int mycopy(string dir, string filename, string destination)
       return 0;
    }
    else {
-    cout << gettext("failed to open file: ") << full_filename << endl;
+    cerr << gettext("failed to open file: ") << full_filename << endl;
     return 1;
     }
 }
@@ -367,7 +387,7 @@ int backup()
       return 1;
    if ( mycopy("/.gnupg/", "pubring.kbx", destination) )
       return 1;
-   cout << gettext("Succesfully backuped pubring.gpg and pubring.kbx") << endl;
+   cout << gettext("Successfully backuped pubring.gpg and pubring.kbx") << endl;
    return 0;
 }
 
@@ -385,11 +405,11 @@ void help() {
    cout << "\t-o\t" << gettext("remove key already if one given criteria is maching") << endl;
    cout << "\t-q\t" << gettext("don't print out so much") << endl;
    cout << "\t-y\t" << gettext("Answer all questions with yes") << endl;
-   cout << "\t-y\t" << gettext("Don't realy do anything") << endl;
+   cout << "\t-y\t" << gettext("Don't really do anything") << endl;
    cout << gettext("TESTs: ") << endl;
    cout << "\t-r\t" << gettext("remove revoked keys") << endl;
    cout << "\t-e\t" << gettext("remove expired keys") << endl;
-   cout << "\t-l " << gettext("file") << "\t" << gettext("remove keys listed in file (longuids)") << endl;
+   cout << "\t-l " << gettext("file") << "\t" << gettext("remove keys listed in file (uids)") << endl;
    cout << "\t-v [N]\t" << gettext("remove not-valid keys") << endl;
    cout << "\t-t [N]\t" << gettext("remove not-trusted keys") << endl;
    cout << "\t\t\t" << gettext("with N you can increase the maximum level") << endl;
