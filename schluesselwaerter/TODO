@@ -1,9 +1,21 @@
-- Keyserver sync
-- clean up code
-- improve Backup funktion
-  - create dictory if not exists
+Smaller Tasks:
+- improve backupfunction
+  - create directory if not exists
   - test if file already exists
 - clean up error-codes!
-- support exclude-file with keyids as test
-- more usefull question (ok)
+- more useful question (ok)
+- translate & improve manpage
 
+Bigger Tasks:
+- Keyserver sync
+- support exclude-file with keyids as test
+- GUI
+
+Things always to do:
+- clean up code
+- more translations
+
+Other Things:
+- Decide about name
+- Announce & Promote
+- Update Homepage
