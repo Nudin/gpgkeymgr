@@ -126,7 +126,30 @@ int main(int argc, char *argv[]) {
 
    if (!yes)
    {
-   cout << gettext("Do you really want to delete the keys? [y/n] ");
+   /* Generate security-question */
+   string mode;
+   if (altern)
+      mode = gettext(" or ");
+   else
+      mode = gettext(" and ");
+   string question = gettext("Do you really want to delete all keys which are ");
+   if ( revoked )
+      question += gettext("revoked") + mode;
+   if ( expired )
+      question += gettext("expired") + mode;
+   if ( novalid )
+      question += gettext("unvalid") + mode;
+   if ( notrust )
+      question += gettext("untrusted") + mode;
+   if ( poslist )
+      question += gettext("listed in file") + mode;
+   question = question.substr(0,question.length()-mode.length()); // remove last 'and'
+   question += gettext("###");	// for languages which need also something at the end
+   if ( question.substr(question.length()-3,question.length()) == "###")
+      question = question.substr(0,question.length()-3);
+   question += "? [y/n] ";
+
+   cout << question; // Ask
    char c;
    cin >> c;
    if (c != 'y') {
