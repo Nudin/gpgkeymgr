@@ -20,23 +20,29 @@
 #include <iostream>
 #include <fstream>
 #include <cstdlib>
-#include <gpgme.h>
+#include <algorithm>
+#include <vector>
 #include <string.h>
 #include <sys/stat.h>
 #include <unistd.h>
 #include <sys/types.h>
 #include <pwd.h>
-
 #include <libintl.h>
 #include <locale.h>
+
+#include <gpgme.h>
+
+#define arraylength(a) ( sizeof ( a ) / sizeof ( *a ) )
 
 
 using namespace std;
 
 const char* program_name="Schlüsselwärter";
-const char* program_version="0.1.4";
+const char* program_version="0.1.5";
 const char* textpath="/usr/share/locale";
 
+int searchvector(vector<string> str, string key);
+int readvector(string file, vector<string>& vector);
 string replace_string(string input, const string &search, const string &replace);
 int mycopy(string dir, string filename, string destination);
 int backup();
@@ -59,10 +65,11 @@ int main(int argc, char *argv[]) {
    /* First: get arguments */
    bool revoked = false;
    bool expired = false;
-   bool novalid = false; int max_valid = 0;
-   bool notrust = false; int max_trust = 0;
+   bool novalid = false;	int max_valid = 0;
+   bool notrust = false;	int max_trust = 0;
    bool altern = false;
    bool dobackup = false;
+   bool poslist = false;	vector<string> list;
    for(int i=1;i<argc;i++) {
       if ( strlen(argv[i]) != 2 )
          { help(); return 7; }
@@ -92,10 +99,22 @@ int main(int argc, char *argv[]) {
          case 'y': yes = true; break;
          case 'd': dry = true; break;
          case 'b': dobackup=true; backup(); break;
+         case 'l':
+            if ( i+1 < argc ) {
+               poslist=true;
+               if ( readvector(argv[i+1],list) )
+                  return 8;
+               i++;
+               }
+            else {
+               help();
+               return 7;
+               }
+            break;
          case 'h': help(); return 0;
    }
    }
-   if ( !revoked && !expired && !novalid && !notrust ) {
+   if ( !revoked && !expired && !novalid && !notrust && !poslist ) {
       if ( dobackup )
          return 0;
       else {
@@ -175,12 +194,16 @@ int main(int argc, char *argv[]) {
             else if ( notrust && key->owner_trust <= max_trust  ) {
                if (!quiet) print_key(key);
                if (!dry) fail = remove_key(ctx, key); }
+            else if ( poslist && searchvector(list, key->subkeys->keyid)  ) {
+               if (!quiet) print_key(key);
+               if (!dry) fail = remove_key(ctx, key); }
          }
          else { // all given kriteria together induce deletion
             if ( 	(!revoked || ( revoked && key->revoked ) ) &&
                   (!expired || ( expired && key->expired ) ) &&
                   (!novalid || ( novalid && key->uids->validity <= max_valid ) ) &&
-                  (!notrust || ( notrust && key->owner_trust <= max_trust ) )	) {
+                  (!notrust || ( notrust && key->owner_trust <= max_trust ) ) &&
+                  (!poslist || ( poslist && searchvector(list, key->subkeys->keyid) ) )	) {
                      if (!quiet) print_key(key);
                      if (!dry) fail = remove_key(ctx, key);
                   }
@@ -255,6 +278,50 @@ string replace_string(string input, const string &search, const string &replace)
 }
 
 /*
+Search if an value is included in the string list
+*/
+int searchvector(vector<string> str, string key)
+{
+	int low, high, mid;
+	low = 0;
+	//high = arraylength ( str );
+	high = str.size();
+	
+	while (low <= high) {
+	   mid = (low+high)/2;
+	   if (key < str[mid]) high = mid-1;
+	   else if (key > str[mid]) low = mid+1;
+	   else return 1;  // gefunden
+	}
+	return 0; // nicht gefunden
+}
+
+/*
+Read vector from file
+*/
+int readvector(string file, vector<string>& vector)
+{
+  ifstream ifs( file.c_str() );
+  int line_counter = 1;
+  string s;
+
+  // check if the file is open
+  if (! ifs) {
+    cerr << "FAILED to open " << file << endl;
+    return 1;
+  }
+
+  while(getline(ifs, s)) {
+    line_counter++;
+    vector.push_back(s);
+  }
+
+  ifs.close();
+  sort(vector.begin(), vector.end());
+  return 0;
+}
+
+/*
 Will copy a <home>/dir/filename to destination/filename 
 equivalent to `cp ~/$dir/$filename $destination/filename` on unix
 destination must already exist
@@ -322,6 +389,7 @@ void help() {
    cout << gettext("TESTs: ") << endl;
    cout << "\t-r\t" << gettext("remove revoked keys") << endl;
    cout << "\t-e\t" << gettext("remove expired keys") << endl;
+   cout << "\t-l " << gettext("file") << "\t" << gettext("remove keys listed in file (longuids)") << endl;
    cout << "\t-v [N]\t" << gettext("remove not-valid keys") << endl;
    cout << "\t-t [N]\t" << gettext("remove not-trusted keys") << endl;
    cout << "\t\t\t" << gettext("with N you can increase the maximum level") << endl;

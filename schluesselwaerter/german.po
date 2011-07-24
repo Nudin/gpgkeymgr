@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: schluesselwaerter\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-07-17 01:29+0200\n"
-"PO-Revision-Date: 2011-07-17 01:42+0100\n"
+"POT-Creation-Date: 2011-07-24 03:22+0200\n"
+"PO-Revision-Date: 2011-07-24 03:23+0100\n"
 "Last-Translator: Michael F. Schönitzer <michael@schoenitzer.de>\n"
 "Language-Team: German\n"
 "Language: de\n"
@@ -21,91 +21,95 @@ msgstr ""
 "X-Poedit-Country: GERMANY\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: schluesselwaerter.cpp:320
+#: schluesselwaerter.cpp:387
 msgid "Answer all questions with yes"
 msgstr "Alle Fragen mit ja beantworten"
 
-#: schluesselwaerter.cpp:317
+#: schluesselwaerter.cpp:384
 msgid "Backup public keyring"
 msgstr "Backup von öffentlichem Schlüsselring anlegen"
 
-#: schluesselwaerter.cpp:113
+#: schluesselwaerter.cpp:132
 msgid "By"
 msgstr "By."
 
-#: schluesselwaerter.cpp:200
+#: schluesselwaerter.cpp:223
 #, c-format
 msgid "Deleted %i key(s).\n"
 msgstr "%i Schlüssel wurden gelöscht.\n"
 
-#: schluesselwaerter.cpp:109
+#: schluesselwaerter.cpp:128
 msgid "Do you realy want to delete the keys? [y/n] "
-msgstr "Wollen sie die Schlüssel wirklich löschen? [y/n]"
+msgstr "Wollen sie die Schlüssel wirklich löschen? [y/n] "
 
-#: schluesselwaerter.cpp:321
+#: schluesselwaerter.cpp:388
 msgid "Don't realy do anything"
 msgstr "Nichts wirklich tun (Simulationsmodus)"
 
-#: schluesselwaerter.cpp:126
+#: schluesselwaerter.cpp:145
 #, c-format
 msgid "GPG-Version=%s\n"
 msgstr "GPG-Version: %s\n"
 
-#: schluesselwaerter.cpp:313
+#: schluesselwaerter.cpp:380
 msgid "Note: this is still an experimental version. Before use, please backup your ~/.gnupg directory.\n"
 msgstr "Hinweis: Dies ist eine noch experimentelle Version. Machen sie vor der Verwendung ein Backup ihres ~/.gnupg Ordners.\n"
 
-#: schluesselwaerter.cpp:133
+#: schluesselwaerter.cpp:152
 #, c-format
 msgid "Protocol name: %s\n"
 msgstr "Protokollname: %s\n"
 
-#: schluesselwaerter.cpp:229
+#: schluesselwaerter.cpp:252
 msgid "Skipping secret key"
 msgstr "Überspringe privaten Schlüssel"
 
-#: schluesselwaerter.cpp:303
+#: schluesselwaerter.cpp:370
 msgid "Succesfully backuped pubring.gpg and pubring.kbx"
 msgstr "Backup von pubring.gpg und pubring.kbx erfolgreich."
 
-#: schluesselwaerter.cpp:322
+#: schluesselwaerter.cpp:389
 msgid "TESTs: "
 msgstr "TESTs: "
 
-#: schluesselwaerter.cpp:314
+#: schluesselwaerter.cpp:381
 msgid "Use: "
 msgstr "Benutzung:"
 
-#: schluesselwaerter.cpp:312
+#: schluesselwaerter.cpp:379
 msgid "Version: "
 msgstr "Version: "
 
-#: schluesselwaerter.cpp:295
+#: schluesselwaerter.cpp:362
 msgid "Where should I put the backup? (Directory must exist) "
-msgstr "Wo soll das Backup erstellt werden? (Verzeichnis muss existieren)"
+msgstr "Wo soll das Backup erstellt werden? (Verzeichnis muss existieren) "
 
-#: schluesselwaerter.cpp:197
+#: schluesselwaerter.cpp:220
 #, c-format
 msgid "can not list keys: %s\n"
 msgstr "Kann Schlüsselliste nicht abfragen: %s\n"
 
-#: schluesselwaerter.cpp:232
+#: schluesselwaerter.cpp:255
 msgid "deleted key"
 msgstr "Schlüssel gelöscht"
 
-#: schluesselwaerter.cpp:319
+#: schluesselwaerter.cpp:386
 msgid "don't print out so much"
 msgstr "Weniger Text ausgeben"
 
-#: schluesselwaerter.cpp:216
+#: schluesselwaerter.cpp:239
 msgid "expired"
 msgstr "Abgelaufen"
 
-#: schluesselwaerter.cpp:284
+#: schluesselwaerter.cpp:351
 msgid "failed to open file: "
 msgstr "Kann Datei nicht öffnen: "
 
-#: schluesselwaerter.cpp:138
+#: schluesselwaerter.cpp:392
+msgid "file"
+msgstr "datei"
+
+#: schluesselwaerter.cpp:157
 #, c-format
 msgid ""
 "file=%s, home=%s\n"
@@ -114,35 +118,39 @@ msgstr ""
 "Datei=%s, Heimverzeichnis=%s\n"
 "\n"
 
-#: schluesselwaerter.cpp:324
+#: schluesselwaerter.cpp:391
 msgid "remove expired keys"
 msgstr "Abgelaufene Schlüssel löschen"
 
-#: schluesselwaerter.cpp:318
+#: schluesselwaerter.cpp:385
 msgid "remove key already if one given criteria is maching"
 msgstr "Schlüssel entfernen sobald eines der Kriterien zutrifft"
 
-#: schluesselwaerter.cpp:326
+#: schluesselwaerter.cpp:392
+msgid "remove keys listed in file (longuids)"
+msgstr "Schlüssel die in der Datei gelistet sind entfernen (lange uids)"
+
+#: schluesselwaerter.cpp:394
 msgid "remove not-trusted keys"
 msgstr "Schlüssel denen ich nicht vertraue entfernen"
 
-#: schluesselwaerter.cpp:325
+#: schluesselwaerter.cpp:393
 msgid "remove not-valid keys"
 msgstr "Schlüssel deren Gültigkeit nicht überprüft wurde entfernen"
 
-#: schluesselwaerter.cpp:323
+#: schluesselwaerter.cpp:390
 msgid "remove revoked keys"
 msgstr "Wiederrufene Schlüssel löschen"
 
-#: schluesselwaerter.cpp:214
+#: schluesselwaerter.cpp:237
 msgid "revoked"
 msgstr "Wiederrufen"
 
-#: schluesselwaerter.cpp:235
+#: schluesselwaerter.cpp:258
 msgid "unknown Error occurred"
 msgstr "Ein unbekannter Fehler trat auf."
 
-#: schluesselwaerter.cpp:327
+#: schluesselwaerter.cpp:395
 msgid "with N you can increase the maximum level"
 msgstr "mit N können Sie die Grenze erhöhen"
 

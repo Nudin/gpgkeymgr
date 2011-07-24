@@ -4,5 +4,5 @@
 - improve Backup funktion
   - create dictory if not exists
 - clean up error-codes
-- support file with keyids as test
 - support exclude-file with keyids as test
+- support short uids
