@@ -1,0 +1,84 @@
+.TH "schluesselwaerter" "1" "0.1.6" "Michael Schoenitzer" "User Commands"
+.SH "NAME"
+schluesselwaerter \- manage you GPG keyring
+.SH "SYNOPSIS"
+.B schluesselwaerter
+[\fI\-o\fR] [\fI\-qydb\fR] \fITEST\fR [\fITEST\fR...]
+.br 
+.B schluesselwaerter
+\fI\-b\fR|\fI\-h\fR
+.SH "DESCRIPTION"
+.PP 
+A program to clean up an manage your keyring..PP 
+.PP TEST is one of:.PP 
+.TP 
+\fB\-r\fR
+remove revoked keys
+.TP 
+\fB\-e\fR
+remove expired keys
+.TP 
+\fB\-v\fR [\fIN\fR]
+remove not\-valid keys, with \fIN\fR you can increase the maximum level
+.TP 
+\fB\-t\fR [\fIN\fR]
+remove not\-trusted keys, with \fIN\fR you can increase the maximum level
+.TP 
+\fB\-l\fR \fIFile\fR
+remove keys listed in file (uids)
+
+.br 
+.PP 
+Other options:
+.PP 
+
+.TP 
+\fB\-b\fR
+Backup public keyring to ser given directory
+.TP 
+\fB\-o\fR
+remove key already if one given criteria is maching
+.TP 
+\fB\-q\fR
+don't print out so much
+.TP 
+\fB\-y\fR
+Answer all questions with yes
+.TP 
+\fB\-d\fR
+Don't really do anything
+.TP 
+\fB\-h\fR
+Print help\-text
+
+.br 
+.SH "EXAMPLES"
+.PP 
+Delete all keys wich are revoked or expired:
+.PP 
+.IP 
+schlueselwaerter \-o \-e \-r
+.PP 
+Delete all keys wich are not valid and I don't trust:
+.PP 
+.IP 
+schlueselwaerter \-v \-t
+.PP 
+First backup keyring, then delete all keys wich are not compelty valid:
+.PP 
+.IP 
+schlueselwaerter \-b \-v 3
+.SH "AUTHOR"
+Written by Michael Schoenitzer
+.SH "REPORTING BUGS"
+Report bugs to michael@schoenitzer.de
+.br 
+Homepage: <https://www.github.com/Nudin/GnuPGP\-Tools/>
+.SH "COPYRIGHT"
+Copyright \(co Michael Schoenitzer
+.br 
+License LGPLv3+: GNU Lee srsGPL version 3 or later <http://gnu.org/licenses/lgpl.html>
+.br 
+This is free software: you are free to change and redistribute it.
+.br 
+There is NO WARRANTY, to the extent permitted by law.
