@@ -1,7 +1,6 @@
 Smaller Tasks:
 - improve backupfunction
   - create directory if not exists
-- clean up error-codes!
 - more useful question (ok)
 - translate & improve manpage
 
@@ -18,3 +17,16 @@ Other Things:
 - Decide about name
 - Announce & Promote
 - Update Homepage
+
+
+
+For future use - error-codes are:
+0 - success or exit by user
+1 - wrong arguments
+2 - wrong file content or not existing file given
+  3-9 reserved for other user errors
+10 - unknown GPG/GPGME-error
+11 - no OpenPGP-support
+12 - cant get GPG-engine information
+13 - cant create GPG-context
+14 - cant set GPG-protocol

@@ -38,7 +38,7 @@
 using namespace std;
 
 const char* program_name="Schlüsselwärter";
-const char* program_version="0.1.6";
+const char* program_version="0.1.7";
 const char* textpath="/usr/share/locale";
 
 bool ask_user(string question);
@@ -74,7 +74,7 @@ int main(int argc, char *argv[]) {
    bool poslist = false;	vector<string> list;
    for(int i=1;i<argc;i++) {
       if ( strlen(argv[i]) != 2 )
-         { help(); return 7; }
+         { help(); return 1; }
       char c=argv[i][1];
       switch(c)
       {
@@ -92,7 +92,7 @@ int main(int argc, char *argv[]) {
             notrust = true;
             if ( i+1 < argc ) {
                max_trust = atoi(argv[i+1]);
-               if ( max_valid != 0 )
+               if ( max_trust != 0 )
                   i++;
             }
             break;
@@ -105,12 +105,12 @@ int main(int argc, char *argv[]) {
             if ( i+1 < argc ) {
                poslist=true;
                if ( readvector(argv[i+1],list) )
-                  return 8;
+                  return 2;
                i++;
                }
             else {
                help();
-               return 7;
+               return 1;
                }
             break;
          case 'h': help(); return 0;
@@ -121,7 +121,7 @@ int main(int argc, char *argv[]) {
          return 0;
       else {
          help();
-         return 7;
+         return 1;
          }
       }
 
@@ -168,23 +168,23 @@ int main(int argc, char *argv[]) {
 
    /* check for OpenPGP support */
    err = gpgme_engine_check_version(GPGME_PROTOCOL_OpenPGP);
-   if(err != GPG_ERR_NO_ERROR) return 1;
+   if(err != GPG_ERR_NO_ERROR) return 11;
 
    p = (char *) gpgme_get_protocol_name(GPGME_PROTOCOL_OpenPGP);
    if (!quiet) printf(gettext("Protocol name: %s\n"),p);
 
    /* get engine information */
    err = gpgme_get_engine_info(&enginfo);
-   if(err != GPG_ERR_NO_ERROR) return 2;
+   if(err != GPG_ERR_NO_ERROR) return 12;
    if (!quiet) printf(gettext("file=%s, home=%s\n\n"),enginfo->file_name,enginfo->home_dir);
 
    /* create our own context */
    err = gpgme_new(&ctx);
-   if(err != GPG_ERR_NO_ERROR) return 3;
+   if(err != GPG_ERR_NO_ERROR) return 13;
 
    /* set protocol to use in our context */
    err = gpgme_set_protocol(ctx,GPGME_PROTOCOL_OpenPGP);
-   if(err != GPG_ERR_NO_ERROR) return 4;
+   if(err != GPG_ERR_NO_ERROR) return 14;
 
    /* Now get all Keys */
    if (!err)
@@ -241,7 +241,7 @@ int main(int argc, char *argv[]) {
    if (gpg_err_code (err) != GPG_ERR_EOF)
    {
       fprintf (stderr, gettext("can not list keys: %s\n"), gpgme_strerror (err));
-      exit (1);
+      return 10;
    }
    printf(gettext("Deleted %i key(s).\n"), count);
 } // end main
