@@ -41,6 +41,7 @@ const char* program_name="Schlüsselwärter";
 const char* program_version="0.1.6";
 const char* textpath="/usr/share/locale";
 
+bool ask_user(string question);
 string shortenuid(string longuid);
 int searchvector(vector<string> str, string key);
 int readvector(string file, vector<string>& vector);
@@ -147,12 +148,9 @@ int main(int argc, char *argv[]) {
    question += gettext("###");	// for languages which need also something at the end
    if ( question.substr(question.length()-3,question.length()) == "###")
       question = question.substr(0,question.length()-3);
-   question += "? [y/n] ";
+   question += "?";
 
-   cout << question; // Ask
-   char c;
-   cin >> c;
-   if (c != 'y') {
+   if ( !ask_user(question) ) {
    	cout << gettext("By") << endl;
    	return 0;
    	}
@@ -248,6 +246,19 @@ int main(int argc, char *argv[]) {
    printf(gettext("Deleted %i key(s).\n"), count);
 } // end main
 
+
+/*
+Ask the user something, expecting [y/n] as answer
+*/
+bool ask_user(string question) {
+   cout << question << " [y/n] ";
+   char c;
+   cin >> c;
+   if (c == 'y')
+   	return true;
+   if (c == 'n')
+   	return false;
+}
 
 /*
 Print out information about key
@@ -382,9 +393,14 @@ int mycopy(string dir, string filename, string destination)
    string full_destination = destination + filename;
 
    struct stat stFileInfo;
-   int intStat;
-   intStat = stat(full_filename.c_str(),&stFileInfo); // Test if file exists
-   if(intStat == 0) {
+   int instat, outstat;
+   instat = stat(full_filename.c_str(),&stFileInfo); // Test if file exists
+   outstat = stat(full_destination.c_str(),&stFileInfo); // Test if file exists
+   if ( outstat == 0 )
+      if ( !yes )
+         if ( !ask_user(gettext("File ") + full_destination + gettext(" already exists, overwrite?")) )
+            return 1;
+   if(instat == 0) {
       ifstream ifs(full_filename.c_str(), ios::binary);
       ofstream ofs(full_destination.c_str(), ios::binary);
       ofs << ifs.rdbuf();
@@ -428,7 +444,7 @@ void help() {
    cout << "\t-o\t" << gettext("remove key already if one given criteria is maching") << endl;
    cout << "\t-q\t" << gettext("don't print out so much") << endl;
    cout << "\t-y\t" << gettext("Answer all questions with yes") << endl;
-   cout << "\t-y\t" << gettext("Don't really do anything") << endl;
+   cout << "\t-d\t" << gettext("Don't really do anything") << endl;
    cout << gettext("TESTs: ") << endl;
    cout << "\t-r\t" << gettext("remove revoked keys") << endl;
    cout << "\t-e\t" << gettext("remove expired keys") << endl;

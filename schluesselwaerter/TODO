@@ -1,7 +1,6 @@
 Smaller Tasks:
 - improve backupfunction
   - create directory if not exists
-  - test if file already exists
 - clean up error-codes!
 - more useful question (ok)
 - translate & improve manpage
