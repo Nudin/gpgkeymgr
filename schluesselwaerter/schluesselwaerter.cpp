@@ -394,8 +394,8 @@ int mycopy(string dir, string filename, string destination)
 
    struct stat stFileInfo;
    int instat, outstat;
-   instat = stat(full_filename.c_str(),&stFileInfo); // Test if file exists
-   outstat = stat(full_destination.c_str(),&stFileInfo); // Test if file exists
+   instat = stat(full_filename.c_str(),&stFileInfo); // Test if source-file exists
+   outstat = stat(full_destination.c_str(),&stFileInfo); // Test if output-file already exists
    if ( outstat == 0 )
       if ( !yes )
          if ( !ask_user(gettext("File ") + full_destination + gettext(" already exists, overwrite?")) )
