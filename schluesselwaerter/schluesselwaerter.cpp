@@ -23,12 +23,13 @@
 #include <algorithm>
 #include <vector>
 #include <string.h>
-#include <sys/stat.h>
 #include <unistd.h>
-#include <sys/types.h>
 #include <pwd.h>
 #include <libintl.h>
 #include <locale.h>
+
+#include <sys/types.h>
+#include <sys/stat.h>
 
 #include <gpgme.h>
 
@@ -38,7 +39,7 @@
 using namespace std;
 
 const char* program_name="Schlüsselwärter";
-const char* program_version="0.1.7";
+const char* program_version="0.1.8";
 const char* textpath="/usr/share/locale";
 
 bool ask_user(string question);
@@ -72,11 +73,13 @@ int main(int argc, char *argv[]) {
    bool altern = false;
    bool dobackup = false;
    bool poslist = false;	vector<string> list;
-   for(int i=1;i<argc;i++) {
-      if ( strlen(argv[i]) != 2 )
-         { help(); return 1; }
-      char c=argv[i][1];
-      switch(c)
+   for (int i=1; i<argc; i++) {
+      if ( strlen( argv[i] ) != 2 ) {
+          help();
+          return 1;
+          }
+      char c = argv[i][1];
+      switch (c)
       {
          case 'r': revoked = true; break;
          case 'e': expired = true; break;
@@ -104,7 +107,7 @@ int main(int argc, char *argv[]) {
          case 'l':
             if ( i+1 < argc ) {
                poslist=true;
-               if ( readvector(argv[i+1],list) )
+               if ( readvector(argv[i+1], list) )
                   return 2;
                i++;
                }
@@ -135,25 +138,25 @@ int main(int argc, char *argv[]) {
       mode = gettext(" and ");
    string question = gettext("Do you really want to delete all keys which are ");
    if ( revoked )
-      question += gettext("revoked") + mode;
+      question += gettext("revoked")        + mode;
    if ( expired )
-      question += gettext("expired") + mode;
+      question += gettext("expired")        + mode;
    if ( novalid )
-      question += gettext("unvalid") + mode;
+      question += gettext("unvalid")        + mode;
    if ( notrust )
-      question += gettext("untrusted") + mode;
+      question += gettext("untrusted")      + mode;
    if ( poslist )
       question += gettext("listed in file") + mode;
-   question = question.substr(0,question.length()-mode.length()); // remove last 'and'
+   question = question.substr(0, question.length()-mode.length()); // remove last 'and'
    question += gettext("###");	// for languages which need also something at the end
-   if ( question.substr(question.length()-3,question.length()) == "###")
-      question = question.substr(0,question.length()-3);
+   if ( question.substr(question.length()-3, question.length()) == "###")
+      question = question.substr(0, question.length()-3);
    question += "?";
 
    if ( !ask_user(question) ) {
-   	cout << gettext("By") << endl;
-   	return 0;
-   	}
+      cout << gettext("By") << endl;
+      return 0;
+      }
    }
 
    /* Now set up to use GPGME */
@@ -164,27 +167,29 @@ int main(int argc, char *argv[]) {
    gpgme_engine_info_t enginfo;
    
    p = (char *) gpgme_check_version(NULL);
-   if (!quiet) printf(gettext("GPG-Version=%s\n"),p);
+   if (!quiet)
+      printf(gettext("GPG-Version=%s\n"), p);
 
    /* check for OpenPGP support */
    err = gpgme_engine_check_version(GPGME_PROTOCOL_OpenPGP);
-   if(err != GPG_ERR_NO_ERROR) return 11;
-
+   if (err != GPG_ERR_NO_ERROR)       return 11;
    p = (char *) gpgme_get_protocol_name(GPGME_PROTOCOL_OpenPGP);
-   if (!quiet) printf(gettext("Protocol name: %s\n"),p);
+   if (!quiet)
+      printf(gettext("Protocol name: %s\n"), p);
 
    /* get engine information */
    err = gpgme_get_engine_info(&enginfo);
-   if(err != GPG_ERR_NO_ERROR) return 12;
-   if (!quiet) printf(gettext("file=%s, home=%s\n\n"),enginfo->file_name,enginfo->home_dir);
+   if (err != GPG_ERR_NO_ERROR)       return 12;
+   if (!quiet)
+      printf(gettext("file=%s, home=%s\n\n"), enginfo->file_name, enginfo->home_dir);
 
    /* create our own context */
    err = gpgme_new(&ctx);
-   if(err != GPG_ERR_NO_ERROR) return 13;
+   if (err != GPG_ERR_NO_ERROR)       return 13;
 
    /* set protocol to use in our context */
-   err = gpgme_set_protocol(ctx,GPGME_PROTOCOL_OpenPGP);
-   if(err != GPG_ERR_NO_ERROR) return 14;
+   err = gpgme_set_protocol(ctx, GPGME_PROTOCOL_OpenPGP);
+   if (err != GPG_ERR_NO_ERROR)       return 14;
 
    /* Now get all Keys */
    if (!err)
@@ -240,30 +245,33 @@ int main(int argc, char *argv[]) {
    }
    if (gpg_err_code (err) != GPG_ERR_EOF)
    {
-      fprintf (stderr, gettext("can not list keys: %s\n"), gpgme_strerror (err));
+      cerr << gettext("can not list keys: ") << gpgme_strerror (err) << endl;
       return 10;
    }
    printf(gettext("Deleted %i key(s).\n"), count);
-} // end main
+} // end 'main'
 
 
 /*
 Ask the user something, expecting [y/n] as answer
 */
-bool ask_user(string question) {
+bool ask_user(string question)
+{
    cout << question << " [y/n] ";
    char c;
    cin >> c;
    if (c == 'y')
-   	return true;
+      return true;
    if (c == 'n')
-   	return false;
+      return false;
 }
+
 
 /*
 Print out information about key
 */
-void print_key(gpgme_key_t key) {
+void print_key(gpgme_key_t key)
+{
    printf ("%s:", shortenuid(key->subkeys->keyid).c_str());
    if (key->uids->name)
       printf (" %s", key->uids->name);
@@ -278,40 +286,45 @@ void print_key(gpgme_key_t key) {
    putchar ('\n');
 }
 
+
 /*
 Delete key 'key' from pubring via context 'ctx'
 */ 
-int remove_key(gpgme_ctx_t ctx, gpgme_key_t key) {
+int remove_key(gpgme_ctx_t ctx, gpgme_key_t key)
+{
    gpgme_error_t err = gpgme_new (&ctx);
    err = gpgme_op_delete (ctx, key, 0 );
    if (gpg_err_code (err) == GPG_ERR_CONFLICT ) {
       cout << "\t=> " <<  gettext("Skipping secret key") << endl;
-      return 1; }
+      return 1;
+   }
    else if ( gpg_err_code (err) == GPG_ERR_NO_ERROR ) {
       if (!quiet)  cout << "\t=> " << gettext("deleted key") << endl;
-      return 0; }
+      return 0;
+   }
    else {
       cerr << "\t=> " << gettext("unknown Error occurred") << endl;
-      return 2; }
+      return 2;
+   }
 }
+
 
 /*
 Replace 'search' with 'replace' ind 'input'
 */
 string replace_string(string input, const string &search, const string &replace)
 {
-        string::size_type pos = input.find(search, 0);
-        int searchlength = search.length();
-        int replacelength = replace.length();
+   string::size_type pos = input.find(search, 0);
+   int searchlength  = search.length();
+   int replacelength = replace.length();
 
-        while(string::npos != pos)
-        {
-                input.replace(pos, searchlength, replace);
-                pos = input.find(search, pos + replacelength);
-        }
-
-        return input;
+   while (string::npos != pos) {
+      input.replace(pos, searchlength, replace);
+      pos = input.find(search, pos + replacelength);
+   }
+   return input;
 }
+
 
 /*
 Returns the short-UID
@@ -319,7 +332,7 @@ Returns the short-UID
 string shortenuid(string longuid)
 {
    if ( longuid.size() == 16 )
-      return longuid.substr(8,16);
+      return longuid.substr(8, 16);
    else if ( longuid.size() == 8 )
       return longuid;
    else {
@@ -328,52 +341,57 @@ string shortenuid(string longuid)
    }
 }
 
+
 /*
 Search if an value is included in the string list
 We use binary search as search algorithm
 */
 int searchvector(vector<string> str, string key)
 {
-	int low, high, mid;
-	low = 0;
-	//high = arraylength ( str );
-	high = str.size();
-	
-	while (low <= high) {
-	   mid = (low+high)/2;
-	   if (key < str[mid]) high = mid-1;
-	   else if (key > str[mid]) low = mid+1;
-	   else return 1;  // found
-	}
-	return 0; // not found
+   int low, high, mid;
+   low  = 0;
+   high = str.size();
+   
+   while (low <= high) {
+      mid = (low + high) / 2;
+      if (key < str[mid])
+         high = mid - 1;
+      else if (key > str[mid])
+         low = mid + 1;
+      else
+         return 1;  // found
+   }
+   return 0; // not found
 }
+
 
 /*
 Read vector from file
 */
 int readvector(string file, vector<string>& vector)
 {
-  ifstream ifs( file.c_str() );
-  int line_counter = 1;
-  string s;
+   ifstream ifs( file.c_str() );
 
-  // check if the file is open
-  if (! ifs) {
-    cerr << gettext("FAILED to open ") << file << endl;
-    return 1;
-  }
+   // check if the file is open
+   if (! ifs) {
+      cerr << gettext("Failed to open ") << file << endl;
+      return 1;
+   }
 
-  while(getline(ifs, s)) {
-    line_counter++;
-    s = shortenuid(s);
-    if ( s != "" )
-       vector.push_back(s);
-  }
+   int line_counter = 1;
+   string s;
+   while (getline(ifs, s)) {
+      line_counter++;
+      s = shortenuid(s);
+      if ( s != "" )
+         vector.push_back(s);
+   }
 
-  ifs.close();
-  sort(vector.begin(), vector.end());
-  return 0;
+   ifs.close();
+   sort(vector.begin(), vector.end());
+   return 0;
 }
+
 
 /*
 Will copy a <home>/dir/filename to destination/filename 
@@ -382,21 +400,25 @@ destination must already exist
 */
 int copyfile(string dir, string filename, string destination)
 {
+   string full_filename;
+   string full_destination;
+   struct stat inFileInfo, outFileInfo, pathFileInfo;
+   int    instat, outstat;
+
    // Get home-Directory
-   struct passwd *pw = getpwuid(getuid());
+   struct passwd *pw    = getpwuid(getuid());
    const string homedir = pw->pw_dir;
+
    // Put filenames together
-   string full_filename = homedir + dir + filename;
-   destination = replace_string(destination,"~",homedir);
-   string full_destination = destination;
-   if ( full_destination.substr(full_destination.length(),0) != "/" )
-	full_destination += "/";
+   full_filename    =  homedir + dir + filename;
+   destination      =  replace_string(destination, "~", homedir);
+   full_destination =  destination;
+   if ( full_destination.substr(full_destination.length(), 0) != "/" )
+      full_destination += "/";
    full_destination += filename;
 
-   struct stat inFileInfo,outFileInfo,pathFileInfo;
-   int instat, outstat;
-   instat = stat(full_filename.c_str(),&inFileInfo); // Test if source-file exists
-   if(instat != 0) {
+   instat = stat(full_filename.c_str(), &inFileInfo); // Test if source-file exists
+   if (instat != 0) {
       cerr << gettext("failed to open file: ") << full_filename << endl;
       return 1;
    }
@@ -405,7 +427,7 @@ int copyfile(string dir, string filename, string destination)
    int pathstat = stat(destination.c_str(), &pathFileInfo);
    if ( pathstat != 0 ) {	// path Does not exist.
       int success;
-      if ( !yes )
+      if (!yes)
          if ( !ask_user(gettext("Directory does not exist. Create?")) )
             return 1;
       #ifdef __MSDOS__
@@ -414,7 +436,7 @@ int copyfile(string dir, string filename, string destination)
          success = mkdir(destination.c_str(), 0777);
       #endif
 
-      if ( success ) {
+      if (success) {
          cerr << gettext("Can't create directory.\n");
          return 1;
       }
@@ -428,9 +450,9 @@ int copyfile(string dir, string filename, string destination)
    }
 
    // Test if file already exists
-   outstat = stat(full_destination.c_str(),&outFileInfo);
+   outstat = stat(full_destination.c_str(), &outFileInfo);
    if ( outstat == 0 )
-      if ( !yes )
+      if (!yes)
          if ( !ask_user(gettext("File ") + full_destination + gettext(" already exists, overwrite?")) )
             return 1;
 
@@ -438,7 +460,8 @@ int copyfile(string dir, string filename, string destination)
    ifstream ifs(full_filename.c_str(), ios::binary);
    ofstream ofs(full_destination.c_str(), ios::binary);
    ofs << ifs.rdbuf();
-}
+} // end 'copyfile'
+
 
 /*
 Backup keyring-files to a directory given by the user
@@ -447,7 +470,7 @@ int backup()
 {
    string destination = "";
    cout << gettext("Where should I put the backup? (Directory must exist) ");
-   cin >> destination;
+   cin  >> destination;
    if ( destination == "" )
       destination="/backup/";
    if ( copyfile("/.gnupg/", "pubring.gpg", destination) )
@@ -458,27 +481,31 @@ int backup()
    return 0;
 }
 
+
 /*
 Print out help-Text
 */
-void help() {
+void help()
+{
    cout << program_name << endl;
    cout << "\t" << gettext("Version: ") << program_version << endl;
    cout << gettext("Note: this is still an experimental version. Before use, please backup your ~/.gnupg directory.\n") << endl;
    cout << gettext("Use: ");
    cout << "schluesselwaerter [-o] [-qyb] TEST [MORE TESTS…]\n";
 
-   cout << "\t-b\t" << gettext("Backup public keyring") << endl;
-   cout << "\t-o\t" << gettext("remove key already if one given criteria is maching") << endl;
-   cout << "\t-q\t" << gettext("don't print out so much") << endl;
-   cout << "\t-y\t" << gettext("Answer all questions with yes") << endl;
-   cout << "\t-d\t" << gettext("Don't really do anything") << endl;
-   cout << gettext("TESTs: ") << endl;
-   cout << "\t-r\t" << gettext("remove revoked keys") << endl;
-   cout << "\t-e\t" << gettext("remove expired keys") << endl;
-   cout << "\t-l " << gettext("file") << "\t" << gettext("remove keys listed in file (uids)") << endl;
-   cout << "\t-v [N]\t" << gettext("remove not-valid keys") << endl;
-   cout << "\t-t [N]\t" << gettext("remove not-trusted keys") << endl;
-   cout << "\t\t\t" << gettext("with N you can increase the maximum level") << endl;
+   cout << "\t-b\t"     << gettext("Backup public keyring")             << endl;
+   cout << "\t-o\t"     << gettext("remove key already if one given criteria is maching") << endl;
+   cout << "\t-q\t"     << gettext("don't print out so much")           << endl;
+   cout << "\t-y\t"     << gettext("Answer all questions with yes")     << endl;
+   cout << "\t-d\t"     << gettext("Don't really do anything")          << endl;
+   cout                 << gettext("TESTs: ")                           << endl;
+   cout << "\t-r\t"     << gettext("remove revoked keys")               << endl;
+   cout << "\t-e\t"     << gettext("remove expired keys")               << endl;
+   cout << "\t-l "      << gettext("file")
+        << "\t"         << gettext("remove keys listed in file (uids)") << endl;
+   cout << "\t-v [N]\t" << gettext("remove not-valid keys")             << endl;
+   cout << "\t-t [N]\t" << gettext("remove not-trusted keys")           << endl;
+   cout << "\t\t\t"     << gettext("with N you can increase the maximum level")
+                                                                        << endl;
 }
 

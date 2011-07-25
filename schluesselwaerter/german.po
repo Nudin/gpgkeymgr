@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: schluesselwaerter\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-07-24 22:18+0200\n"
-"PO-Revision-Date: 2011-07-24 22:19+0100\n"
+"POT-Creation-Date: 2011-07-26 01:16+0200\n"
+"PO-Revision-Date: 2011-07-26 01:19+0100\n"
 "Last-Translator: Michael F. Schönitzer <michael@schoenitzer.de>\n"
 "Language-Team: German\n"
 "Language: de\n"
@@ -21,116 +21,131 @@ msgstr ""
 "X-Poedit-Country: GERMANY\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: schluesselwaerter.cpp:133
+#: schluesselwaerter.cpp:456
+msgid " already exists, overwrite?"
+msgstr " existiert bereits, soll sie überschrieben werden?"
+
+#: schluesselwaerter.cpp:138
 msgid " and "
 msgstr " und "
 
-#: schluesselwaerter.cpp:131
+#: schluesselwaerter.cpp:136
 msgid " or "
 msgstr " oder "
 
-#: schluesselwaerter.cpp:146
+#: schluesselwaerter.cpp:151
 msgid "###"
 msgstr " sind"
 
-#: schluesselwaerter.cpp:429
+#: schluesselwaerter.cpp:499
 msgid "Answer all questions with yes"
 msgstr "Alle Fragen mit ja beantworten"
 
-#: schluesselwaerter.cpp:426
+#: schluesselwaerter.cpp:496
 msgid "Backup public keyring"
 msgstr "Backup von öffentlichem Schlüsselring anlegen"
 
-#: schluesselwaerter.cpp:155
+#: schluesselwaerter.cpp:157
 msgid "By"
 msgstr "By."
 
-#: schluesselwaerter.cpp:247
+#: schluesselwaerter.cpp:440
+msgid "Can't create directory.\n"
+msgstr "Kann Ordner nicht anlegen.\n"
+
+#: schluesselwaerter.cpp:251
 #, c-format
 msgid "Deleted %i key(s).\n"
 msgstr "%i Schlüssel wurden gelöscht.\n"
 
-#: schluesselwaerter.cpp:134
+#: schluesselwaerter.cpp:431
+msgid "Directory does not exist. Create?"
+msgstr "Ordner existiert nicht. Soll er angelegt werden?"
+
+#: schluesselwaerter.cpp:139
 msgid "Do you really want to delete all keys which are "
 msgstr "Wollen sie wirklich alle Schlüssel löschen die "
 
-#: schluesselwaerter.cpp:430
+#: schluesselwaerter.cpp:500
 msgid "Don't really do anything"
 msgstr "Nichts wirklich tun (Simulationsmodus)"
 
-#: schluesselwaerter.cpp:350
-msgid "FAILED to open "
-msgstr "Öffnen der Datei fehlgeschlagen "
+#: schluesselwaerter.cpp:377
+msgid "Failed to open "
+msgstr "Kann Datei nicht öffnen: "
 
-#: schluesselwaerter.cpp:168
+#: schluesselwaerter.cpp:456
+msgid "File "
+msgstr "Datei"
+
+#: schluesselwaerter.cpp:171
 #, c-format
 msgid "GPG-Version=%s\n"
 msgstr "GPG-Version: %s\n"
 
-#: schluesselwaerter.cpp:422
+#: schluesselwaerter.cpp:492
 msgid "Note: this is still an experimental version. Before use, please backup your ~/.gnupg directory.\n"
 msgstr "Hinweis: Dies ist eine noch experimentelle Version. Machen sie vor der Verwendung ein Backup ihres ~/.gnupg Ordners.\n"
 
-#: schluesselwaerter.cpp:175
+#: schluesselwaerter.cpp:178
 #, c-format
 msgid "Protocol name: %s\n"
 msgstr "Protokollname: %s\n"
 
-#: schluesselwaerter.cpp:276
+#: schluesselwaerter.cpp:298
 msgid "Skipping secret key"
 msgstr "Überspringe privaten Schlüssel"
 
-#: schluesselwaerter.cpp:412
+#: schluesselwaerter.cpp:480
 msgid "Successfully backuped pubring.gpg and pubring.kbx"
 msgstr "Backup von pubring.gpg und pubring.kbx erfolgreich."
 
-#: schluesselwaerter.cpp:431
+#: schluesselwaerter.cpp:501
 msgid "TESTs: "
 msgstr "TESTs: "
 
-#: schluesselwaerter.cpp:314
+#: schluesselwaerter.cpp:339
 msgid "UID in wrong format, skipping"
 msgstr "Keine gültige UID, überspringe"
 
-#: schluesselwaerter.cpp:423
+#: schluesselwaerter.cpp:493
 msgid "Use: "
 msgstr "Benutzung:"
 
-#: schluesselwaerter.cpp:421
+#: schluesselwaerter.cpp:491
 msgid "Version: "
 msgstr "Version: "
 
-#: schluesselwaerter.cpp:404
+#: schluesselwaerter.cpp:472
 msgid "Where should I put the backup? (Directory must exist) "
 msgstr "Wo soll das Backup erstellt werden? (Verzeichnis muss existieren) "
 
-#: schluesselwaerter.cpp:244
-#, c-format
-msgid "can not list keys: %s\n"
-msgstr "Kann Schlüsselliste nicht abfragen: %s\n"
+#: schluesselwaerter.cpp:248
+msgid "can not list keys: "
+msgstr "Kann Schlüsselliste nicht abfragen: "
 
-#: schluesselwaerter.cpp:279
+#: schluesselwaerter.cpp:302
 msgid "deleted key"
 msgstr "Schlüssel gelöscht"
 
-#: schluesselwaerter.cpp:428
+#: schluesselwaerter.cpp:498
 msgid "don't print out so much"
 msgstr "Weniger Text ausgeben"
 
-#: schluesselwaerter.cpp:138
-#: schluesselwaerter.cpp:263
+#: schluesselwaerter.cpp:143
+#: schluesselwaerter.cpp:283
 msgid "expired"
 msgstr "Abgelaufen"
 
-#: schluesselwaerter.cpp:393
+#: schluesselwaerter.cpp:422
 msgid "failed to open file: "
 msgstr "Kann Datei nicht öffnen: "
 
-#: schluesselwaerter.cpp:434
+#: schluesselwaerter.cpp:504
 msgid "file"
 msgstr "datei"
 
-#: schluesselwaerter.cpp:180
+#: schluesselwaerter.cpp:184
 #, c-format
 msgid ""
 "file=%s, home=%s\n"
@@ -139,54 +154,61 @@ msgstr ""
 "Datei=%s, Heimverzeichnis=%s\n"
 "\n"
 
-#: schluesselwaerter.cpp:144
+#: schluesselwaerter.cpp:149
 msgid "listed in file"
 msgstr "in Datei aufgeführt"
 
-#: schluesselwaerter.cpp:433
+#: schluesselwaerter.cpp:447
+msgid "no directory"
+msgstr "Kein Verzeichnis"
+
+#: schluesselwaerter.cpp:503
 msgid "remove expired keys"
 msgstr "Abgelaufene Schlüssel löschen"
 
-#: schluesselwaerter.cpp:427
+#: schluesselwaerter.cpp:497
 msgid "remove key already if one given criteria is maching"
 msgstr "Schlüssel entfernen sobald eines der Kriterien zutrifft"
 
-#: schluesselwaerter.cpp:434
+#: schluesselwaerter.cpp:505
 msgid "remove keys listed in file (uids)"
 msgstr "Schlüssel die in der Datei gelistet sind entfernen (lange uids)"
 
-#: schluesselwaerter.cpp:436
+#: schluesselwaerter.cpp:507
 msgid "remove not-trusted keys"
 msgstr "Schlüssel denen ich nicht vertraue entfernen"
 
-#: schluesselwaerter.cpp:435
+#: schluesselwaerter.cpp:506
 msgid "remove not-valid keys"
 msgstr "Schlüssel deren Gültigkeit nicht überprüft wurde entfernen"
 
-#: schluesselwaerter.cpp:432
+#: schluesselwaerter.cpp:502
 msgid "remove revoked keys"
 msgstr "Wiederrufene Schlüssel löschen"
 
-#: schluesselwaerter.cpp:136
-#: schluesselwaerter.cpp:261
+#: schluesselwaerter.cpp:141
+#: schluesselwaerter.cpp:281
 msgid "revoked"
 msgstr "Wiederrufen"
 
-#: schluesselwaerter.cpp:282
+#: schluesselwaerter.cpp:306
 msgid "unknown Error occurred"
 msgstr "Ein unbekannter Fehler trat auf."
 
-#: schluesselwaerter.cpp:142
+#: schluesselwaerter.cpp:147
 msgid "untrusted"
 msgstr "nicht vertrauenswürdig"
 
-#: schluesselwaerter.cpp:140
+#: schluesselwaerter.cpp:145
 msgid "unvalid"
 msgstr "nicht überprüft"
 
-#: schluesselwaerter.cpp:437
+#: schluesselwaerter.cpp:508
 msgid "with N you can increase the maximum level"
 msgstr "mit N können Sie die Grenze erhöhen"
 
 #~ msgid "Arguments: "
 #~ msgstr "Argumente: "
+
+#~ msgid "FAILED to open "
+#~ msgstr "Öffnen der Datei fehlgeschlagen "
