@@ -147,8 +147,10 @@ int main(int argc, char *argv[]) {
       question += gettext("untrusted")      + mode;
    if ( poslist )
       question += gettext("listed in file") + mode;
-   question = question.substr(0, question.length()-mode.length()); // remove last 'and'
-   question += gettext("###");	// for languages which need also something at the end
+   // remove last 'and':
+   question = question.substr(0, question.length()-mode.length());
+   // for languages which need also something at the end of the questions:
+   question += gettext("###");
    if ( question.substr(question.length()-3, question.length()) == "###")
       question = question.substr(0, question.length()-3);
    question += "?";
@@ -221,16 +223,18 @@ int main(int argc, char *argv[]) {
             else if ( notrust && key->owner_trust <= max_trust  ) {
                if (!quiet) print_key(key);
                if (!dry) fail = remove_key(ctx, key); }
-            else if ( poslist && searchvector(list, shortenuid(key->subkeys->keyid))  ) {
+            else if ( poslist && 
+                        searchvector(list, shortenuid(key->subkeys->keyid))  ) {
                if (!quiet) print_key(key);
                if (!dry) fail = remove_key(ctx, key); }
          }
          else { // all given criteria together induce deletion
-            if (  (!revoked || ( revoked && key->revoked ) ) &&
-                  (!expired || ( expired && key->expired ) ) &&
-                  (!novalid || ( novalid && key->uids->validity <= max_valid ) ) &&
-                  (!notrust || ( notrust && key->owner_trust <= max_trust ) ) &&
-                  (!poslist || ( poslist && searchvector(list, shortenuid(key->subkeys->keyid)) ) )
+            if ( (!revoked || ( revoked && key->revoked )) &&
+                 (!expired || ( expired && key->expired )) &&
+                 (!novalid || ( novalid && key->uids->validity <= max_valid )) &&
+                 (!notrust || ( notrust && key->owner_trust <= max_trust ))    &&
+                 (!poslist || ( poslist &&
+                          searchvector(list, shortenuid(key->subkeys->keyid))) )
                ) {
                      if (!quiet) print_key(key);
                      if (!dry) fail = remove_key(ctx, key);
@@ -417,7 +421,8 @@ int copyfile(string dir, string filename, string destination)
       full_destination += "/";
    full_destination += filename;
 
-   instat = stat(full_filename.c_str(), &inFileInfo); // Test if source-file exists
+   // Test if source-file exists
+   instat = stat(full_filename.c_str(), &inFileInfo);
    if (instat != 0) {
       cerr << gettext("failed to open file: ") << full_filename << endl;
       return 1;
@@ -452,9 +457,12 @@ int copyfile(string dir, string filename, string destination)
    // Test if file already exists
    outstat = stat(full_destination.c_str(), &outFileInfo);
    if ( outstat == 0 )
-      if (!yes)
-         if ( !ask_user(gettext("File ") + full_destination + gettext(" already exists, overwrite?")) )
+      if (!yes) {
+         string question  =  gettext("File ") + full_destination;
+                question +=  gettext(" already exists, overwrite?");
+         if ( !ask_user(question) )
             return 1;
+      }
 
    // Copy file in binary mode
    ifstream ifs(full_filename.c_str(), ios::binary);
@@ -489,12 +497,14 @@ void help()
 {
    cout << program_name << endl;
    cout << "\t" << gettext("Version: ") << program_version << endl;
-   cout << gettext("Note: this is still an experimental version. Before use, please backup your ~/.gnupg directory.\n") << endl;
+   cout << gettext("Note: this is still an experimental version. "
+                "Before use, please backup your ~/.gnupg directory.\n") << endl;
    cout << gettext("Use: ");
    cout << "schluesselwaerter [-o] [-qyb] TEST [MORE TESTS…]\n";
 
    cout << "\t-b\t"     << gettext("Backup public keyring")             << endl;
-   cout << "\t-o\t"     << gettext("remove key already if one given criteria is maching") << endl;
+   cout << "\t-o\t"     << gettext("remove key already "
+                                   "if one given criteria is maching")  << endl;
    cout << "\t-q\t"     << gettext("don't print out so much")           << endl;
    cout << "\t-y\t"     << gettext("Answer all questions with yes")     << endl;
    cout << "\t-d\t"     << gettext("Don't really do anything")          << endl;

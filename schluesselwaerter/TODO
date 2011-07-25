@@ -1,6 +1,7 @@
 Smaller Tasks:
 - more useful question (ok)
 - translate & improve manpage
+- fix return value of remove_key
 
 Bigger Tasks:
 - Keyserver sync
