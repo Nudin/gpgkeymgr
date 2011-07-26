@@ -4,17 +4,17 @@
 	  Copyright: Michael F. Schönitzer; 2011
 */
 /*  This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU Lesser General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU Lesser General Public License for more details.
-
-    You should have received a copy of the GNU Lesser General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*   it under the terms of the GNU Lesser General Public License as published by
+*   the Free Software Foundation, either version 3 of the License, or
+*   (at your option) any later version.
+*
+*   This program is distributed in the hope that it will be useful,
+*   but WITHOUT ANY WARRANTY; without even the implied warranty of
+*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+*   GNU Lesser General Public License for more details.
+*
+*   You should have received a copy of the GNU Lesser General Public License
+*   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 #include <iostream>
@@ -33,8 +33,8 @@
 
 #include <gpgme.h>
 
-#define arraylength(a) ( sizeof ( a ) / sizeof ( *a ) )
-
+#define arraylength(a) ( sizeof ( a ) / sizeof ( *a ) ) // get length of array
+#define _(Text) gettext(Text) // _ as short version of gettext
 
 using namespace std;
 
@@ -42,37 +42,38 @@ const char* program_name="Schlüsselwärter";
 const char* program_version="0.1.8";
 const char* textpath="/usr/share/locale";
 
+// definitions of functions, implementations see below
 bool ask_user(string question);
 string shortenuid(string longuid);
 int searchvector(vector<string> str, string key);
 int readvector(string file, vector<string>& vector);
 string replace_string(string input, const string &search, const string &replace);
-int copyfile(string dir, string filename, string destination);
-int backup();
-int remove_key(gpgme_ctx_t ctx, gpgme_key_t key);
+int copyfile(string dir, string filename, string destination, bool yes);
+int backup(bool yes);
+int remove_key(gpgme_ctx_t ctx, gpgme_key_t key, bool quiet);
 void print_key(gpgme_key_t key);
 void help();
 
-bool quiet = false; // For quiet-mode
-bool yes = false; // For 'yes-mode'
-bool dry = false; // For dry-mode
 
 int main(int argc, char *argv[]) {
    int count = 0; // count number of key's deleted
 
    /* i18n */
    setlocale( LC_ALL, "" );
-   bindtextdomain( "schluesselwaerter", "/usr/share/locale" );
+   bindtextdomain( "schluesselwaerter", textpath );
    textdomain( "schluesselwaerter" );
 
    /* First: get arguments */
-   bool revoked = false;
-   bool expired = false;
-   bool novalid = false;	int max_valid = 0;
-   bool notrust = false;	int max_trust = 0;
-   bool altern = false;
+   bool revoked  = false;
+   bool expired  = false;
+   bool novalid  = false;	int max_valid = 0;
+   bool notrust  = false;	int max_trust = 0;
+   bool altern   = false;
    bool dobackup = false;
-   bool poslist = false;	vector<string> list;
+   bool poslist  = false;	vector<string> list;
+   bool quiet    = false;  // For quiet-mode
+   bool dry      = false;  // For dry-mode
+   bool yes      = false;  // For 'yes-mode'
    for (int i=1; i<argc; i++) {
       if ( strlen( argv[i] ) != 2 ) {
           help();
@@ -103,7 +104,7 @@ int main(int argc, char *argv[]) {
          case 'q': quiet = true; break;
          case 'y': yes = true; break;
          case 'd': dry = true; break;
-         case 'b': dobackup=true; backup(); break;
+         case 'b': dobackup=true; backup(yes); break;
          case 'l':
             if ( i+1 < argc ) {
                poslist=true;
@@ -133,30 +134,30 @@ int main(int argc, char *argv[]) {
    /* Generate security-question */
    string mode;
    if (altern)
-      mode = gettext(" or ");
+      mode = _(" or ");
    else
-      mode = gettext(" and ");
-   string question = gettext("Do you really want to delete all keys which are ");
+      mode = _(" and ");
+   string question = _("Do you really want to delete all keys which are ");
    if ( revoked )
-      question += gettext("revoked")        + mode;
+      question += _("revoked")        + mode;
    if ( expired )
-      question += gettext("expired")        + mode;
+      question += _("expired")        + mode;
    if ( novalid )
-      question += gettext("unvalid")        + mode;
+      question += _("unvalid")        + mode;
    if ( notrust )
-      question += gettext("untrusted")      + mode;
+      question += _("untrusted")      + mode;
    if ( poslist )
-      question += gettext("listed in file") + mode;
+      question += _("listed in file") + mode;
    // remove last 'and':
    question = question.substr(0, question.length()-mode.length());
    // for languages which need also something at the end of the questions:
-   question += gettext("###");
+   question += _("###");
    if ( question.substr(question.length()-3, question.length()) == "###")
       question = question.substr(0, question.length()-3);
    question += "?";
 
    if ( !ask_user(question) ) {
-      cout << gettext("By") << endl;
+      cout << _("By") << endl;
       return 0;
       }
    }
@@ -170,20 +171,20 @@ int main(int argc, char *argv[]) {
    
    p = (char *) gpgme_check_version(NULL);
    if (!quiet)
-      printf(gettext("GPG-Version=%s\n"), p);
+      printf(_("GPG-Version=%s\n"), p);
 
    /* check for OpenPGP support */
    err = gpgme_engine_check_version(GPGME_PROTOCOL_OpenPGP);
    if (err != GPG_ERR_NO_ERROR)       return 11;
    p = (char *) gpgme_get_protocol_name(GPGME_PROTOCOL_OpenPGP);
    if (!quiet)
-      printf(gettext("Protocol name: %s\n"), p);
+      printf(_("Protocol name: %s\n"), p);
 
    /* get engine information */
    err = gpgme_get_engine_info(&enginfo);
    if (err != GPG_ERR_NO_ERROR)       return 12;
    if (!quiet)
-      printf(gettext("file=%s, home=%s\n\n"), enginfo->file_name, enginfo->home_dir);
+      printf(_("file=%s, home=%s\n\n"), enginfo->file_name, enginfo->home_dir);
 
    /* create our own context */
    err = gpgme_new(&ctx);
@@ -213,20 +214,20 @@ int main(int argc, char *argv[]) {
          if ( altern ) { // any given criteria induce deletion
             if ( revoked && key->revoked ) {
                if (!quiet) print_key(key);
-               if (!dry) fail = remove_key(ctx, key); }
+               if (!dry) fail = remove_key(ctx, key, quiet); }
             else if ( expired && key->expired ) {
                if (!quiet) print_key(key);
-               if (!dry) fail = remove_key(ctx, key); }
+               if (!dry) fail = remove_key(ctx, key, quiet); }
             else if ( novalid && key->uids->validity <= max_valid ) {
                if (!quiet) print_key(key);
-               if (!dry) fail = remove_key(ctx, key); }
+               if (!dry) fail = remove_key(ctx, key, quiet); }
             else if ( notrust && key->owner_trust <= max_trust  ) {
                if (!quiet) print_key(key);
-               if (!dry) fail = remove_key(ctx, key); }
+               if (!dry) fail = remove_key(ctx, key, quiet); }
             else if ( poslist && 
                         searchvector(list, shortenuid(key->subkeys->keyid))  ) {
                if (!quiet) print_key(key);
-               if (!dry) fail = remove_key(ctx, key); }
+               if (!dry) fail = remove_key(ctx, key, quiet); }
          }
          else { // all given criteria together induce deletion
             if ( (!revoked || ( revoked && key->revoked )) &&
@@ -237,7 +238,7 @@ int main(int argc, char *argv[]) {
                           searchvector(list, shortenuid(key->subkeys->keyid))) )
                ) {
                      if (!quiet) print_key(key);
-                     if (!dry) fail = remove_key(ctx, key);
+                     if (!dry) fail = remove_key(ctx, key, quiet);
                  }
          }
 
@@ -249,11 +250,12 @@ int main(int argc, char *argv[]) {
    }
    if (gpg_err_code (err) != GPG_ERR_EOF)
    {
-      cerr << gettext("can not list keys: ") << gpgme_strerror (err) << endl;
+      cerr << _("can not list keys: ") << gpgme_strerror (err) << endl;
       return 10;
    }
-   printf(gettext("Deleted %i key(s).\n"), count);
+   printf(_("Deleted %i key(s).\n"), count);
 } // end 'main'
+
 
 
 /*
@@ -270,47 +272,6 @@ bool ask_user(string question)
       return false;
 }
 
-
-/*
-Print out information about key
-*/
-void print_key(gpgme_key_t key)
-{
-   printf ("%s:", shortenuid(key->subkeys->keyid).c_str());
-   if (key->uids->name)
-      printf (" %s", key->uids->name);
-   if (key->uids->email)
-      printf (" <%s>", key->uids->email);
-   if (key->revoked)
-      cout << " " << gettext("revoked");
-   if (key->expired)
-      cout << " " << gettext("expired");
-   printf (" [%i|", key->uids->validity);
-   printf ("%i]", key->owner_trust);
-   putchar ('\n');
-}
-
-
-/*
-Delete key 'key' from pubring via context 'ctx'
-*/ 
-int remove_key(gpgme_ctx_t ctx, gpgme_key_t key)
-{
-   gpgme_error_t err = gpgme_new (&ctx);
-   err = gpgme_op_delete (ctx, key, 0 );
-   if (gpg_err_code (err) == GPG_ERR_CONFLICT ) {
-      cout << "\t=> " <<  gettext("Skipping secret key") << endl;
-      return 1;
-   }
-   else if ( gpg_err_code (err) == GPG_ERR_NO_ERROR ) {
-      if (!quiet)  cout << "\t=> " << gettext("deleted key") << endl;
-      return 0;
-   }
-   else {
-      cerr << "\t=> " << gettext("unknown Error occurred") << endl;
-      return 2;
-   }
-}
 
 
 /*
@@ -330,6 +291,7 @@ string replace_string(string input, const string &search, const string &replace)
 }
 
 
+
 /*
 Returns the short-UID
 */
@@ -340,10 +302,11 @@ string shortenuid(string longuid)
    else if ( longuid.size() == 8 )
       return longuid;
    else {
-      cerr << gettext("UID in wrong format, skipping");
+      cerr << _("UID in wrong format, skipping");
       return "";
    }
 }
+
 
 
 /*
@@ -369,6 +332,7 @@ int searchvector(vector<string> str, string key)
 }
 
 
+
 /*
 Read vector from file
 */
@@ -378,7 +342,7 @@ int readvector(string file, vector<string>& vector)
 
    // check if the file is open
    if (! ifs) {
-      cerr << gettext("Failed to open ") << file << endl;
+      cerr << _("Failed to open ") << file << endl;
       return 1;
    }
 
@@ -397,12 +361,13 @@ int readvector(string file, vector<string>& vector)
 }
 
 
+
 /*
 Will copy a <home>/dir/filename to destination/filename 
 equivalent to `cp ~/$dir/$filename $destination/filename` on unix
 destination must already exist
 */
-int copyfile(string dir, string filename, string destination)
+int copyfile(string dir, string filename, string destination, bool yes)
 {
    string full_filename;
    string full_destination;
@@ -424,7 +389,7 @@ int copyfile(string dir, string filename, string destination)
    // Test if source-file exists
    instat = stat(full_filename.c_str(), &inFileInfo);
    if (instat != 0) {
-      cerr << gettext("failed to open file: ") << full_filename << endl;
+      cerr << _("failed to open file: ") << full_filename << endl;
       return 1;
    }
 
@@ -433,7 +398,7 @@ int copyfile(string dir, string filename, string destination)
    if ( pathstat != 0 ) {	// path Does not exist.
       int success;
       if (!yes)
-         if ( !ask_user(gettext("Directory does not exist. Create?")) )
+         if ( !ask_user(_("Directory does not exist. Create?")) )
             return 1;
       #ifdef __MSDOS__
          success = mkdir(destination.c_str());
@@ -442,14 +407,14 @@ int copyfile(string dir, string filename, string destination)
       #endif
 
       if (success) {
-         cerr << gettext("Can't create directory.\n");
+         cerr << _("Can't create directory.\n");
          return 1;
       }
    }
    else {
       int filetyp = pathFileInfo.st_mode & S_IFMT;
       if ( filetyp != S_IFDIR ) {	// path isn't a directory
-         cerr << gettext("no directory") << endl;
+         cerr << _("no directory") << endl;
          return 1;
       }
    }
@@ -458,8 +423,8 @@ int copyfile(string dir, string filename, string destination)
    outstat = stat(full_destination.c_str(), &outFileInfo);
    if ( outstat == 0 )
       if (!yes) {
-         string question  =  gettext("File ") + full_destination;
-                question +=  gettext(" already exists, overwrite?");
+         string question  =  _("File ") + full_destination;
+                question +=  _(" already exists, overwrite?");
          if ( !ask_user(question) )
             return 1;
       }
@@ -471,23 +436,69 @@ int copyfile(string dir, string filename, string destination)
 } // end 'copyfile'
 
 
+
 /*
 Backup keyring-files to a directory given by the user
 */
-int backup()
+int backup(bool yes)
 {
    string destination = "";
-   cout << gettext("Where should I put the backup? (Directory must exist) ");
+   cout << _("Where should I put the backup? (Directory must exist) ");
    cin  >> destination;
    if ( destination == "" )
       destination="/backup/";
-   if ( copyfile("/.gnupg/", "pubring.gpg", destination) )
+   if ( copyfile("/.gnupg/", "pubring.gpg", destination, yes) )
       return 1;
-   if ( copyfile("/.gnupg/", "pubring.kbx", destination) )
+   if ( copyfile("/.gnupg/", "pubring.kbx", destination, yes) )
       return 1;
-   cout << gettext("Successfully backuped pubring.gpg and pubring.kbx") << endl;
+   cout << _("Successfully backuped pubring.gpg and pubring.kbx") << endl;
    return 0;
 }
+
+
+
+/*
+Print out information about key
+*/
+void print_key(gpgme_key_t key)
+{
+   printf ("%s:", shortenuid(key->subkeys->keyid).c_str());
+   if (key->uids->name)
+      printf (" %s", key->uids->name);
+   if (key->uids->email)
+      printf (" <%s>", key->uids->email);
+   if (key->revoked)
+      cout << " " << _("revoked");
+   if (key->expired)
+      cout << " " << _("expired");
+   printf (" [%i|", key->uids->validity);
+   printf ("%i]", key->owner_trust);
+   putchar ('\n');
+}
+
+
+
+/*
+Delete key 'key' from pubring via context 'ctx'
+*/ 
+int remove_key(gpgme_ctx_t ctx, gpgme_key_t key, bool quiet)
+{
+   gpgme_error_t err = gpgme_new (&ctx);
+   err = gpgme_op_delete (ctx, key, 0 );
+   if (gpg_err_code (err) == GPG_ERR_CONFLICT ) {
+      cout << "\t=> " <<  _("Skipping secret key") << endl;
+      return 1;
+   }
+   else if ( gpg_err_code (err) == GPG_ERR_NO_ERROR ) {
+      if (!quiet)  cout << "\t=> " << _("deleted key") << endl;
+      return 0;
+   }
+   else {
+      cerr << "\t=> " << _("unknown Error occurred") << endl;
+      return 2;
+   }
+}
+
 
 
 /*
@@ -496,26 +507,26 @@ Print out help-Text
 void help()
 {
    cout << program_name << endl;
-   cout << "\t" << gettext("Version: ") << program_version << endl;
-   cout << gettext("Note: this is still an experimental version. "
+   cout << "\t" << _("Version: ") << program_version << endl;
+   cout << _("Note: this is still an experimental version. "
                 "Before use, please backup your ~/.gnupg directory.\n") << endl;
-   cout << gettext("Use: ");
+   cout << _("Use: ");
    cout << "schluesselwaerter [-o] [-qyb] TEST [MORE TESTS…]\n";
 
-   cout << "\t-b\t"     << gettext("Backup public keyring")             << endl;
-   cout << "\t-o\t"     << gettext("remove key already "
+   cout << "\t-b\t"     << _("Backup public keyring")                   << endl;
+   cout << "\t-o\t"     << _("remove key already "
                                    "if one given criteria is maching")  << endl;
-   cout << "\t-q\t"     << gettext("don't print out so much")           << endl;
-   cout << "\t-y\t"     << gettext("Answer all questions with yes")     << endl;
-   cout << "\t-d\t"     << gettext("Don't really do anything")          << endl;
-   cout                 << gettext("TESTs: ")                           << endl;
-   cout << "\t-r\t"     << gettext("remove revoked keys")               << endl;
-   cout << "\t-e\t"     << gettext("remove expired keys")               << endl;
-   cout << "\t-l "      << gettext("file")
-        << "\t"         << gettext("remove keys listed in file (uids)") << endl;
-   cout << "\t-v [N]\t" << gettext("remove not-valid keys")             << endl;
-   cout << "\t-t [N]\t" << gettext("remove not-trusted keys")           << endl;
-   cout << "\t\t\t"     << gettext("with N you can increase the maximum level")
+   cout << "\t-q\t"     << _("don't print out so much")                 << endl;
+   cout << "\t-y\t"     << _("Answer all questions with yes")           << endl;
+   cout << "\t-d\t"     << _("Don't really do anything")                << endl;
+   cout                 << _("TESTs: ")                                 << endl;
+   cout << "\t-r\t"     << _("remove revoked keys")                     << endl;
+   cout << "\t-e\t"     << _("remove expired keys")                     << endl;
+   cout << "\t-l "      << _("file")
+        << "\t"         << _("remove keys listed in file (uids)")       << endl;
+   cout << "\t-v [N]\t" << _("remove not-valid keys")                   << endl;
+   cout << "\t-t [N]\t" << _("remove not-trusted keys")                 << endl;
+   cout << "\t\t\t"     << _("with N you can increase the maximum level")
                                                                         << endl;
 }
 
