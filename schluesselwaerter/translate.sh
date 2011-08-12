@@ -48,7 +48,7 @@ if [ "$location" = "" ] ; then	# Default Location
 fi
 
 if [ $finish -eq 0 ] ; then	# Create po-file
-   xgettext --from-code=UTF-8 -d schluesselwaerter -s -o schluesselwaerter-new.pot schluesselwaerter.cpp
+   xgettext --from-code=UTF-8 -k_ -d schluesselwaerter -s -o schluesselwaerter-new.pot schluesselwaerter.cpp
    if [ -f ${langname}.po ] ; then	# If po-file already exists, update.
 	msgmerge -s -U ${langname}.po schluesselwaerter-new.pot
 	mv schluesselwaerter-new.pot schluesselwaerter.pot

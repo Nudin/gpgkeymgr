@@ -2,10 +2,14 @@ Smaller Tasks:
 - more useful question (ok)
 - translate & improve manpage
 - fix return value of remove_key
+- installer
 
 Bigger Tasks:
-- Keyserver sync
+- count keys in keyring
 - support exclude-file with keyids as test
+- option to also remove secret keys
+- keyring-statistics
+- Keyserver sync
 - GUI
 
 Things always to do:
