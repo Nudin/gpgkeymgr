@@ -2,7 +2,8 @@ Smaller Tasks:
 - more useful question (ok)
 - translate & improve manpage
 - fix return value of remove_key
-- installer
+- create configure script? - Set language
+- better make clean
 
 Bigger Tasks:
 - count keys in keyring

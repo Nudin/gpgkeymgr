@@ -1,34 +1,50 @@
+NAME=schluesselwaerter
+SRC=$(NAME).cpp
 LANG=de_DE
-LANGFILE=translations/schluesselwaerter-$(LANG).mo
+LANGFILE=translations/$(NAME)-$(LANG).mo
 
-compile: schluesselwaerter.cpp
-	g++ schluesselwaerter.cpp -lgpgme -o schluesselwaerter
+compile: $(SRC)
+	g++ $(SRC) -lgpgme -o $(NAME)
 
 install: compile $(LANGFILE)
-	cp schluesselwaerter /usr/bin
+	cp $(NAME) /usr/bin
 	cp $(LANGFILE) /usr/share/locale/$(LANG)/LC_MESSAGES/
+	cp $(NAME).1 /usr/share/man/man1/
 
-clean: schluesselwaerter a.out german.mo
-	rm schluesselwaerter
+# bad
+clean: $(NAME)
+	rm $(NAME)
 	rm a.out
 
-portable: schluesselwaerter.cpp
-	sed --in-place schluesselwaerter.cpp --expression='s!textpath="/usr/share/locale"!textpath="locale"!'
-	g++ schluesselwaerter.cpp -lgpgme -o schluesselwaerter
+portable: $(SRC)
+	sed --in-place $(SRC) --expression='s!textpath="/usr/share/locale"!textpath="locale"!'
+	g++ $(SRC) -lgpgme -o $(NAME)
 	mkdir locale/$(LANG)/LC_MESSAGES
 	cp $(LANGFILE) locale/$(LANG)/LC_MESSAGES/
 
 
 ### i18n ###
 
-newtranslation: schluesselwaerter.cpp translate.sh
-	./translate.sh -i
-	echo "Run 'make finishtranslation' if you are finished with translating."
+# To create a new translation-file 
+newtranslation: $(SRC) translate.sh
+	read -p "Language-code (xx_XX): " lang;\
+	read -p "Language-name: " langname;\
+	po=translations/$(NAME)-$${lang}.po;\
+	xgettext --from-code=UTF-8 -k_ -d $(NAME) -s -o $(NAME).pot $(SRC);\
+	msginit -l $${lang} -o $$po -i $(NAME).pot;\
+	sed --in-place $$po --expression="s/PACKAGE VERSION/$${langname}/"
+	echo "Run 'make finishtranslations' if you are finished with translating."
 
-# Note quite good
-finishtranslation: 
-	./translate.sh -f 
+# To update an translation-file
+updatetranslation: $(wildcard translations/*.po)
+	xgettext --from-code=UTF-8 -k_ -d $(NAME) -s -o $(NAME).pot $(SRC)
+	for i in $^; do msgmerge -s -U $$i $(NAME).pot; done
+
+# will create .mo files of all .po files
+finishtranslations: 
+	for i in translations/*.po do; msgfmt -c -v -o translations/$(NAME)-${i:18:5}.mo $i; done
 
 # will install all translations
-installtranslations: $(wildcard translations/schluesselwaerter-*.mo)
+installtranslations: $(wildcard translations/$(NAME)-*.mo)
 	for i in $^; do cp $$i /usr/share/locale/$${i:31:5}/LC_MESSAGES/; done
+
