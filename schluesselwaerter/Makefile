@@ -10,8 +10,7 @@ install: compile $(NAME).1
 	cp $(NAME) /usr/bin
 	cp $(NAME).1 /usr/share/man/man1/
 
-# bad
-clean: $(NAME)
+clean:
 	rm $(NAME)
 	rm a.out schluesselwaerter.pot
 

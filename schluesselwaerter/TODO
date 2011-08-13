@@ -1,14 +1,14 @@
 Smaller Tasks:
 - more useful question (ok)
 - translate & improve manpage
-- fix return value of remove_key
+- fix return value of remove_key (int <-> bool)
 - better make clean
 
 Bigger Tasks:
-- count keys in keyring
-- support exclude-file with keyids as test
-- option to also remove secret keys
-- keyring-statistics
+- new option - count keys in keyring
+- new option - support exclude-file with keyids as test
+- new option - also remove secret keys
+- new option - keyring-statistics
 - Keyserver sync
 - GUI
 

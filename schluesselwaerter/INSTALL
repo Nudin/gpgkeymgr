@@ -1,7 +1,10 @@
 == Dependecies ==
+To run:
  - GPG
  - GPGME
- - C++-compiler (I used g++) and GPGME-devel-packages for compiling
+To build:
+ - C++-compiler (g++ used in make-file)
+ - gpgme-devel
 
 == Compile & Install ==
 
