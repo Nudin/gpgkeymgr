@@ -8,7 +8,7 @@
 How to compile & install:
 	$ sudo make install
 
-How to install all translations:
+How to install translations:
 	$ sudo make installtranslations
 
 How to compile for 'portable' use with language support:
@@ -21,3 +21,13 @@ How to create new translation:
 How to update the existing translations, after editing source-code:
 	$ make updatetranslation
 
+How to translate:
+	- make sure that language-file exist and is up to date (see above)
+	- open translations/schluesselwaerter-<lang>.po with an editor
+	  or better an translation program like poedit
+	- create .mo file (see below)
+	- install translations (see above)
+	- send in you .po file, to get it shipped out in future version
+
+How to create .mo files from you .po files:
+	$ make finishtranslations

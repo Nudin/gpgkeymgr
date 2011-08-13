@@ -1,27 +1,27 @@
 NAME=schluesselwaerter
 SRC=$(NAME).cpp
-LANG=de_DE
-LANGFILE=translations/$(NAME)-$(LANG).mo
 
 compile: $(SRC)
 	g++ $(SRC) -lgpgme -o $(NAME)
 
-install: compile $(LANGFILE)
+installall: install installtranslations
+
+install: compile $(NAME).1
 	cp $(NAME) /usr/bin
-	cp $(LANGFILE) /usr/share/locale/$(LANG)/LC_MESSAGES/
 	cp $(NAME).1 /usr/share/man/man1/
 
 # bad
 clean: $(NAME)
 	rm $(NAME)
-	rm a.out
+	rm a.out schluesselwaerter.pot
 
 portable: $(SRC)
 	sed --in-place $(SRC) --expression='s!textpath="/usr/share/locale"!textpath="locale"!'
 	g++ $(SRC) -lgpgme -o $(NAME)
-	mkdir locale/$(LANG)/LC_MESSAGES
-	cp $(LANGFILE) locale/$(LANG)/LC_MESSAGES/
-
+	for i in translations/*.mo; do\
+	  mkdir locale/$${i:31:5}/LC_MESSAGES;\
+	  cp $$i locale/$${i:31:5}/LC_MESSAGES/;\
+	done
 
 ### i18n ###
 
