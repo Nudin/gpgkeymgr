@@ -1,6 +1,6 @@
 Smaller Tasks:
-- more useful question (ok)
-- translate & improve manpage
+- mention level (N) in security-level
+- translate manpage
 - fix return value of remove_key (int <-> bool)
 - better make clean
 - better option parsing (getopt?)
@@ -19,7 +19,6 @@ Things always to do:
 - more translations
 
 Other Things:
-- Decide about name
 - Announce & Promote
 - Update Homepage
 

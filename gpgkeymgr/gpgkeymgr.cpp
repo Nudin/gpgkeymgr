@@ -39,7 +39,7 @@
 using namespace std;
 
 const char* program_name="gpgkeymgr";
-const char* program_version="0.1.8";
+const char* program_version="0.2.0";
 const char* textpath="/usr/share/locale";
 
 // definitions of functions, implementations see below
