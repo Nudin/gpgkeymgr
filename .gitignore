@@ -5,6 +5,9 @@ gpgkeymgr/gpgkeymgr.pot
 *.tar.gz
 *.tar.xz
 *.tar.lzma
+*.sha256
+*.md5
+*.sig
 *aux
 *log
 *pdf
