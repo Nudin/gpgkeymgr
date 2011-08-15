@@ -1,6 +1,10 @@
 */a.out
 *~
-schluesselwaerter/schluesselwaerter
+gpgkeymgr/gpgkeymgr
+gpgkeymgr/gpgkeymgr.pot
+*.tar.gz
+*.tar.xz
+*.tar.lzma
 *aux
 *log
 *pdf
