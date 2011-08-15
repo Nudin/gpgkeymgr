@@ -9,7 +9,8 @@ schluesselwaerter \- manage you GPG keyring
 \fI\-b\fR|\fI\-h\fR
 .SH "DESCRIPTION"
 .PP 
-A program to clean up an manage your keyring..PP 
+A program to clean up an manage your keyring.
+.PP 
 .PP TEST is one of:.PP 
 .TP 
 \fB\-r\fR
@@ -20,13 +21,23 @@ remove expired keys
 .TP 
 \fB\-v\fR [\fIN\fR]
 remove not\-valid keys, with \fIN\fR you can increase the maximum level
+.IP 
+This are keys of witch you can't be sure if they belong to the given person.
+.br 
+As default it will only delete keys witch are completely unvalid keys (N=0),
+if you give 3 as N it will also delete keys with a moderate validity. 
 .TP 
 \fB\-t\fR [\fIN\fR]
 remove not\-trusted keys, with \fIN\fR you can increase the maximum level
+.IP 
+This are keys of persons witch you do not trust.
+.br 
+As default it will only delete keys witch are completely untrusted (N=0),
+if you give 3 as N it will also delete keys of persons witch you trust a bit.
 .TP 
 \fB\-l\fR \fIFile\fR
-remove keys listed in file (uids)
-
+remove keys listed in file.
+Each line must contain one UID (long or short UID)
 .br 
 .PP 
 Other options:
@@ -34,22 +45,22 @@ Other options:
 
 .TP 
 \fB\-b\fR
-Backup public keyring to ser given directory
+backup public keyring to user given directory
 .TP 
 \fB\-o\fR
-remove key already if one given criteria is maching
+remove key already if one given criteria is matching
 .TP 
 \fB\-q\fR
 don't print out so much
 .TP 
 \fB\-y\fR
-Answer all questions with yes
+answer all questions with yes
 .TP 
 \fB\-d\fR
-Don't really do anything
+don't really do anything \- just simulate
 .TP 
 \fB\-h\fR
-Print help\-text
+print help\-text
 
 .br 
 .SH "EXAMPLES"
@@ -71,13 +82,13 @@ schlueselwaerter \-b \-v 3
 .SH "AUTHOR"
 Written by Michael Schoenitzer
 .SH "REPORTING BUGS"
-Report bugs to michael@schoenitzer.de
+Report bugs to michael @ schoenitzer.de
 .br 
 Homepage: <https://www.github.com/Nudin/GnuPGP\-Tools/>
 .SH "COPYRIGHT"
 Copyright \(co Michael Schoenitzer
 .br 
-License LGPLv3+: GNU Lee srsGPL version 3 or later <http://gnu.org/licenses/lgpl.html>
+License LGPLv3+: GNU Lesser GPL version 3 or later <http://gnu.org/licenses/lgpl.html>
 .br 
 This is free software: you are free to change and redistribute it.
 .br 

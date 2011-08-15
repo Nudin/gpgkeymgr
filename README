@@ -12,7 +12,9 @@ Features:
  - remove not-valid keys, optional with given level
  - remove not-trusted keys, optional with given level
  - AND or OR mode for key choosing
+ - backup keyring
  - secret key will not be toutched
+ - support for translations
 Note: the name is temporary an might change in future.
 
 Copyright & License:

@@ -3,6 +3,8 @@ Smaller Tasks:
 - translate & improve manpage
 - fix return value of remove_key (int <-> bool)
 - better make clean
+- better option parsing (getopt?)
+- possibility to give backup-directory as argument
 
 Bigger Tasks:
 - new option - count keys in keyring
