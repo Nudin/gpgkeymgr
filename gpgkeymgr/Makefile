@@ -1,4 +1,4 @@
-NAME=schluesselwaerter
+NAME=gpgkeymgr
 SRC=$(NAME).cpp
 
 compile: $(SRC)
@@ -12,7 +12,7 @@ install: compile $(NAME).1
 
 clean:
 	rm $(NAME)
-	rm a.out schluesselwaerter.pot
+	rm a.out $(NAME).pot
 
 portable: $(SRC)
 	sed --in-place $(SRC) --expression='s!textpath="/usr/share/locale"!textpath="locale"!'
@@ -34,14 +34,14 @@ newtranslation: $(SRC) translate.sh
 	sed --in-place $$po --expression="s/PACKAGE VERSION/$${langname}/"
 	echo "Run 'make finishtranslations' if you are finished with translating."
 
-# To update an translation-file
-updatetranslation: $(wildcard translations/*.po)
+# To update translation-files
+updatetranslations: $(wildcard translations/*.po)
 	xgettext --from-code=UTF-8 -k_ -d $(NAME) -s -o $(NAME).pot $(SRC)
 	for i in $^; do msgmerge -s -U $$i $(NAME).pot; done
 
 # will create .mo files of all .po files
 finishtranslations: 
-	for i in translations/*.po do; msgfmt -c -v -o translations/$(NAME)-${i:18:5}.mo $i; done
+	cd translations; for i in *.po ; do msgfmt -c -v -o $${i/.po/.mo} $$i; done
 
 # will install all translations
 installtranslations: $(wildcard translations/$(NAME)-*.mo)

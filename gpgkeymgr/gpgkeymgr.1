@@ -1,11 +1,11 @@
-.TH "schluesselwaerter" "1" "0.1.6" "Michael Schoenitzer" "User Commands"
+.TH "gpgkeymgr" "1" "0.2" "Michael Schoenitzer" "User Commands"
 .SH "NAME"
-schluesselwaerter \- manage you GPG keyring
+gpgkeymgr \- manage you GPG keyring
 .SH "SYNOPSIS"
-.B schluesselwaerter
+.B gpgkeymgr
 [\fI\-o\fR] [\fI\-qydb\fR] \fITEST\fR [\fITEST\fR...]
 .br 
-.B schluesselwaerter
+.B gpgkeymgr
 \fI\-b\fR|\fI\-h\fR
 .SH "DESCRIPTION"
 .PP 
@@ -68,17 +68,17 @@ print help\-text
 Delete all keys wich are revoked or expired:
 .PP 
 .IP 
-schlueselwaerter \-o \-e \-r
+gpgkeymgr \-o \-e \-r
 .PP 
 Delete all keys wich are not valid and I don't trust:
 .PP 
 .IP 
-schlueselwaerter \-v \-t
+gpgkeymgr \-v \-t
 .PP 
 First backup keyring, then delete all keys wich are not compelty valid:
 .PP 
 .IP 
-schlueselwaerter \-b \-v 3
+gpgkeymgr \-b \-v 3
 .SH "AUTHOR"
 Written by Michael Schoenitzer
 .SH "REPORTING BUGS"

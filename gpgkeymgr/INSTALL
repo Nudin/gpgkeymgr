@@ -22,11 +22,11 @@ How to create new translation:
 	$ make newtranslation
 
 How to update the existing translations, after editing source-code:
-	$ make updatetranslation
+	$ make updatetranslations
 
 How to translate:
 	- make sure that language-file exist and is up to date (see above)
-	- open translations/schluesselwaerter-<lang>.po with an editor
+	- open translations/gpgkeymgr-<lang>.po with an editor
 	  or better an translation program like poedit
 	- create .mo file (see below)
 	- install translations (see above)

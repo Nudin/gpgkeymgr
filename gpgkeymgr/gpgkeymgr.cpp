@@ -1,5 +1,5 @@
 /*
-	Schlüsselwärter
+	gpgkeymgr
 	  A program to clean up an manage your keyring
 	  Copyright: Michael F. Schönitzer; 2011
 */
@@ -38,7 +38,7 @@
 
 using namespace std;
 
-const char* program_name="Schlüsselwärter";
+const char* program_name="gpgkeymgr";
 const char* program_version="0.1.8";
 const char* textpath="/usr/share/locale";
 
@@ -60,8 +60,8 @@ int main(int argc, char *argv[]) {
 
    /* i18n */
    setlocale( LC_ALL, "" );
-   bindtextdomain( "schluesselwaerter", textpath );
-   textdomain( "schluesselwaerter" );
+   bindtextdomain( program_name, textpath );
+   textdomain( program_name );
 
    /* First: get arguments */
    bool revoked  = false;
@@ -511,7 +511,7 @@ void help()
    cout << _("Note: this is still an experimental version. "
                 "Before use, please backup your ~/.gnupg directory.\n") << endl;
    cout << _("Use: ");
-   cout << "schluesselwaerter [-o] [-qyb] TEST [MORE TESTS…]\n";
+   cout << program_name <<  " [-o] [-qyb] TEST [MORE TESTS…]\n";
 
    cout << "\t-b\t"     << _("Backup public keyring")                   << endl;
    cout << "\t-o\t"     << _("remove key already "

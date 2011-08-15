@@ -1,10 +1,10 @@
 Some tools for GNuPGP (GPG):
- - Schlüsselwärter:
+ - gpgkeymgr
  	A program to clean up an manage your keyring
  - more comming soon…
 
 
-== Schlüsselwärter ==
+== gpgkeymgr ==
 A program to clean up an manage your keyring.
 Features:
  - remove expired keys
@@ -15,7 +15,6 @@ Features:
  - backup keyring
  - secret key will not be toutched
  - support for translations
-Note: the name is temporary an might change in future.
 
 Copyright & License:
  - Copyright: Michael F. Schönitzer; 2011
