@@ -35,17 +35,15 @@
   <a href="http://github.com/Nudin/GnuPGP-Tools"><img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub" /></a>
 
   <div id="container">
-
+<!--
     <div class="download">
       <a href="http://github.com/Nudin/GnuPGP-Tools/zipball/master">
         <img border="0" width="90" src="http://github.com/images/modules/download/zip.png"></a>
       <a href="http://github.com/Nudin/GnuPGP-Tools/tarball/master">
         <img border="0" width="90" src="http://github.com/images/modules/download/tar.png"></a>
     </div>
-
-    <h1><a href="http://github.com/Nudin/GnuPGP-Tools">GnuPGP-Tools</a>
-      <span class="small">by 
-      <a href="http://github.com/Nudin">Michael F. Schönitzer</a></span></h1>
+-->
+    <h1><a href="http://github.com/Nudin/GnuPGP-Tools">GnuPGP-Tools</a></h1>
 
     <div class="description">
       some tools for GnuPGP (GPG)
@@ -56,8 +54,8 @@
     beginners and advanced user of encryption with Gnu's free PGP
     implementation.
 
-<h2 class="bigger">Schluesselwaerter</h2>
-With schluesselwaerter you can clean up your keyring,
+<h2 class="bigger">gpgkeymgr</h2>
+With gpgkeymgr you can clean up and manage your GnuPGP-keyring,
 by removing old and unnecessary keys.</p>
 <p>
 Features:
@@ -66,33 +64,57 @@ Features:
 <li> remove revoked keys</li>
 <li> remove not-valid keys, optional with given level</li>
 <li> remove not-trusted keys, optional with given level</li>
+<li> remove key listed in a file</li>
+<li> backup you keyring</li>
 <li> AND or OR mode for key choosing</li>
-<li> secret key will not be toutched</li>
+<li> secret key will not be touched</li>
 </ul>
-Note: the name is temporary an might change in future.
+<h3>Download</h3>
+<ul>
+<li><a href="https://github.com/downloads/Nudin/GnuPGP-Tools/gpgkeymgr-0.2.tar.gz">Download version 0.2</a> (tar.gz, 32 KB), <a href="https://github.com/downloads/Nudin/GnuPGP-Tools/gpgkeymgr-0.2.tar.gz.sah256">sha256</a>, <a href="https://github.com/downloads/Nudin/GnuPGP-Tools/gpgkeymgr-0.2.tar.gz.sig">sig</a></li>
+<li>or get latest version from <a href="http://github.com/Nudin/GnuPGP-Tools/gpgkeymgr">Github</a></li>
+</ul>
 
 <h3>Dependencies</h3>
 <p>GnuPGP, gpgme</p>
-<h3>Install</h3>
-<p>See instructions in package</p>
+
 <h3>License</h3>
 <p>Gnu Lesser Public License v. 3.0</p>
 
+<h3>Examples</h3>
+<p>
+Remove all keys wich are expired or revoked:
+      <pre>$ gpgkeymgr -o -e -r</pre>
+</p>
+<p>
+Remove all keys wich wich are not valid and I don't trust:
+      <pre>$ gpgkeymgr -v -t</pre>
+</p>
+<p>
+First backup keyring, then delete all keys witch are not completely valid:
+      <pre>$ gpgkeymgr -b -v 3</pre>
+</p>
+
 <br>
+<hr>
 
-<h2>Authors</h2>
-<p>Michael F. Schönitzer (michael [@] schoenitzer.de)<br/><br/>      </p>
+<h2>Author</h2>
+<p>Michael F. Schönitzer (michael [@] schoenitzer.de)
+<br/>
+</p>
+<!--
 <h2>Contact</h2>
-<p>Michael F. Schönitzer (michael [@] schoenitzer.de)<br/>      </p>
+<p>Michael F. Schönitzer (michael [@] schoenitzer.de)
+<br/>      </p>
+-->
 
 
-    <h2>Download</h2>
+    <h2>Join Development, Feedback</h2>
     <p>
-      You can download this project in either
-      <a href="http://github.com/Nudin/GnuPGP-Tools/zipball/master">zip</a> or
-      <a href="http://github.com/Nudin/GnuPGP-Tools/tarball/master">tar</a> formats.
+      I welcome any feedback and I would of course be glad about any contributions.
+      You can send me a mail, or contact me via <a href="http://github.com/Nudin/GnuPGP-Tools">Githup</a>.
     </p>
-    <p>You can also clone the project with <a href="http://git-scm.com">Git</a>
+    <p>You can clone the project with <a href="http://git-scm.com">Git</a>
       by running:
       <pre>$ git clone git://github.com/Nudin/GnuPGP-Tools</pre>
     </p>
