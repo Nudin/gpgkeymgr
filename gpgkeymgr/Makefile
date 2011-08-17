@@ -1,4 +1,5 @@
 NAME=gpgkeymgr
+VERSION=0.2
 SRC=$(NAME).cpp
 
 compile: $(SRC)
@@ -11,8 +12,9 @@ install: compile $(NAME).1
 	cp $(NAME).1 /usr/share/man/man1/
 
 clean:
-	rm $(NAME)
-	rm a.out $(NAME).pot
+	 if [ -f $(NAME) ]; then rm $(NAME); fi
+	if [ -f $(NAME).pot ]; then rm $(NAME).pot; fi
+	if [ -f $(NAME)-$(VERSION).tar.gz ]; then rm $(NAME)-$(VERSION).tar.gz*; fi
 
 portable: $(SRC)
 	sed --in-place $(SRC) --expression='s!textpath="/usr/share/locale"!textpath="locale"!'
@@ -47,3 +49,13 @@ finishtranslations:
 installtranslations: $(wildcard translations/$(NAME)-*.mo)
 	for i in $^; do cp $$i /usr/share/locale/$${i:31:5}/LC_MESSAGES/; done
 
+
+### for developers ##
+
+tarball: compile
+	mkdir ../$(NAME)-$(VERSION)
+	cp -r * ../$(NAME)-$(VERSION)
+	tar cvzf $(NAME)-$(VERSION).tar.gz ../$(NAME)-$(VERSION)
+	sha256sum $(NAME)-$(VERSION).tar.gz > $(NAME)-$(VERSION).tar.gz.sha256
+	gpg --detach-sign $(NAME)-$(VERSION).tar.gz
+	rm -rf ../$(NAME)-$(VERSION)
