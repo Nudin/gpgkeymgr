@@ -49,7 +49,7 @@ int searchvector(vector<string> str, string key);
 int readvector(string file, vector<string>& vector);
 string replace_string(string input, const string &search, const string &replace);
 int copyfile(string dir, string filename, string destination, bool yes);
-int backup(bool yes);
+int backup(bool yes, string destination);
 int remove_key(gpgme_ctx_t ctx, gpgme_key_t key, bool quiet);
 void print_key(gpgme_key_t key);
 void help();
@@ -69,14 +69,15 @@ int main(int argc, char *argv[]) {
    bool novalid  = false;	int max_valid = 0;
    bool notrust  = false;	int max_trust = 0;
    bool altern   = false;
-   bool dobackup = false;
+   bool dobackup = false;	string destination = "";
    bool poslist  = false;	vector<string> list;
    bool quiet    = false;  // For quiet-mode
    bool dry      = false;  // For dry-mode
    bool yes      = false;  // For 'yes-mode'
 
+   opterr = 0;
    char c;
-   while ((c = getopt (argc, argv, "rev:t:oqydbl:h")) != -1)
+   while ((c = getopt (argc, argv, "rev:t:oqydb:l:h")) != -1)
       switch (c)
          {
          case 'r':
@@ -107,6 +108,7 @@ int main(int argc, char *argv[]) {
             break;
          case 'b':
             dobackup=true;
+            destination = optarg;
             break;
          case 'l':
             poslist=true;
@@ -122,23 +124,26 @@ int main(int argc, char *argv[]) {
                novalid = true;
             else if (optopt == 't')
                notrust = true;
-            else
+            else if (optopt == 'b')
+               dobackup=true;
+            else {
                help();
                return 1;
+            }
             break;
          default:
              help();
              return 1;
-         }
+         } // end swich & loop
 
    if ( dobackup ) {
-      if ( backup(yes) )
+      if ( backup(yes, destination) )
          return 3;
    }
    if ( !revoked && !expired && !novalid && !notrust && !poslist ) {
       if ( dobackup )
          return 0;
-      else { // none option has given
+      else { // none option has been given
          help();
          return 1;
       }
@@ -456,13 +461,14 @@ int copyfile(string dir, string filename, string destination, bool yes)
 /*
 Backup keyring-files to a directory given by the user
 */
-int backup(bool yes)
+int backup(bool yes, string destination)
 {
-   string destination = "";
-   cout << _("Where should I put the backup? (Directory must exist) ");
-   cin  >> destination;
+   if ( destination == "" ) {
+      cout << _("Where should I put the backup? (Directory must exist) ");
+      cin  >> destination;
+   }
    if ( destination == "" )
-      destination="/backup/";
+      destination="backup/";
    if ( copyfile("/.gnupg/", "pubring.gpg", destination, yes) )
       return 1;
    if ( copyfile("/.gnupg/", "pubring.kbx", destination, yes) )
