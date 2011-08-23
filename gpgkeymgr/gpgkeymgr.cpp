@@ -132,9 +132,10 @@ int main(int argc, char *argv[]) {
          }
 
    if ( dobackup ) {
-      backup(yes);
+      if ( backup(yes) )
+         return 3;
    }
-   else if ( !revoked && !expired && !novalid && !notrust && !poslist ) {
+   if ( !revoked && !expired && !novalid && !notrust && !poslist ) {
       if ( dobackup )
          return 0;
       else { // none option has given
@@ -175,8 +176,6 @@ int main(int argc, char *argv[]) {
       return 0;
       }
    }
-
-return 0; //###
 
    /* Now set up to use GPGME */
    char *p;
@@ -449,6 +448,7 @@ int copyfile(string dir, string filename, string destination, bool yes)
    ifstream ifs(full_filename.c_str(), ios::binary);
    ofstream ofs(full_destination.c_str(), ios::binary);
    ofs << ifs.rdbuf();
+   return 0;
 } // end 'copyfile'
 
 
