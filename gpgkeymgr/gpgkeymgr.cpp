@@ -74,60 +74,74 @@ int main(int argc, char *argv[]) {
    bool quiet    = false;  // For quiet-mode
    bool dry      = false;  // For dry-mode
    bool yes      = false;  // For 'yes-mode'
-   for (int i=1; i<argc; i++) {
-      if ( strlen( argv[i] ) != 2 ) {
-          help();
-          return 1;
-          }
-      char c = argv[i][1];
+
+   char c;
+   while ((c = getopt (argc, argv, "rev:t:oqydbl:h")) != -1)
       switch (c)
-      {
-         case 'r': revoked = true; break;
-         case 'e': expired = true; break;
+         {
+         case 'r':
+            revoked = true;
+            break;
+         case 'e':
+            expired = true;
+            break;
          case 'v':
             novalid = true;
-            if ( i+1 < argc ) {
-               max_valid = atoi(argv[i+1]);
-               if ( max_valid != 0 )
-                  i++;
-            }
+            max_valid = atoi(optarg);
             break;
          case 't':
             notrust = true;
-            if ( i+1 < argc ) {
-               max_trust = atoi(argv[i+1]);
-               if ( max_trust != 0 )
-                  i++;
-            }
+            max_trust = atoi(optarg);
             break;
-         case 'o': altern = true; break;
-         case 'q': quiet = true; break;
-         case 'y': yes = true; break;
-         case 'd': dry = true; break;
-         case 'b': dobackup=true; backup(yes); break;
+         case 'o':
+            altern = true;
+            break;
+         case 'q':
+            quiet = true;
+            break;
+         case 'y':
+            yes = true;
+            break;
+         case 'd':
+            dry = true;
+            break;
+         case 'b':
+            dobackup=true;
+            break;
          case 'l':
-            if ( i+1 < argc ) {
-               poslist=true;
-               if ( readvector(argv[i+1], list) )
-                  return 2;
-               i++;
-               }
-            else {
+            poslist=true;
+            if ( readvector(optarg, list) )
+               return 2;
+            break;
+         case 'h':
+            help();
+            return 0;
+            break;
+         case '?':
+            if (optopt == 'v')	// Option t and v can also be called without N
+               novalid = true;
+            else if (optopt == 't')
+               notrust = true;
+            else
                help();
                return 1;
-               }
             break;
-         case 'h': help(); return 0;
+         default:
+             help();
+             return 1;
+         }
+
+   if ( dobackup ) {
+      backup(yes);
    }
-   }
-   if ( !revoked && !expired && !novalid && !notrust && !poslist ) {
+   else if ( !revoked && !expired && !novalid && !notrust && !poslist ) {
       if ( dobackup )
          return 0;
-      else {
+      else { // none option has given
          help();
          return 1;
-         }
       }
+   }
 
    if (!yes)
    {
@@ -161,6 +175,8 @@ int main(int argc, char *argv[]) {
       return 0;
       }
    }
+
+return 0; //###
 
    /* Now set up to use GPGME */
    char *p;

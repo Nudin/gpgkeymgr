@@ -2,6 +2,13 @@ NAME=gpgkeymgr
 VERSION=0.2
 SRC=$(NAME).cpp
 
+prefix=/usr/local
+exec_prefix=${prefix}
+BINDIR=${exec_prefix}/bin
+
+test:
+	echo $(BINDIR)
+
 compile: $(SRC)
 	g++ $(SRC) -lgpgme -o $(NAME)
 
