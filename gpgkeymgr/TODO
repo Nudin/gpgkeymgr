@@ -1,10 +1,8 @@
 Smaller Tasks:
-- mention level (N) in security-level
+- mention level (N) in security-question
 - translate manpage
 - fix return value of remove_key (int <-> bool)
 - better make clean
-- better option parsing (getopt?)
-- possibility to give backup-directory as argument
 
 Bigger Tasks:
 - new option - count keys in keyring
@@ -28,7 +26,8 @@ For future use - error-codes are:
 0 - success or exit by user
 1 - wrong arguments
 2 - wrong file content or not existing file given
-  3-9 reserved for other user errors
+3 - backup has failed
+  4-9 reserved for other user errors
 10 - unknown GPG/GPGME-error
 11 - no OpenPGP-support
 12 - cant get GPG-engine information

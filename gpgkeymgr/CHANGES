@@ -1,0 +1,12 @@
+Note:
+.x-Version means the current developing-branch
+
+Version 0.2.0 -> 0.2.x
+- using getopt for argument handling
+ -> fixed some bugs
+ -> improved code readability
+- backup-dir can be given as argument
+- give return-value 3 if backup fails
+
+before Version 0.2.0
+- see Git-changelogs

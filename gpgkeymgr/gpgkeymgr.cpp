@@ -39,7 +39,7 @@
 using namespace std;
 
 const char* program_name="gpgkeymgr";
-const char* program_version="0.2.0";
+const char* program_version="0.2.x";
 const char* textpath="/usr/share/locale";
 
 // definitions of functions, implementations see below
@@ -535,20 +535,20 @@ void help()
    cout << _("Use: ");
    cout << program_name <<  " [-o] [-qyb] TEST [MORE TESTS…]\n";
 
-   cout << "\t-b\t"     << _("Backup public keyring")                   << endl;
-   cout << "\t-o\t"     << _("remove key already "
+   cout << "\t-b [dir]\t" << _("Backup public keyring")                 << endl;
+   cout << "\t-o\t"       << _("remove key already "
                                    "if one given criteria is maching")  << endl;
-   cout << "\t-q\t"     << _("don't print out so much")                 << endl;
-   cout << "\t-y\t"     << _("Answer all questions with yes")           << endl;
-   cout << "\t-d\t"     << _("Don't really do anything")                << endl;
-   cout                 << _("TESTs: ")                                 << endl;
-   cout << "\t-r\t"     << _("remove revoked keys")                     << endl;
-   cout << "\t-e\t"     << _("remove expired keys")                     << endl;
-   cout << "\t-l "      << _("file")
-        << "\t"         << _("remove keys listed in file (uids)")       << endl;
-   cout << "\t-v [N]\t" << _("remove not-valid keys")                   << endl;
-   cout << "\t-t [N]\t" << _("remove not-trusted keys")                 << endl;
-   cout << "\t\t\t"     << _("with N you can increase the maximum level")
+   cout << "\t-q\t"       << _("don't print out so much")               << endl;
+   cout << "\t-y\t"       << _("Answer all questions with yes")         << endl;
+   cout << "\t-d\t"       << _("Don't really do anything")              << endl;
+   cout                   << _("TESTs: ")                               << endl;
+   cout << "\t-r\t"       << _("remove revoked keys")                   << endl;
+   cout << "\t-e\t"       << _("remove expired keys")                   << endl;
+   cout << "\t-l "        << _("file")
+        << "\t"           << _("remove keys listed in file (uids)")     << endl;
+   cout << "\t-v [N]\t"   << _("remove not-valid keys")                 << endl;
+   cout << "\t-t [N]\t"   << _("remove not-trusted keys")               << endl;
+   cout << "\t\t\t"       << _("with N you can increase the maximum level")
                                                                         << endl;
 }
 
