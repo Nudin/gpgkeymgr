@@ -1,0 +1,213 @@
+# French translations for gpgkeymgr package
+# French messages for gpgkeymgr.
+# Copyright (C) 2011 THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the gpgkeymgr package.
+# Michael Florian SchÃ¶nitzer <michael@schoenitzer.de>, 2011.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: gpgkeymgr\n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: 2011-08-24\n"
+"Last-Translator: Jean-Jacques BRUCKER <jeanjacquesbrucker@gmail.com>\n"
+"Language-Team: France\n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-Language: Français\n"
+"X-Poedit-Country: FRANCE\n"
+"X-Poedit-SourceCharset: utf-8\n"
+
+#: gpgkeymgr.cpp:427
+msgid " already exists, overwrite?"
+msgstr " existe déjà, écraser ?"
+
+#: gpgkeymgr.cpp:139
+msgid " and "
+msgstr " et "
+
+#: gpgkeymgr.cpp:137
+msgid " or "
+msgstr " ou "
+
+#: gpgkeymgr.cpp:154
+msgid "###"
+msgstr " sont"
+
+#: gpgkeymgr.cpp:520
+msgid "Answer all questions with yes"
+msgstr "Répond \"oui\" à toutes les questions"
+
+#: gpgkeymgr.cpp:516
+msgid "Backup public keyring"
+msgstr "Sauvegarde des clés publiques"
+
+#: gpgkeymgr.cpp:160
+msgid "By"
+msgstr "By."
+
+#: gpgkeymgr.cpp:410
+msgid "Can't create directory.\n"
+msgstr "Creation du répertoire impossible.\n"
+
+#: gpgkeymgr.cpp:256
+#, c-format
+msgid "Deleted %i key(s).\n"
+msgstr "Suppression de(s) clé(s) %i\n"
+
+#: gpgkeymgr.cpp:401
+msgid "Directory does not exist. Create?"
+msgstr "Le répertoire n'existe pas. Le créer ?"
+
+#: gpgkeymgr.cpp:140
+msgid "Do you really want to delete all keys which are "
+msgstr "Voulez-vous supprimer tous ces certificats "
+
+#: gpgkeymgr.cpp:521
+msgid "Don't really do anything"
+msgstr "Ne rien faire réellement (simulation)"
+
+#: gpgkeymgr.cpp:345
+msgid "Failed to open "
+msgstr "Impossible d'ouvrir: "
+
+#: gpgkeymgr.cpp:426
+msgid "File "
+msgstr "Fichier "
+
+#: gpgkeymgr.cpp:174
+#, c-format
+msgid "GPG-Version=%s\n"
+msgstr "GPG-Version: %s\n"
+
+#: gpgkeymgr.cpp:511
+msgid ""
+"Note: this is still an experimental version. Before use, please backup your "
+"~/.gnupg directory.\n"
+msgstr ""
+"Note: Ce logiciel est en version alpha. Il est vivement conseillé que vous"
+"sauvegardiez votre répertoire ~/.gnupg .\n"
+
+#: gpgkeymgr.cpp:181
+#, c-format
+msgid "Protocol name: %s\n"
+msgstr "Nom du protocole : %s\n"
+
+#: gpgkeymgr.cpp:489
+msgid "Skipping secret key"
+msgstr "Skipping secret key"
+
+#: gpgkeymgr.cpp:454
+msgid "Successfully backuped pubring.gpg and pubring.kbx"
+msgstr "Sauvegarde de pubring.gpg et pubring.kbx réussie."
+
+#: gpgkeymgr.cpp:522
+msgid "TESTs: "
+msgstr "TESTs: "
+
+#: gpgkeymgr.cpp:305
+msgid "UID in wrong format, skipping"
+msgstr "Mauvais format d'UID, ignoré"
+
+#: gpgkeymgr.cpp:513
+msgid "Use: "
+msgstr "Utilisation:"
+
+#: gpgkeymgr.cpp:510
+msgid "Version: "
+msgstr "Version: "
+
+#: gpgkeymgr.cpp:446
+msgid "Where should I put the backup? (Directory must exist) "
+msgstr "Emplacement pour la sauvegarde ? (Répertoire existant) "
+
+#: gpgkeymgr.cpp:253
+msgid "can not list keys: "
+msgstr "Les clés ne peuvent pas être obtenues : "
+
+#: gpgkeymgr.cpp:493
+msgid "deleted key"
+msgstr "suppression de clé"
+
+#: gpgkeymgr.cpp:519
+msgid "don't print out so much"
+msgstr "affichage moins verbeux"
+
+#: gpgkeymgr.cpp:144 gpgkeymgr.cpp:473
+msgid "expired"
+msgstr "expiré"
+
+#: gpgkeymgr.cpp:392
+msgid "failed to open file: "
+msgstr "Impossible d'ouvrir le fichier : "
+
+#: gpgkeymgr.cpp:525
+msgid "file"
+msgstr "fichier"
+
+#: gpgkeymgr.cpp:187
+#, c-format
+msgid ""
+"file=%s, home=%s\n"
+"\n"
+msgstr ""
+"fichier=%s, répertoire=%s\n"
+"\n"
+
+#: gpgkeymgr.cpp:150
+msgid "listed in file"
+msgstr "indiqué dans le fichier"
+
+#: gpgkeymgr.cpp:417
+msgid "no directory"
+msgstr "pas de répertoire"
+
+#: gpgkeymgr.cpp:524
+msgid "remove expired keys"
+msgstr "supprime les clés ayant expirés"
+
+#: gpgkeymgr.cpp:517
+msgid "remove key already if one given criteria is maching"
+msgstr "supprime la clé si l'un des critéres est valide"
+
+#: gpgkeymgr.cpp:526
+msgid "remove keys listed in file (uids)"
+msgstr "supprime les clés indiqués dans le fichier (uids)"
+
+#: gpgkeymgr.cpp:528
+msgid "remove not-trusted keys"
+msgstr "supprime les clé dont la confiance n'est pas suffisante"
+
+#: gpgkeymgr.cpp:527
+msgid "remove not-valid keys"
+msgstr "supprime les clés invalides"
+
+#: gpgkeymgr.cpp:523
+msgid "remove revoked keys"
+msgstr "supprime les clés révoquées"
+
+#: gpgkeymgr.cpp:142 gpgkeymgr.cpp:471
+msgid "revoked"
+msgstr "révoqué"
+
+#: gpgkeymgr.cpp:497
+msgid "unknown Error occurred"
+msgstr "Oups, erreur quelque part..."
+
+#: gpgkeymgr.cpp:148
+msgid "untrusted"
+msgstr "confiance insuffisante"
+
+#: gpgkeymgr.cpp:146
+msgid "unvalid"
+msgstr "invalide"
+
+#: gpgkeymgr.cpp:529
+msgid "with N you can increase the maximum level"
+msgstr "le nombre N permet d'accroitre le niveau maximum"
+
+#~ msgid "Arguments: "
+
+#~ msgid "FAILED to open "
