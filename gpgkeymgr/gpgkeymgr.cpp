@@ -40,7 +40,11 @@ using namespace std;
 
 const char* program_name="gpgkeymgr";
 const char* program_version="0.2.x";
-const char* textpath="/usr/share/locale";
+#ifdef LOCAL
+  const char* textpath="locale";
+#else
+  const char* textpath="/usr/share/locale";
+#endif
 
 // definitions of functions, implementations see below
 bool ask_user(string question);

@@ -6,8 +6,6 @@ prefix=/usr/local
 exec_prefix=${prefix}
 BINDIR=${exec_prefix}/bin
 
-test:
-	echo $(BINDIR)
 
 compile: $(SRC)
 	g++ $(SRC) -lgpgme -o $(NAME)
@@ -24,8 +22,8 @@ clean:
 	if [ -f $(NAME)-$(VERSION).tar.gz ]; then rm $(NAME)-$(VERSION).tar.gz*; fi
 
 portable: $(SRC)
-	sed --in-place $(SRC) --expression='s!textpath="/usr/share/locale"!textpath="locale"!'
-	g++ $(SRC) -lgpgme -o $(NAME)
+	g++ $(SRC) -DLOCAL -lgpgme -o $(NAME)
+	mkdir locale
 	for i in translations/*.mo; do\
 	  mkdir locale/$${i:31:5}/LC_MESSAGES;\
 	  cp $$i locale/$${i:31:5}/LC_MESSAGES/;\
