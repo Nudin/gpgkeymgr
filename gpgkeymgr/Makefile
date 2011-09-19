@@ -1,19 +1,19 @@
-NAME=gpgkeymgr
-VERSION=0.2
-SRC=$(NAME).cpp
+NAME	= gpgkeymgr
+VERSION	= 0.2
 
-prefix=/usr/local
-exec_prefix=${prefix}
-BINDIR=${exec_prefix}/bin
-
+SRC	= $(NAME).cpp
+BINDIR	= /usr/bin
+FLAGS	= -D_FILE_OFFSET_BITS=64
+LIBPATH	= -L/usr/include/ -L/usr/include/gpgme/ -L/usr/local/include/ -L/usr/include/gpgme/
+LIBS	= -lgpgme
 
 compile: $(SRC)
-	g++ $(SRC) -lgpgme -o $(NAME)
+	g++ $(SRC) $(FLAGS) $(LIBPATH) $(LIBS) -o $(NAME)
 
 installall: install installtranslations
 
 install: compile $(NAME).1
-	cp $(NAME) /usr/bin
+	cp $(NAME) $(BINDIR)
 	cp $(NAME).1 /usr/share/man/man1/
 
 clean:
@@ -22,7 +22,7 @@ clean:
 	if [ -f $(NAME)-$(VERSION).tar.gz ]; then rm $(NAME)-$(VERSION).tar.gz*; fi
 
 portable: $(SRC)
-	g++ $(SRC) -DLOCAL -lgpgme -o $(NAME)
+	g++ $(SRC) $(FLAGS) $(LIBPATH) -DLOCAL $(LIBS) -o $(NAME)
 	mkdir locale
 	for i in translations/*.mo; do\
 	  mkdir locale/$${i:31:5}/LC_MESSAGES;\
