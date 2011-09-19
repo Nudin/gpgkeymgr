@@ -54,7 +54,7 @@ finishtranslations:
 
 # will install all translations
 installtranslations: $(wildcard translations/$(NAME)-*.mo)
-	for i in $^; do cp $$i /usr/share/locale/$${i:23:5}/LC_MESSAGES/; done
+	for i in $^; do cp $$i /usr/share/locale/$${i:23:5}/LC_MESSAGES/$(NAME).mo; chmod +r /usr/share/locale/$${i:23:5}/LC_MESSAGES/$(NAME).mo; done
 
 #will install all translation of the manpage
 installmanpagetranslations: $(wildcard manpages/$(NAME)-*.1)
