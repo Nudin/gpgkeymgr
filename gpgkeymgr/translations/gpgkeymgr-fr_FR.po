@@ -209,5 +209,7 @@ msgid "with N you can increase the maximum level"
 msgstr "le nombre N permet d'accroitre le niveau maximum"
 
 #~ msgid "Arguments: "
+#~ msgstr "Argumente: "
 
 #~ msgid "FAILED to open "
+#~ msgstr "Öffnen der Datei fehlgeschlagen "
