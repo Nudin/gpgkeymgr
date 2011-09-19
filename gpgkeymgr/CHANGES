@@ -9,6 +9,10 @@ Version 0.2.0 -> 0.2.x
  -> fixed some bugs
  -> improved code readability
 - give return-value 3 if backup fails
+- using preprocessor to set version
+- improved Makefile
+  -> more compability to diveren Linux-distributions
+- Manpages can also be translated
 
 before Version 0.2.0
 - see Git-changelogs

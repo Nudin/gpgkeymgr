@@ -7,6 +7,8 @@ BINDIR	= /usr/bin
 FLAGS	= -D_FILE_OFFSET_BITS=64 -DVERS=\"$(VERSION)\"
 LIBPATH	= -L/usr/include/ -L/usr/include/gpgme/ -L/usr/local/include/ -L/usr/include/gpgme/
 LIBS	= -lgpgme
+LOCAL	= /usr/share/locale/
+MAN	= /usr/share/man/
 
 compile: $(SRC)
 	g++ $(SRC) $(FLAGS) $(LIBPATH) $(LIBS) -o $(NAME)
@@ -15,8 +17,8 @@ installall: install installtranslations installmanpagetranslations
 
 install: compile manpages/$(NAME).1
 	cp $(NAME) $(BINDIR)
-	cp manpages/$(NAME).1 /usr/share/man/man1/
-	chmod +r /usr/share/man/man1/$(NAME).1
+	cp manpages/$(NAME).1 $(MAN)man1/
+	chmod +r $(MAN)man1/$(NAME).1
 
 clean:
 	 if [ -f $(NAME) ]; then rm $(NAME); fi
@@ -54,11 +56,11 @@ finishtranslations:
 
 # will install all translations
 installtranslations: $(wildcard translations/$(NAME)-*.mo)
-	for i in $^; do cp $$i /usr/share/locale/$${i:23:5}/LC_MESSAGES/$(NAME).mo; chmod +r /usr/share/locale/$${i:23:5}/LC_MESSAGES/$(NAME).mo; done
+	for i in $^; do cp $$i $(LOCAL)$${i:23:5}/LC_MESSAGES/$(NAME).mo; chmod +r $(LOCAL)$${i:23:5}/LC_MESSAGES/$(NAME).mo; done
 
 #will install all translation of the manpage
 installmanpagetranslations: $(wildcard manpages/$(NAME)-*.1)
-	for i in $^; do cp $$i /usr/share/man/$${i:19:2}/man1/; chmod +r /usr/share/man/$${i:19:2}/man1/$${i:9}; done
+	for i in $^; do cp $$i $(MAN)$${i:19:2}/man1/; chmod +r $(MAN)$${i:19:2}/man1/$${i:9}; done
 
 ### for developers ##
 
