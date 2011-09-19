@@ -39,7 +39,11 @@
 using namespace std;
 
 const char* program_name="gpgkeymgr";
-const char* program_version="0.2.x";
+#ifdef VERS
+   const char* program_version = VERS;
+#else
+   const char* program_version = "Developement Version";
+#endif
 #ifdef LOCAL
   const char* textpath="locale";
 #else
@@ -92,11 +96,17 @@ int main(int argc, char *argv[]) {
             break;
          case 'v':
             novalid = true;
-            max_valid = atoi(optarg);
+            if(optarg[0] == '-')
+               optind--;
+            else
+               max_valid = atoi(optarg);
             break;
          case 't':
             notrust = true;
-            max_trust = atoi(optarg);
+            if(optarg[0] == '-')
+               optind--;
+            else
+               max_trust = atoi(optarg);
             break;
          case 'o':
             altern = true;
@@ -112,7 +122,10 @@ int main(int argc, char *argv[]) {
             break;
          case 'b':
             dobackup=true;
-            destination = optarg;
+            if(optarg[0] == '-')
+               optind--;
+            else
+               destination = optarg;
             break;
          case 'l':
             poslist=true;
@@ -139,7 +152,6 @@ int main(int argc, char *argv[]) {
              help();
              return 1;
          } // end swich & loop
-
    if ( dobackup ) {
       if ( backup(yes, destination) )
          return 3;

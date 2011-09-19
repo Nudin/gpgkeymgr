@@ -1,20 +1,22 @@
 NAME	= gpgkeymgr
-VERSION	= 0.2
+VERSION	= 0.2.99
 
+SHELL	:= /bin/bash
 SRC	= $(NAME).cpp
 BINDIR	= /usr/bin
-FLAGS	= -D_FILE_OFFSET_BITS=64
+FLAGS	= -D_FILE_OFFSET_BITS=64 -DVERS=\"$(VERSION)\"
 LIBPATH	= -L/usr/include/ -L/usr/include/gpgme/ -L/usr/local/include/ -L/usr/include/gpgme/
 LIBS	= -lgpgme
 
 compile: $(SRC)
 	g++ $(SRC) $(FLAGS) $(LIBPATH) $(LIBS) -o $(NAME)
 
-installall: install installtranslations
+installall: install installtranslations installmanpagetranslations
 
-install: compile $(NAME).1
+install: compile manpages/$(NAME).1
 	cp $(NAME) $(BINDIR)
-	cp $(NAME).1 /usr/share/man/man1/
+	cp manpages/$(NAME).1 /usr/share/man/man1/
+	chmod +r /usr/share/man/man1/$(NAME).1
 
 clean:
 	 if [ -f $(NAME) ]; then rm $(NAME); fi
@@ -25,8 +27,8 @@ portable: $(SRC)
 	g++ $(SRC) $(FLAGS) $(LIBPATH) -DLOCAL $(LIBS) -o $(NAME)
 	mkdir locale
 	for i in translations/*.mo; do\
-	  mkdir locale/$${i:31:5}/LC_MESSAGES;\
-	  cp $$i locale/$${i:31:5}/LC_MESSAGES/;\
+	  mkdir locale/$${i:23:5}/LC_MESSAGES;\
+	  cp $$i locale/$${i:23:5}/LC_MESSAGES/;\
 	done
 
 ### i18n ###
@@ -52,8 +54,11 @@ finishtranslations:
 
 # will install all translations
 installtranslations: $(wildcard translations/$(NAME)-*.mo)
-	for i in $^; do cp $$i /usr/share/locale/$${i:31:5}/LC_MESSAGES/; done
+	for i in $^; do cp $$i /usr/share/locale/$${i:23:5}/LC_MESSAGES/; done
 
+#will install all translation of the manpage
+installmanpagetranslations: $(wildcard manpages/$(NAME)-*.1)
+	for i in $^; do cp $$i /usr/share/man/$${i:19:2}/man1/; chmod +r /usr/share/man/$${i:19:2}/man1/$${i:9}; done
 
 ### for developers ##
 
