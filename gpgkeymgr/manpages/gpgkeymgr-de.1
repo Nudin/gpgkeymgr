@@ -1,0 +1,97 @@
+.TH "gpgkeymgr" "1" "0.2" "Michael Schoenitzer" "User Commands"
+.SH "NAME"
+gpgkeymgr \- verwalte deinen GnuPG Schlüsselbund
+.SH "SYNTAX"
+.B gpgkeymgr
+[\fI\-o\fR] [\fI\-qydb\fR] \fITEST\fR [\fITEST\fR...]
+.br 
+.B gpgkeymgr
+\fI\-b\fR|\fI\-h\fR
+.SH "BESCHREIBUNG"
+.PP 
+Ein Programm um den GPG-Schlüsselbund aufzuräumen
+.PP 
+.PP
+TEST ist eines der folgenden:
+.PP 
+.TP 
+\fB\-r\fR
+entferne 
+.TP 
+\fB\-e\fR
+Widerrufene Schlüssel löschen
+.TP 
+\fB\-v\fR [\fIN\fR]
+Schlüssel deren Gültigkeit nicht überprüft wurde entfernen, mit N können Sie die Grenze erhöhen
+.IP 
+Dies sind Schlüssel, bei welchen sie sich nicht sicher sind, ob er der angegebenen Person gehört.
+.br 
+Standardmäßig werden nur Schlüssel entfernt, deren Gültigkeit völlig unbekannt ist (N=0),
+wenn sie 3 als Grenze angeben, werden auch Schlüssel entfernt deren Gültigkeit moderat sicher ist.
+.TP 
+\fB\-t\fR [\fIN\fR]
+Schlüssel denen ich nicht vertraue entfernen, mit N können Sie die Grenze erhöhen
+.IP 
+Dies sind Schlüssel von Personen, denen sie nicht vertrauen.
+.br 
+Standardmäßig werden nur Schlüssel entfernt, denen sie gar nicht vertrauen (N=0),
+wenn sie 3 als Grenze angeben, werden auch Schlüssel entfernt, welchen sie eingeschränkt vertrauen.
+.TP 
+\fB\-l\fR \fIFile\fR
+Schlüssel die in der Datei gelistet sind entfernen.
+Jede Zeile muss dabei eine UID (lange oder kurze UID) enthalten.
+.br 
+.PP 
+Other options:
+.PP 
+
+.TP 
+\fB\-b\fR
+Backup von öffentlichem Schlüsselring anlegen
+.TP 
+\fB\-o\fR
+Schlüssel entfernen sobald eines der Kriterien zutrifft
+.TP 
+\fB\-q\fR
+Weniger Text ausgeben
+.TP 
+\fB\-y\fR
+Alle Fragen mit ja beantworten
+.TP 
+\fB\-d\fR
+Nichts wirklich tun (Simulationsmodus)
+.TP 
+\fB\-h\fR
+Hilfstext anzeigen
+
+.br 
+.SH "BEISPIELE"
+.PP 
+Lösche alle Schlüssel die widerrufen wurden oder abgelaufen sind:
+.PP 
+.IP 
+gpgkeymgr \-o \-e \-r
+.PP 
+Lösche alle Schlüssel die nicht Gültig sind und denen ich nicht vertraue:
+.PP 
+.IP 
+gpgkeymgr \-v \-t
+.PP 
+Erstelle zuerst ein Backup und lösche dann alle Schlüssel die nicht vollständig gültig sind:
+.PP 
+.IP 
+gpgkeymgr \-b \-v 3
+.SH "AUTOR"
+Geschrieben von Michael Schoenitzer
+.SH "REPORTING BUGS"
+Bitte melden sie Fehler an michael @ schoenitzer.de
+.br 
+Homepage: <https://www.github.com/Nudin/GnuPGP\-Tools/>
+.SH "COPYRIGHT"
+Copyright \(co Michael Schoenitzer
+.br 
+License LGPLv3+: GNU Lesser GPL version 3 or later <http://gnu.org/licenses/lgpl.html>
+.br 
+This is free software: you are free to change and redistribute it.
+.br 
+There is NO WARRANTY, to the extent permitted by law.
