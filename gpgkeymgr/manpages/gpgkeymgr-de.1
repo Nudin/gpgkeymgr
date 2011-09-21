@@ -1,4 +1,4 @@
-.TH "gpgkeymgr" "1" "0.2" "Michael Schoenitzer" "User Commands"
+.TH "gpgkeymgr" "1" "0.3" "Michael Schoenitzer" "User Commands"
 .SH "NAME"
 gpgkeymgr \- verwalte deinen GnuPG Schlüsselbund
 .SH "SYNTAX"
@@ -46,8 +46,9 @@ Other options:
 .PP 
 
 .TP 
-\fB\-b\fR
-Backup von öffentlichem Schlüsselring anlegen
+\fB\-b\fR \fI[DIR]\fR
+Backup von öffentlichem Schlüsselring in Verzeichnis DIR anlegen,
+wen kein Verzeichnis angegeben ist, fragt gpgkeymgr danach.
 .TP 
 \fB\-o\fR
 Schlüssel entfernen sobald eines der Kriterien zutrifft

@@ -1,5 +1,5 @@
 NAME	= gpgkeymgr
-VERSION	= 0.2.99
+VERSION	= 0.3
 
 SHELL	:= /bin/bash
 SRC	= $(NAME).cpp

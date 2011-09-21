@@ -1,7 +1,7 @@
 Note:
 .x-Version means the current developing-branch
 
-Version 0.2.0 -> 0.2.x
+Version 0.2.0 -> 0.3
 + added frensh translations
 + backup-dir can be given as argument
 - using preprocessor insted of sed to realize portable version
@@ -13,6 +13,7 @@ Version 0.2.0 -> 0.2.x
 - improved Makefile
   -> more compability to diveren Linux-distributions
 - Manpages can also be translated
+- translated manpage to german
 
 before Version 0.2.0
 - see Git-changelogs
