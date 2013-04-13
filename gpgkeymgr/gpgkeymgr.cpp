@@ -307,13 +307,13 @@ int main(int argc, char *argv[]) {
       
       if(statistics) {
          // Print out table
-         cout << "Statistics:" << endl;
-         cout << "\e[31m" << "Left-to-Right: Trust" << "\e[0m" << endl;
-         cout << "\e[32m" << "Up-To-Down: Validity" << "\e[0m" << endl;
+         cout << _("Statistics:") << endl;
+         cout << "\e[31m" << _("Left-to-Right: Trust") << "\e[0m" << endl;
+         cout << "\e[32m" << _("Up-To-Down: Validity") << "\e[0m" << endl;
          cout << "\e[1m\e[31m" << setw(5) << "#";
          cout << setw(5) << "0" << setw(5) << "1" << setw(5) << "2";
          cout << setw(5) << "3" << setw(5) << "4" << setw(5) << "5";
-         cout << setw(7) << "Sum" << "\e[0m" << endl;
+         cout << setw(7) << _("Sum") << "\e[0m" << endl;
          for (int i = 0; i < 6; i++ )
          {
             cout << "\e[1m\e[32m" << setw(5) << i << "\e[0m" << setw(5) << numberofkeys[i][0] << setw(5) << numberofkeys[i][1];
@@ -324,7 +324,7 @@ int main(int argc, char *argv[]) {
                sum += numberofkeys[i][j];
             cout << setw(7) << "\e[1m" << sum << "\e[0m" << endl;
          }
-         cout << "\e[1m\e[32m" << setw(5) << "Sum" << "\e[0m\e[1m";
+         cout << "\e[1m\e[32m" << setw(5) << _("Sum") << "\e[0m\e[1m";
          int totalsum = 0;
          for ( int j = 0; j<6; j++)
          {
