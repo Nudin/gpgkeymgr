@@ -18,6 +18,7 @@
 */
 
 #include <iostream>
+#include <iomanip>
 #include <fstream>
 #include <cstdlib>
 #include <algorithm>
@@ -79,13 +80,16 @@ int main(int argc, char *argv[]) {
    bool altern   = false;
    bool dobackup = false;	string destination = "";
    bool poslist  = false;	vector<string> list;
+   bool statistics = false; // Print out statistics
+   bool onlystatistics = false; 
    bool quiet    = false;  // For quiet-mode
    bool dry      = false;  // For dry-mode
    bool yes      = false;  // For 'yes-mode'
 
    opterr = 0;
    char c;
-   while ((c = getopt (argc, argv, "rev:t:oqydb:l:h")) != -1)
+   int tmp;
+   while ((c = getopt (argc, argv, "rev:t:oqydsb:l:h")) != -1) {
       switch (c)
          {
          case 'r':
@@ -96,17 +100,17 @@ int main(int argc, char *argv[]) {
             break;
          case 'v':
             novalid = true;
-            if(optarg[0] == '-')
-               optind--;
+            if ( sscanf(optarg, "%d", &tmp) )
+               max_valid = tmp;
             else
-               max_valid = atoi(optarg);
+               optind--;
             break;
          case 't':
             notrust = true;
-            if(optarg[0] == '-')
-               optind--;
+            if ( sscanf(optarg, "%d", &tmp) )
+               max_trust = tmp;
             else
-               max_trust = atoi(optarg);
+               optind--;
             break;
          case 'o':
             altern = true;
@@ -119,6 +123,9 @@ int main(int argc, char *argv[]) {
             break;
          case 'd':
             dry = true;
+            break;
+         case 's':
+            statistics = true;
             break;
          case 'b':
             dobackup=true;
@@ -151,7 +158,8 @@ int main(int argc, char *argv[]) {
          default:
              help();
              return 1;
-         } // end swich & loop
+         } } // end swich & loop
+
    if ( dobackup ) {
       if ( backup(yes, destination) )
          return 3;
@@ -159,13 +167,15 @@ int main(int argc, char *argv[]) {
    if ( !revoked && !expired && !novalid && !notrust && !poslist ) {
       if ( dobackup )
          return 0;
+      else if ( statistics )
+         onlystatistics=true;
       else { // none option has been given
          help();
          return 1;
       }
    }
 
-   if (!yes)
+   if (!yes && !onlystatistics )
    {
    /* Generate security-question */
    string mode;
@@ -230,6 +240,12 @@ int main(int argc, char *argv[]) {
    err = gpgme_set_protocol(ctx, GPGME_PROTOCOL_OpenPGP);
    if (err != GPG_ERR_NO_ERROR)       return 14;
 
+   // For counting the number of keys
+   int numberofkeys[6][6];
+   for ( int i=0; i<6; i++)
+      for ( int j=0; j<6; j++)
+         numberofkeys[i][j]=0;
+   
    /* Now get all Keys */
    if (!err)
    {
@@ -245,9 +261,14 @@ int main(int argc, char *argv[]) {
 
          if ( !key->uids )
             break;
+            
+         if ( key->uids->validity > 6 || key->owner_trust > 6 )
+            cerr << "Warning: Some keys have validity  or trust biger than 5." << endl;
+         else
+            numberofkeys[key->uids->validity][key->owner_trust]++;
 
          /* Test if to remove key */
-         if ( altern ) { // any given criteria induce deletion
+         if ( !onlystatistics && altern ) { // any given criteria induce deletion
             if ( revoked && key->revoked ) {
                if (!quiet) print_key(key);
                if (!dry) fail = remove_key(ctx, key, quiet); }
@@ -265,7 +286,7 @@ int main(int argc, char *argv[]) {
                if (!quiet) print_key(key);
                if (!dry) fail = remove_key(ctx, key, quiet); }
          }
-         else { // all given criteria together induce deletion
+         else if( !onlystatistics ) { // all given criteria together induce deletion
             if ( (!revoked || ( revoked && key->revoked )) &&
                  (!expired || ( expired && key->expired )) &&
                  (!novalid || ( novalid && key->uids->validity <= max_valid )) &&
@@ -283,13 +304,46 @@ int main(int argc, char *argv[]) {
             count++;
       } // end while
       gpgme_release (ctx);
+      
+      if(statistics) {
+         // Print out table
+         cout << "Statistics:" << endl;
+         cout << "\e[31m" << "Left-to-Right: Trust" << "\e[0m" << endl;
+         cout << "\e[32m" << "Up-To-Down: Validity" << "\e[0m" << endl;
+         cout << "\e[1m\e[31m" << setw(5) << "#";
+         cout << setw(5) << "0" << setw(5) << "1" << setw(5) << "2";
+         cout << setw(5) << "3" << setw(5) << "4" << setw(5) << "5";
+         cout << setw(7) << "Sum" << "\e[0m" << endl;
+         for (int i = 0; i < 6; i++ )
+         {
+            cout << "\e[1m\e[32m" << setw(5) << i << "\e[0m" << setw(5) << numberofkeys[i][0] << setw(5) << numberofkeys[i][1];
+            cout << setw(5) << numberofkeys[i][2] << setw(5) << numberofkeys[i][3];
+            cout << setw(5) << numberofkeys[i][4] << setw(5) << numberofkeys[i][5];
+            int sum = 0;
+            for ( int j = 0; j<6; j++)
+               sum += numberofkeys[i][j];
+            cout << setw(7) << "\e[1m" << sum << "\e[0m" << endl;
+         }
+         cout << "\e[1m\e[32m" << setw(5) << "Sum" << "\e[0m\e[1m";
+         int totalsum = 0;
+         for ( int j = 0; j<6; j++)
+         {
+            int sum = 0;
+            for ( int i = 0; i<6; i++)
+               sum += numberofkeys[i][j];
+            cout << setw(5) << sum;
+            totalsum += sum;
+         }
+         cout << setw(5) << totalsum << "\e[0m" << endl;
+      }
    }
    if (gpg_err_code (err) != GPG_ERR_EOF)
    {
       cerr << _("can not list keys: ") << gpgme_strerror (err) << endl;
       return 10;
    }
-   printf(_("Deleted %i key(s).\n"), count);
+   if ( !onlystatistics && !dry )
+      printf(_("Deleted %i key(s).\n"), count);
 } // end 'main'
 
 
@@ -549,7 +603,7 @@ void help()
    cout << _("Note: this is still an experimental version. "
                 "Before use, please backup your ~/.gnupg directory.\n") << endl;
    cout << _("Use: ");
-   cout << program_name <<  " [-o] [-qyb] TEST [MORE TESTS…]\n";
+   cout << program_name <<  " [-o] [-qysb] TEST [MORE TESTS…]\n";
 
    cout << "\t-b [dir]\t" << _("Backup public keyring")                 << endl;
    cout << "\t-o\t"       << _("remove key already "
@@ -557,6 +611,7 @@ void help()
    cout << "\t-q\t"       << _("don't print out so much")               << endl;
    cout << "\t-y\t"       << _("Answer all questions with yes")         << endl;
    cout << "\t-d\t"       << _("Don't really do anything")              << endl;
+   cout << "\t-s\t"       << _("Print statistics")                      << endl;
    cout                   << _("TESTs: ")                               << endl;
    cout << "\t-r\t"       << _("remove revoked keys")                   << endl;
    cout << "\t-e\t"       << _("remove expired keys")                   << endl;
