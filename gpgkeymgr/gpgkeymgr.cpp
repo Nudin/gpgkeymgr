@@ -241,6 +241,8 @@ int main(int argc, char *argv[]) {
    if (err != GPG_ERR_NO_ERROR)       return 14;
 
    // For counting the number of keys
+   int revokedkeys = 0;
+   int expiredkeys = 0;
    int numberofkeys[6][6];
    for ( int i=0; i<6; i++)
       for ( int j=0; j<6; j++)
@@ -263,9 +265,13 @@ int main(int argc, char *argv[]) {
             break;
             
          if ( key->uids->validity > 6 || key->owner_trust > 6 )
-            cerr << "Warning: Some keys have validity  or trust biger than 5." << endl;
+            cerr << _("Warning: Some keys have validity  or trust biger than 5.") << endl;
          else
             numberofkeys[key->uids->validity][key->owner_trust]++;
+         if ( key->revoked )
+            revokedkeys++;
+         if ( key->expired )
+            expiredkeys++;
 
          /* Test if to remove key */
          if ( !onlystatistics && altern ) { // any given criteria induce deletion
@@ -335,6 +341,10 @@ int main(int argc, char *argv[]) {
             totalsum += sum;
          }
          cout << setw(5) << totalsum << "\e[0m" << endl;
+         cout << endl;
+         cout << _("Number of revoked keys: ") << revokedkeys << endl;
+         cout << _("Number of expired keys: ") << expiredkeys << endl;
+         cout << _("Number keys: ") << totalsum << endl;
       }
    }
    if (gpg_err_code (err) != GPG_ERR_EOF)

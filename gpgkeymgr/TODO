@@ -5,10 +5,8 @@ Smaller Tasks:
 - better make clean
 
 Bigger Tasks:
-- new option - count keys in keyring
 - new option - support exclude-file with keyids as test
 - new option - also remove secret keys
-- new option - keyring-statistics
 - Keyserver sync
 - GUI
 
