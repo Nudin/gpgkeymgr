@@ -1,7 +1,7 @@
 /*
 	gpgkeymgr
 	  A program to clean up an manage your keyring
-	  Copyright: Michael F. Schönitzer; 2011
+	  Copyright: Michael F. Schönitzer; 2011-2013
 */
 /*  This program is free software: you can redistribute it and/or modify
 *   it under the terms of the GNU Lesser General Public License as published by

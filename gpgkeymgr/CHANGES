@@ -1,6 +1,13 @@
 Note:
 .x-Version means the current developing-branch
 
+Version 0.3 -> 0.4
++ added statistics command
+- updated german l10n
+- fixed installation of translated manpage
+- added -h to helptext
+- fixed minor bugs
+
 Version 0.2.0 -> 0.3
 + added frensh translations
 + backup-dir can be given as argument

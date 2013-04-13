@@ -1,5 +1,5 @@
 NAME	= gpgkeymgr
-VERSION	= 0.3
+VERSION	= 0.4
 
 SHELL	:= /bin/bash
 SRC	= $(NAME).cpp
@@ -21,7 +21,7 @@ install: compile manpages/$(NAME).1
 	chmod +r $(MAN)man1/$(NAME).1
 
 clean:
-	 if [ -f $(NAME) ]; then rm $(NAME); fi
+	if [ -f $(NAME) ]; then rm $(NAME); fi
 	if [ -f $(NAME).pot ]; then rm $(NAME).pot; fi
 	if [ -f $(NAME)-$(VERSION).tar.gz ]; then rm $(NAME)-$(VERSION).tar.gz*; fi
 
@@ -60,7 +60,7 @@ installtranslations: $(wildcard translations/$(NAME)-*.mo)
 
 #will install all translation of the manpage
 installmanpagetranslations: $(wildcard manpages/$(NAME)-*.1)
-	for i in $^; do cp $$i $(MAN)$${i:19:2}/man1/; chmod +r $(MAN)$${i:19:2}/man1/$${i:9}; done
+	for i in $^; do cp $$i $(MAN)$${i:19:2}/man1/$(NAME).1; chmod +r $(MAN)$${i:19:2}/man1/$(NAME).1; done
 
 ### for developers ##
 

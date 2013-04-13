@@ -13,6 +13,7 @@ How to compile & install:
 
 How to install translations:
 	$ sudo make installtranslations
+	$ sudo make installmanpagetranslations
 
 How to compile for 'portable' use with language support:
 	$ make portable
