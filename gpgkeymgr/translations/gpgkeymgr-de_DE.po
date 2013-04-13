@@ -8,148 +8,190 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gpgkeymgr\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-09-19 22:18+0200\n"
-"PO-Revision-Date: 2011-09-19 22:22+0100\n"
-"Last-Translator: Michael Schönitzer <michael@schoenitzer.de>\n"
+"POT-Creation-Date: 2013-04-13 14:00+0200\n"
+"PO-Revision-Date: 2013-04-13 14:09+0100\n"
+"Last-Translator: Michael F. Schönitzer <mcihael@schoenitzer.de>\n"
 "Language-Team: German\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Poedit-Language: German\n"
-"X-Poedit-Country: GERMANY\n"
 "X-Poedit-SourceCharset: utf-8\n"
+"X-Generator: Poedit 1.5.5\n"
 
-#: gpgkeymgr.cpp:463
+#: gpgkeymgr.cpp:527
 msgid " already exists, overwrite?"
 msgstr " existiert bereits, soll sie überschrieben werden?"
 
-#: gpgkeymgr.cpp:175
+#: gpgkeymgr.cpp:185
 msgid " and "
 msgstr " und "
 
-#: gpgkeymgr.cpp:173
+#: gpgkeymgr.cpp:183
 msgid " or "
 msgstr " oder "
 
-#: gpgkeymgr.cpp:190
+#: gpgkeymgr.cpp:200
 msgid "###"
 msgstr " sind"
 
-#: gpgkeymgr.cpp:558
+#: gpgkeymgr.cpp:622
 msgid "Answer all questions with yes"
 msgstr "Alle Fragen mit ja beantworten"
 
-#: gpgkeymgr.cpp:554
+#: gpgkeymgr.cpp:618
 msgid "Backup public keyring"
 msgstr "Backup von öffentlichem Schlüsselring anlegen"
 
-#: gpgkeymgr.cpp:196
+#: gpgkeymgr.cpp:206
 msgid "By"
 msgstr "By."
 
-#: gpgkeymgr.cpp:446
+#: gpgkeymgr.cpp:510
 msgid "Can't create directory.\n"
 msgstr "Kann Ordner nicht anlegen.\n"
 
-#: gpgkeymgr.cpp:292
+#: gpgkeymgr.cpp:356
 #, c-format
 msgid "Deleted %i key(s).\n"
 msgstr "%i Schlüssel wurden gelöscht.\n"
 
-#: gpgkeymgr.cpp:45
+#: gpgkeymgr.cpp:46
 msgid "Developement Version"
 msgstr "Entwicklungsversion"
 
-#: gpgkeymgr.cpp:437
+#: gpgkeymgr.cpp:501
 msgid "Directory does not exist. Create?"
 msgstr "Ordner existiert nicht. Soll er angelegt werden?"
 
-#: gpgkeymgr.cpp:176
+#: gpgkeymgr.cpp:186
 msgid "Do you really want to delete all keys which are "
 msgstr "Wollen sie wirklich alle Schlüssel löschen die "
 
-#: gpgkeymgr.cpp:559
+#: gpgkeymgr.cpp:623
 msgid "Don't really do anything"
 msgstr "Nichts wirklich tun (Simulationsmodus)"
 
-#: gpgkeymgr.cpp:381
+#: gpgkeymgr.cpp:445
 msgid "Failed to open "
 msgstr "Kann Datei nicht öffnen: "
 
-#: gpgkeymgr.cpp:462
+#: gpgkeymgr.cpp:526
 msgid "File "
 msgstr "Datei"
 
-#: gpgkeymgr.cpp:210
+#: gpgkeymgr.cpp:220
 #, c-format
 msgid "GPG-Version=%s\n"
 msgstr "GPG-Version: %s\n"
 
-#: gpgkeymgr.cpp:549
-msgid "Note: this is still an experimental version. Before use, please backup your ~/.gnupg directory.\n"
-msgstr "Hinweis: Dies ist eine noch experimentelle Version. Machen sie vor der Verwendung ein Backup ihres ~/.gnupg Ordners.\n"
+#: gpgkeymgr.cpp:317
+msgid "Left-to-Right: Trust"
+msgstr "Horizontal: Vertrauen"
 
-#: gpgkeymgr.cpp:217
+#: gpgkeymgr.cpp:613
+msgid ""
+"Note: this is still an experimental version. Before use, please backup your "
+"~/.gnupg directory.\n"
+msgstr ""
+"Hinweis: Dies ist eine noch experimentelle Version. Machen sie vor der "
+"Verwendung ein Backup ihres ~/.gnupg Ordners.\n"
+
+#: gpgkeymgr.cpp:347
+msgid "Number keys: "
+msgstr "Anzahl an Schlüsseln: "
+
+#: gpgkeymgr.cpp:346
+msgid "Number of expired keys: "
+msgstr "Anzahl der abgelaufenen Schlüsseln: "
+
+#: gpgkeymgr.cpp:345
+msgid "Number of revoked keys: "
+msgstr "Anzahl der widerrufenen Schlüsseln: "
+
+#: gpgkeymgr.cpp:624
+msgid "Print statistics"
+msgstr "Statistik anzeigen"
+
+#: gpgkeymgr.cpp:625
+msgid "Print this help and exit"
+msgstr "Diese Hilfe ausgeben und dann beenden"
+
+#: gpgkeymgr.cpp:227
 #, c-format
 msgid "Protocol name: %s\n"
 msgstr "Protokollname: %s\n"
 
-#: gpgkeymgr.cpp:527
+#: gpgkeymgr.cpp:591
 msgid "Skipping secret key"
 msgstr "Überspringe privaten Schlüssel"
 
-#: gpgkeymgr.cpp:492
+#: gpgkeymgr.cpp:316
+msgid "Statistics:"
+msgstr "Statistik: "
+
+#: gpgkeymgr.cpp:556
 msgid "Successfully backuped pubring.gpg and pubring.kbx"
 msgstr "Backup von pubring.gpg und pubring.kbx erfolgreich."
 
-#: gpgkeymgr.cpp:560
+#: gpgkeymgr.cpp:322 gpgkeymgr.cpp:333
+msgid "Sum"
+msgstr "Sum"
+
+#: gpgkeymgr.cpp:626
 msgid "TESTs: "
 msgstr "TESTs: "
 
-#: gpgkeymgr.cpp:341
+#: gpgkeymgr.cpp:405
 msgid "UID in wrong format, skipping"
 msgstr "Keine gültige UID, überspringe"
 
-#: gpgkeymgr.cpp:551
+#: gpgkeymgr.cpp:318
+msgid "Up-To-Down: Validity"
+msgstr "Vertikal: Gültigkeit"
+
+#: gpgkeymgr.cpp:615
 msgid "Use: "
 msgstr "Benutzung:"
 
-#: gpgkeymgr.cpp:548
+#: gpgkeymgr.cpp:612
 msgid "Version: "
 msgstr "Version: "
 
-#: gpgkeymgr.cpp:483
+#: gpgkeymgr.cpp:268
+msgid "Warning: Some keys have validity  or trust biger than 5."
+msgstr "Warnung: Einige Schlüssel haben Gültigkeit oder vertrauen von über 5."
+
+#: gpgkeymgr.cpp:547
 msgid "Where should I put the backup? (Directory must exist) "
 msgstr "Wo soll das Backup erstellt werden? (Verzeichnis muss existieren) "
 
-#: gpgkeymgr.cpp:289
+#: gpgkeymgr.cpp:352
 msgid "can not list keys: "
 msgstr "Kann Schlüsselliste nicht abfragen: "
 
-#: gpgkeymgr.cpp:531
+#: gpgkeymgr.cpp:595
 msgid "deleted key"
 msgstr "Schlüssel gelöscht"
 
-#: gpgkeymgr.cpp:557
+#: gpgkeymgr.cpp:621
 msgid "don't print out so much"
 msgstr "Weniger Text ausgeben"
 
-#: gpgkeymgr.cpp:180
-#: gpgkeymgr.cpp:511
+#: gpgkeymgr.cpp:190 gpgkeymgr.cpp:575
 msgid "expired"
 msgstr "Abgelaufen"
 
-#: gpgkeymgr.cpp:428
+#: gpgkeymgr.cpp:492
 msgid "failed to open file: "
 msgstr "Kann Datei nicht öffnen: "
 
-#: gpgkeymgr.cpp:563
+#: gpgkeymgr.cpp:629
 msgid "file"
 msgstr "datei"
 
-#: gpgkeymgr.cpp:223
+#: gpgkeymgr.cpp:233
 #, c-format
 msgid ""
 "file=%s, home=%s\n"
@@ -158,56 +200,55 @@ msgstr ""
 "Datei=%s, Heimverzeichnis=%s\n"
 "\n"
 
-#: gpgkeymgr.cpp:186
+#: gpgkeymgr.cpp:196
 msgid "listed in file"
 msgstr "in Datei aufgeführt"
 
-#: gpgkeymgr.cpp:453
+#: gpgkeymgr.cpp:517
 msgid "no directory"
 msgstr "Kein Verzeichnis"
 
-#: gpgkeymgr.cpp:562
+#: gpgkeymgr.cpp:628
 msgid "remove expired keys"
 msgstr "Abgelaufene Schlüssel löschen"
 
-#: gpgkeymgr.cpp:555
+#: gpgkeymgr.cpp:619
 msgid "remove key already if one given criteria is maching"
 msgstr "Schlüssel entfernen sobald eines der Kriterien zutrifft"
 
-#: gpgkeymgr.cpp:564
+#: gpgkeymgr.cpp:630
 msgid "remove keys listed in file (uids)"
 msgstr "Schlüssel die in der Datei gelistet sind entfernen (lange uids)"
 
-#: gpgkeymgr.cpp:566
+#: gpgkeymgr.cpp:632
 msgid "remove not-trusted keys"
 msgstr "Schlüssel denen ich nicht vertraue entfernen"
 
-#: gpgkeymgr.cpp:565
+#: gpgkeymgr.cpp:631
 msgid "remove not-valid keys"
 msgstr "Schlüssel deren Gültigkeit nicht überprüft wurde entfernen"
 
-#: gpgkeymgr.cpp:561
+#: gpgkeymgr.cpp:627
 msgid "remove revoked keys"
-msgstr "Wiederrufene Schlüssel löschen"
+msgstr "Widerrufene Schlüssel löschen"
 
-#: gpgkeymgr.cpp:178
-#: gpgkeymgr.cpp:509
+#: gpgkeymgr.cpp:188 gpgkeymgr.cpp:573
 msgid "revoked"
-msgstr "Wiederrufen"
+msgstr "Widerrufen"
 
-#: gpgkeymgr.cpp:535
+#: gpgkeymgr.cpp:599
 msgid "unknown Error occurred"
 msgstr "Ein unbekannter Fehler trat auf."
 
-#: gpgkeymgr.cpp:184
+#: gpgkeymgr.cpp:194
 msgid "untrusted"
 msgstr "nicht vertrauenswürdig"
 
-#: gpgkeymgr.cpp:182
+#: gpgkeymgr.cpp:192
 msgid "unvalid"
 msgstr "nicht überprüft"
 
-#: gpgkeymgr.cpp:567
+#: gpgkeymgr.cpp:633
 msgid "with N you can increase the maximum level"
 msgstr "mit N können Sie die Grenze erhöhen"
 
