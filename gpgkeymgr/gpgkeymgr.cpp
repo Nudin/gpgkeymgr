@@ -612,6 +612,7 @@ void help()
    cout << "\t-y\t"       << _("Answer all questions with yes")         << endl;
    cout << "\t-d\t"       << _("Don't really do anything")              << endl;
    cout << "\t-s\t"       << _("Print statistics")                      << endl;
+   cout << "\t-h\t"       << _("Print this help and exit")              << endl;
    cout                   << _("TESTs: ")                               << endl;
    cout << "\t-r\t"       << _("remove revoked keys")                   << endl;
    cout << "\t-e\t"       << _("remove expired keys")                   << endl;
