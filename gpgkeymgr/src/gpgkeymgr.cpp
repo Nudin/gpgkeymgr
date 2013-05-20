@@ -37,7 +37,7 @@ const char* program_name="gpgkeymgr";
 #ifdef VERS
    const char* program_version = VERS;
 #else
-   const char* program_version = _("Developement Version");
+   const char* program_version = _("Development Version");
 #endif
 #ifdef LOCAL
   const char* textpath="locale";
