@@ -19,18 +19,12 @@
 
 #include <iostream>
 #include <iomanip>
-#include <fstream>
-#include <cstdlib>
-#include <algorithm>
-#include <vector>
-#include <string.h>
 #include <unistd.h>
-#include <pwd.h>
 #include <libintl.h>
-#include <locale.h>
 
-#include <sys/types.h>
-#include <sys/stat.h>
+#include "vectorutil.hpp"
+#include "stringutil.hpp"
+#include "copyfile.hpp"
 
 #include <gpgme.h>
 
@@ -53,11 +47,6 @@ const char* program_name="gpgkeymgr";
 
 // definitions of functions, implementations see below
 bool ask_user(string question);
-string shortenuid(string longuid);
-int searchvector(vector<string> str, string key);
-int readvector(string file, vector<string>& vector);
-string replace_string(string input, const string &search, const string &replace);
-int copyfile(string dir, string filename, string destination, bool yes);
 int backup(bool yes, string destination);
 int remove_key(gpgme_ctx_t ctx, gpgme_key_t key, bool quiet);
 void print_key(gpgme_key_t key);
@@ -371,170 +360,6 @@ bool ask_user(string question)
    if (c == 'n')
       return false;
 }
-
-
-
-/*
-Replace 'search' with 'replace' ind 'input'
-*/
-string replace_string(string input, const string &search, const string &replace)
-{
-   string::size_type pos = input.find(search, 0);
-   int searchlength  = search.length();
-   int replacelength = replace.length();
-
-   while (string::npos != pos) {
-      input.replace(pos, searchlength, replace);
-      pos = input.find(search, pos + replacelength);
-   }
-   return input;
-}
-
-
-
-/*
-Returns the short-UID
-*/
-string shortenuid(string longuid)
-{
-   if ( longuid.size() == 16 )
-      return longuid.substr(8, 16);
-   else if ( longuid.size() == 8 )
-      return longuid;
-   else {
-      cerr << _("UID in wrong format, skipping");
-      return "";
-   }
-}
-
-
-
-/*
-Search if an value is included in the string list
-We use binary search as search algorithm
-*/
-int searchvector(vector<string> str, string key)
-{
-   int low, high, mid;
-   low  = 0;
-   high = str.size();
-   
-   while (low <= high) {
-      mid = (low + high) / 2;
-      if (key < str[mid])
-         high = mid - 1;
-      else if (key > str[mid])
-         low = mid + 1;
-      else
-         return 1;  // found
-   }
-   return 0; // not found
-}
-
-
-
-/*
-Read vector from file
-*/
-int readvector(string file, vector<string>& vector)
-{
-   ifstream ifs( file.c_str() );
-
-   // check if the file is open
-   if (! ifs) {
-      cerr << _("Failed to open ") << file << endl;
-      return 1;
-   }
-
-   int line_counter = 1;
-   string s;
-   while (getline(ifs, s)) {
-      line_counter++;
-      s = shortenuid(s);
-      if ( s != "" )
-         vector.push_back(s);
-   }
-
-   ifs.close();
-   sort(vector.begin(), vector.end());
-   return 0;
-}
-
-
-
-/*
-Will copy a <home>/dir/filename to destination/filename 
-equivalent to `cp ~/$dir/$filename $destination/filename` on unix
-destination must already exist
-*/
-int copyfile(string dir, string filename, string destination, bool yes)
-{
-   string full_filename;
-   string full_destination;
-   struct stat inFileInfo, outFileInfo, pathFileInfo;
-   int    instat, outstat;
-
-   // Get home-Directory
-   struct passwd *pw    = getpwuid(getuid());
-   const string homedir = pw->pw_dir;
-
-   // Put filenames together
-   full_filename    =  homedir + dir + filename;
-   destination      =  replace_string(destination, "~", homedir);
-   full_destination =  destination;
-   if ( full_destination.substr(full_destination.length(), 0) != "/" )
-      full_destination += "/";
-   full_destination += filename;
-
-   // Test if source-file exists
-   instat = stat(full_filename.c_str(), &inFileInfo);
-   if (instat != 0) {
-      cerr << _("failed to open file: ") << full_filename << endl;
-      return 1;
-   }
-
-   // Now, test path, to which should be written
-   int pathstat = stat(destination.c_str(), &pathFileInfo);
-   if ( pathstat != 0 ) {	// path Does not exist.
-      int success;
-      if (!yes)
-         if ( !ask_user(_("Directory does not exist. Create?")) )
-            return 1;
-      #ifdef __MSDOS__
-         success = mkdir(destination.c_str());
-      #else  /* Unix */
-         success = mkdir(destination.c_str(), 0777);
-      #endif
-
-      if (success) {
-         cerr << _("Can't create directory.\n");
-         return 1;
-      }
-   }
-   else {
-      int filetyp = pathFileInfo.st_mode & S_IFMT;
-      if ( filetyp != S_IFDIR ) {	// path isn't a directory
-         cerr << _("no directory") << endl;
-         return 1;
-      }
-   }
-
-   // Test if file already exists
-   outstat = stat(full_destination.c_str(), &outFileInfo);
-   if ( outstat == 0 )
-      if (!yes) {
-         string question  =  _("File ") + full_destination;
-                question +=  _(" already exists, overwrite?");
-         if ( !ask_user(question) )
-            return 1;
-      }
-
-   // Copy file in binary mode
-   ifstream ifs(full_filename.c_str(), ios::binary);
-   ofstream ofs(full_destination.c_str(), ios::binary);
-   ofs << ifs.rdbuf();
-   return 0;
-} // end 'copyfile'
 
 
 
