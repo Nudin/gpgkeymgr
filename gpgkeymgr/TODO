@@ -3,7 +3,6 @@ Smaller Tasks:
 - translate manpage
 - fix return value of remove_key (int <-> bool)
 - better make clean
-- divide code into multiple files
 
 Bigger Tasks:
 - new option - support exclude-file with keyids as test

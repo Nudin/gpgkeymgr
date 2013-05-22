@@ -25,6 +25,8 @@
 #include "vectorutil.hpp"
 #include "stringutil.hpp"
 #include "copyfile.hpp"
+#include "auditor.hpp"
+#include "parsearguments.hpp"
 
 #include <gpgme.h>
 
@@ -61,141 +63,38 @@ int main(int argc, char *argv[]) {
    bindtextdomain( program_name, textpath );
    textdomain( program_name );
 
-   /* First: get arguments */
-   bool revoked  = false;
-   bool expired  = false;
-   bool novalid  = false;	int max_valid = 0;
-   bool notrust  = false;	int max_trust = 0;
-   bool altern   = false;
-   bool dobackup = false;	string destination = "";
-   bool poslist  = false;	vector<string> list;
-   bool statistics = false; // Print out statistics
-   bool onlystatistics = false; 
+   /* Parse arguments */
+   // The auditor contains all the options an logic about deciding where to delete a key or not
+   auditor keyauditor;
+   bool dobackup       = false;
+   string destination  = "";
+   bool statistics     = false; // Print out statistics
+   bool onlystatistics = false; // Do nothing but statistics, implies statistics==true
    bool quiet    = false;  // For quiet-mode
    bool dry      = false;  // For dry-mode
    bool yes      = false;  // For 'yes-mode'
+   
+   // Parse the arguments
+   int parsestat = parsearguments(argc, argv, keyauditor, dobackup, destination,
+                                  statistics, onlystatistics, quiet, dry, yes);
 
-   opterr = 0;
-   char c;
-   int tmp;
-   while ((c = getopt (argc, argv, "rev:t:oqydsb:l:h")) != -1) {
-      switch (c)
-         {
-         case 'r':
-            revoked = true;
-            break;
-         case 'e':
-            expired = true;
-            break;
-         case 'v':
-            novalid = true;
-            if ( sscanf(optarg, "%d", &tmp) )
-               max_valid = tmp;
-            else
-               optind--;
-            break;
-         case 't':
-            notrust = true;
-            if ( sscanf(optarg, "%d", &tmp) )
-               max_trust = tmp;
-            else
-               optind--;
-            break;
-         case 'o':
-            altern = true;
-            break;
-         case 'q':
-            quiet = true;
-            break;
-         case 'y':
-            yes = true;
-            break;
-         case 'd':
-            dry = true;
-            break;
-         case 's':
-            statistics = true;
-            break;
-         case 'b':
-            dobackup=true;
-            if(optarg[0] == '-')
-               optind--;
-            else
-               destination = optarg;
-            break;
-         case 'l':
-            poslist=true;
-            if ( readvector(optarg, list) )
-               return 2;
-            break;
-         case 'h':
-            help();
-            return 0;
-            break;
-         case '?':
-            if (optopt == 'v')	// Option t and v can also be called without N
-               novalid = true;
-            else if (optopt == 't')
-               notrust = true;
-            else if (optopt == 'b')
-               dobackup=true;
-            else {
-               help();
-               return 1;
-            }
-            break;
-         default:
-             help();
-             return 1;
-         } } // end swich & loop
+   if ( parsestat == -1) // option -h is given, exit
+      return 0;
+   else if ( parsestat != 0 ) // an error occurred, exit
+      return parsestat;
 
+   /* Make a backup */
    if ( dobackup ) {
       if ( backup(yes, destination) )
          return 3;
    }
-   if ( !revoked && !expired && !novalid && !notrust && !poslist ) {
-      if ( dobackup )
-         return 0;
-      else if ( statistics )
-         onlystatistics=true;
-      else { // none option has been given
-         help();
-         return 1;
-      }
-   }
-
+   
+   // Security-question
    if (!yes && !onlystatistics )
-   {
-   /* Generate security-question */
-   string mode;
-   if (altern)
-      mode = _(" or ");
-   else
-      mode = _(" and ");
-   string question = _("Do you really want to delete all keys which are ");
-   if ( revoked )
-      question += _("revoked")        + mode;
-   if ( expired )
-      question += _("expired")        + mode;
-   if ( novalid )
-      question += _("unvalid")        + mode;
-   if ( notrust )
-      question += _("untrusted")      + mode;
-   if ( poslist )
-      question += _("listed in file") + mode;
-   // remove last 'and':
-   question = question.substr(0, question.length()-mode.length());
-   // for languages which need also something at the end of the questions:
-   question += _("###");
-   if ( question.substr(question.length()-3, question.length()) == "###")
-      question = question.substr(0, question.length()-3);
-   question += "?";
-
-   if ( !ask_user(question) ) {
-      cout << _("By") << endl;
-      return 0;
+      if ( !ask_user(keyauditor.generatequestion()) ) {
+         cout << _("By") << endl;
+         return 0;
       }
-   }
 
    /* Now set up to use GPGME */
    char *p;
@@ -262,37 +161,13 @@ int main(int argc, char *argv[]) {
          if ( key->expired )
             expiredkeys++;
 
-         /* Test if to remove key */
-         if ( !onlystatistics && altern ) { // any given criteria induce deletion
-            if ( revoked && key->revoked ) {
+         if ( !onlystatistics )
+            // Test if keys should be deleted
+            if ( keyauditor.test(key->revoked, key->expired, key->uids->validity,
+                                 key->owner_trust, key->subkeys->keyid) ) {
                if (!quiet) print_key(key);
-               if (!dry) fail = remove_key(ctx, key, quiet); }
-            else if ( expired && key->expired ) {
-               if (!quiet) print_key(key);
-               if (!dry) fail = remove_key(ctx, key, quiet); }
-            else if ( novalid && key->uids->validity <= max_valid ) {
-               if (!quiet) print_key(key);
-               if (!dry) fail = remove_key(ctx, key, quiet); }
-            else if ( notrust && key->owner_trust <= max_trust  ) {
-               if (!quiet) print_key(key);
-               if (!dry) fail = remove_key(ctx, key, quiet); }
-            else if ( poslist && 
-                        searchvector(list, shortenuid(key->subkeys->keyid))  ) {
-               if (!quiet) print_key(key);
-               if (!dry) fail = remove_key(ctx, key, quiet); }
-         }
-         else if( !onlystatistics ) { // all given criteria together induce deletion
-            if ( (!revoked || ( revoked && key->revoked )) &&
-                 (!expired || ( expired && key->expired )) &&
-                 (!novalid || ( novalid && key->uids->validity <= max_valid )) &&
-                 (!notrust || ( notrust && key->owner_trust <= max_trust ))    &&
-                 (!poslist || ( poslist &&
-                          searchvector(list, shortenuid(key->subkeys->keyid))) )
-               ) {
-                     if (!quiet) print_key(key);
-                     if (!dry) fail = remove_key(ctx, key, quiet);
-                 }
-         }
+               if (!dry) fail = remove_key(ctx, key, quiet);
+            }
 
          gpgme_key_release (key);
          if ( !fail )

@@ -2,7 +2,7 @@ NAME	= gpgkeymgr
 #VERSION	= 0.4
 
 SHELL	:= /bin/bash
-SRC	= src/$(NAME).cpp src/vectorutil.cpp src/stringutil.cpp src/copyfile.cpp
+SRC	= src/$(NAME).cpp src/vectorutil.cpp src/stringutil.cpp src/copyfile.cpp src/auditor.cpp src/parsearguments.cpp
 BINDIR	= /usr/bin
 FLAGS	= -D_FILE_OFFSET_BITS=64 #-DVERS=\"$(VERSION)\"
 LIBPATH	= -L/usr/include/ -L/usr/include/gpgme/ -L/usr/local/include/ -L/usr/include/gpgme/
