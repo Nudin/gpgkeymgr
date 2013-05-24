@@ -17,29 +17,18 @@
 *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <vector>
-#include <string>
-using namespace std;
 
-#ifndef _auditor_hpp_
-#define _auditor_hpp_
+#include "globalconsts.hpp"
 
-class auditor{
-  
-  public:
-    auditor();
-    void setvalues(bool, bool, bool, bool, int, bool, int, bool, vector<string>);
-    bool test(bool, bool, int, int, string);
-    string generatequestion();
-    
-  private:
-    bool auditor_revoked;
-    bool auditor_expired;
-    bool auditor_novalid;	int auditor_max_valid;
-    bool auditor_notrust;	int auditor_max_trust;
-    bool auditor_altern;
-    bool auditor_poslist;	vector<string> auditor_list;
-};
+const char* program_name="gpgkeymgr";
 
-
+#ifdef VERS
+   const char* program_version = VERS;
+#else
+   const char* program_version = "Development Version";
+#endif
+#ifdef LOCAL
+  const char* textpath="locale";
+#else
+  const char* textpath="/usr/share/locale";
 #endif

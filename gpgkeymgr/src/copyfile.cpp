@@ -17,6 +17,8 @@
 *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "copyfile.hpp"
+
 #include <iostream>
 #include <fstream>
 #include <pwd.h>
@@ -25,12 +27,10 @@
 #include <libintl.h>
 
 #include "stringutil.hpp"
+#include "userinteraction.hpp"
 
 using namespace std;
 #define _(Text) gettext(Text) // _ as short version of gettext
-
-// For now ask_user is still in gpgkeymgr.cpp but will be put in separate file
-bool ask_user(string question);
 
 
 /*

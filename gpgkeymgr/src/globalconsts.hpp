@@ -17,29 +17,11 @@
 *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <vector>
-#include <string>
-using namespace std;
+#ifndef _my_globalconsts_
+#define _my_globalconsts_
 
-#ifndef _auditor_hpp_
-#define _auditor_hpp_
-
-class auditor{
-  
-  public:
-    auditor();
-    void setvalues(bool, bool, bool, bool, int, bool, int, bool, vector<string>);
-    bool test(bool, bool, int, int, string);
-    string generatequestion();
-    
-  private:
-    bool auditor_revoked;
-    bool auditor_expired;
-    bool auditor_novalid;	int auditor_max_valid;
-    bool auditor_notrust;	int auditor_max_trust;
-    bool auditor_altern;
-    bool auditor_poslist;	vector<string> auditor_list;
-};
-
+extern const char* program_name;
+extern const char* program_version;
+extern const char* textpath;
 
 #endif

@@ -17,5 +17,8 @@
 *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <string>
+using namespace std;
+
 int copyfile(string dir, string filename, string destination, bool yes);
 

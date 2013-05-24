@@ -22,8 +22,8 @@
 #include <unistd.h>
 #include <stdio.h>
 
-#include "vectorutil.hpp"
 #include "parsearguments.hpp"
+#include "vectorutil.hpp"
 
 void help();
 

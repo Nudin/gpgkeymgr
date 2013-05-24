@@ -21,9 +21,8 @@
 #include <fstream>
 #include <algorithm>
 #include <libintl.h>
-#include <vector>
-#include <string.h>
 
+#include "vectorutil.hpp"
 #include "stringutil.hpp"
 
 using namespace std;

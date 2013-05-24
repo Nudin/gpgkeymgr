@@ -20,9 +20,9 @@
 #include <iostream>
 #include <libintl.h>
 
+#include "auditor.hpp"
 #include "vectorutil.hpp"
 #include "stringutil.hpp"
-#include "auditor.hpp"
 
 #define _(Text) gettext(Text) // _ as short version of gettext
 
