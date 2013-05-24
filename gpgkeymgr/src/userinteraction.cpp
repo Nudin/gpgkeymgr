@@ -106,6 +106,8 @@ void help()
    cout << "\t-e\t"       << _("remove expired keys")                   << endl;
    cout << "\t-l "        << _("file")
         << "\t"           << _("remove keys listed in file (uids)")     << endl;
+   cout << "\t-x "        << _("file")
+        << "\t"           << _("do not remove keys listed in file (uids)")     << endl;
    cout << "\t-v [N]\t"   << _("remove not-valid keys")                 << endl;
    cout << "\t-t [N]\t"   << _("remove not-trusted keys")               << endl;
    cout << "\t\t\t"       << _("with N you can increase the maximum level")

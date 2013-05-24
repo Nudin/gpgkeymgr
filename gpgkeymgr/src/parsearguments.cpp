@@ -37,7 +37,8 @@ int parsearguments(int argc, char *argv[], auditor& keyauditor,
    bool novalid  = false;	int max_valid = 0;
    bool notrust  = false;	int max_trust = 0;
    bool altern   = false;
-   bool poslist  = false;	vector<string> list;
+   bool poslist  = false;	vector<string> list_pos;
+   bool neglist  = false;	vector<string> list_neg;
    
    dobackup = false;	destination = "";
    statistics = false; // Print out statistics
@@ -55,7 +56,7 @@ int parsearguments(int argc, char *argv[], auditor& keyauditor,
    opterr = 0;
    char c;
    int tmp;
-   while ((c = getopt (argc, argv, "rev:t:oqydsb:l:h")) != -1) {
+   while ((c = getopt (argc, argv, "rev:t:oqydsb:l:x:h")) != -1) {
       switch (c)
          {
          case 'r':
@@ -102,7 +103,12 @@ int parsearguments(int argc, char *argv[], auditor& keyauditor,
             break;
          case 'l':
             poslist=true;
-            if ( readvector(optarg, list) )
+            if ( readvector(optarg, list_pos) )
+               return 2;
+            break;
+         case 'x':
+            neglist=true;
+            if ( readvector(optarg, list_neg) )
                return 2;
             break;
          case 'h':
@@ -126,11 +132,11 @@ int parsearguments(int argc, char *argv[], auditor& keyauditor,
              return 1;
          } } // end swich & loop
 
-   if ( !revoked && !expired && !novalid && !notrust && !poslist && statistics )
+   if ( !revoked && !expired && !novalid && !notrust && !poslist && !neglist && statistics )
          onlystatistics=true;
 
    keyauditor.setvalues(altern, revoked, expired, novalid,
 					max_valid, notrust, max_trust, poslist,
-				 	list);
+				 	list_pos, neglist, list_neg);
    return 0;
 }

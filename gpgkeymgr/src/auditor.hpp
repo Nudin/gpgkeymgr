@@ -28,17 +28,18 @@ class auditor{
   
   public:
     auditor();
-    void setvalues(bool, bool, bool, bool, int, bool, int, bool, vector<string>);
+    void setvalues(bool, bool, bool, bool, int, bool, int, bool, vector<string>, bool, vector<string>);
     bool test(bool, bool, int, int, string);
     string generatequestion();
     
   private:
-    bool auditor_revoked;
-    bool auditor_expired;
-    bool auditor_novalid;	int auditor_max_valid;
-    bool auditor_notrust;	int auditor_max_trust;
-    bool auditor_altern;
-    bool auditor_poslist;	vector<string> auditor_list;
+    bool auditor_revoked;	// delete keys that are revoked
+    bool auditor_expired;	// delete keys that are expired
+    bool auditor_novalid;	int auditor_max_valid;	// delete keys that are not valid (engough)
+    bool auditor_notrust;	int auditor_max_trust;	// delete keys that are not trusted (engough)
+    bool auditor_altern;	// treat arguments as alternative
+    bool auditor_poslist;	vector<string> auditor_list_pos;	// List of keys to delete
+    bool auditor_neglist;	vector<string> auditor_list_neg;	// List of keys NOT to delete
 };
 
 

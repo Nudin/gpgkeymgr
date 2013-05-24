@@ -38,7 +38,7 @@ int searchvector(vector<string> str, string key)
 {
    int low, high, mid;
    low  = 0;
-   high = str.size();
+   high = str.size()-1;
    
    while (low <= high) {
       mid = (low + high) / 2;
@@ -55,7 +55,7 @@ int searchvector(vector<string> str, string key)
 
 
 /*
-Read vector from file
+Read vector from file and sort vector
 */
 int readvector(string file, vector<string>& vector)
 {

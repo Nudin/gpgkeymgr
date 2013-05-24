@@ -8,9 +8,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gpgkeymgr\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-04-13 14:00+0200\n"
-"PO-Revision-Date: 2013-04-19 14:11+0100\n"
-"Last-Translator: Jean-Jacques Brucker <jeanjacquesbrucker@gmail.com>\n"
+"POT-Creation-Date: 2013-05-25 01:47+0200\n"
+"PO-Revision-Date: 2013-05-25 01:50+0100\n"
+"Last-Translator: Michael F. Schönitzer <mcihael@schoenitzer.de>\n"
 "Language-Team: France\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
@@ -20,77 +20,73 @@ msgstr ""
 "X-Poedit-SourceCharset: utf-8\n"
 "X-Generator: Poedit 1.5.5\n"
 
-#: gpgkeymgr.cpp:527
+#: src/copyfile.cpp:98
 msgid " already exists, overwrite?"
 msgstr " existe déjà, écraser ?"
 
-#: gpgkeymgr.cpp:185
+#: src/auditor.cpp:102
 msgid " and "
 msgstr " et "
 
-#: gpgkeymgr.cpp:183
+#: src/auditor.cpp:100
 msgid " or "
 msgstr " ou "
 
-#: gpgkeymgr.cpp:200
+#: src/auditor.cpp:117
 msgid "###"
 msgstr " sont"
 
-#: gpgkeymgr.cpp:622
+#: src/userinteraction.cpp:100
 msgid "Answer all questions with yes"
 msgstr "Répond \"oui\" à toutes les questions"
 
-#: gpgkeymgr.cpp:618
+#: src/userinteraction.cpp:96
 msgid "Backup public keyring"
 msgstr "Sauvegarde des clés publiques"
 
-#: gpgkeymgr.cpp:206
+#: src/gpgkeymgr.cpp:83
 msgid "By"
 msgstr "By."
 
-#: gpgkeymgr.cpp:510
+#: src/copyfile.cpp:81
 msgid "Can't create directory.\n"
 msgstr "Creation du répertoire impossible.\n"
 
-#: gpgkeymgr.cpp:356
+#: src/gpgkeymgr.cpp:176
 #, c-format
 msgid "Deleted %i key(s).\n"
 msgstr "Suppression de(s) clé(s) %i\n"
 
-#: gpgkeymgr.cpp:46
-msgid "Developement Version"
-msgstr "Veersion de Développement"
-
-#: gpgkeymgr.cpp:501
+#: src/copyfile.cpp:72
 msgid "Directory does not exist. Create?"
 msgstr "Le répertoire n'existe pas. Le créer ?"
 
-#: gpgkeymgr.cpp:186
+#: src/auditor.cpp:103
 msgid "Do you really want to delete all keys which are "
 msgstr "Voulez-vous supprimer tous ces certificats "
 
-#: gpgkeymgr.cpp:623
+#: src/userinteraction.cpp:101
 msgid "Don't really do anything"
 msgstr "Ne rien faire réellement (simulation)"
 
-#: gpgkeymgr.cpp:445
+#: src/vectorutil.cpp:66
 msgid "Failed to open "
 msgstr "Impossible d'ouvrir : "
 
-#: gpgkeymgr.cpp:526
+#: src/copyfile.cpp:97
 msgid "File "
 msgstr "Fichier "
 
-#: gpgkeymgr.cpp:220
+#: src/gpgkeymgr.cpp:96
 #, c-format
 msgid "GPG-Version=%s\n"
 msgstr "GPG-Version: %s\n"
 
-#: gpgkeymgr.cpp:317
+#: src/userinteraction.cpp:49
 msgid "Left-to-Right: Trust"
 msgstr "Gauche-à-Droite: Confiance"
 
-#: gpgkeymgr.cpp:613
+#: src/userinteraction.cpp:91
 msgid ""
 "Note: this is still an experimental version. Before use, please backup your "
 "~/.gnupg directory.\n"
@@ -98,100 +94,104 @@ msgstr ""
 "Note: Ce logiciel est en version alpha. Il est vivement conseillé que "
 "voussauvegardiez votre répertoire ~/.gnupg .\n"
 
-#: gpgkeymgr.cpp:347
+#: src/userinteraction.cpp:79
 msgid "Number keys: "
 msgstr "Nombres de clés : "
 
-#: gpgkeymgr.cpp:346
+#: src/userinteraction.cpp:78
 msgid "Number of expired keys: "
 msgstr "Nombre de clés expirées : "
 
-#: gpgkeymgr.cpp:345
+#: src/userinteraction.cpp:77
 msgid "Number of revoked keys: "
 msgstr "Nombre de clés revoquées : "
 
-#: gpgkeymgr.cpp:624
+#: src/userinteraction.cpp:102
 msgid "Print statistics"
 msgstr "Affiche des statistiques"
 
-#: gpgkeymgr.cpp:625
+#: src/userinteraction.cpp:103
 msgid "Print this help and exit"
 msgstr "Affiche juste cette aide"
 
-#: gpgkeymgr.cpp:227
+#: src/gpgkeymgr.cpp:103
 #, c-format
 msgid "Protocol name: %s\n"
 msgstr "Nom du protocole : %s\n"
 
-#: gpgkeymgr.cpp:591
+#: src/gpgkeymgr.cpp:231
 msgid "Skipping secret key"
 msgstr "Skipping secret key"
 
-#: gpgkeymgr.cpp:316
+#: src/userinteraction.cpp:48
 msgid "Statistics:"
 msgstr "Statistiques:"
 
-#: gpgkeymgr.cpp:556
+#: src/gpgkeymgr.cpp:196
 msgid "Successfully backuped pubring.gpg and pubring.kbx"
 msgstr "Sauvegarde de pubring.gpg et pubring.kbx réussie."
 
-#: gpgkeymgr.cpp:322 gpgkeymgr.cpp:333
+#: src/userinteraction.cpp:54 src/userinteraction.cpp:65
 msgid "Sum"
 msgstr "Somme"
 
-#: gpgkeymgr.cpp:626
+#: src/userinteraction.cpp:104
 msgid "TESTs: "
 msgstr "TESTs: "
 
-#: gpgkeymgr.cpp:405
+#: src/stringutil.cpp:68
 msgid "UID in wrong format, skipping"
 msgstr "Mauvais format d'UID, ignoré"
 
-#: gpgkeymgr.cpp:318
+#: src/userinteraction.cpp:50
 msgid "Up-To-Down: Validity"
 msgstr "Haut-en-Bas: Validité"
 
-#: gpgkeymgr.cpp:615
+#: src/userinteraction.cpp:93
 msgid "Use: "
 msgstr "Utilisation:"
 
-#: gpgkeymgr.cpp:612
+#: src/userinteraction.cpp:90
 msgid "Version: "
 msgstr "Version: "
 
-#: gpgkeymgr.cpp:268
+#: src/gpgkeymgr.cpp:144
 msgid "Warning: Some keys have validity  or trust biger than 5."
 msgstr "Attention: certaines clés ont un niveau de confiance supérieur à 5"
 
-#: gpgkeymgr.cpp:547
+#: src/gpgkeymgr.cpp:187
 msgid "Where should I put the backup? (Directory must exist) "
 msgstr "Emplacement pour la sauvegarde ? (Répertoire existant) "
 
-#: gpgkeymgr.cpp:352
+#: src/gpgkeymgr.cpp:172
 msgid "can not list keys: "
 msgstr "Les clés ne peuvent pas être obtenues : "
 
-#: gpgkeymgr.cpp:595
+#: src/gpgkeymgr.cpp:235
 msgid "deleted key"
 msgstr "suppression de clé"
 
-#: gpgkeymgr.cpp:621
+#: src/userinteraction.cpp:110
+msgid "do not remove keys listed in file (uids)"
+msgstr ""
+
+#: src/userinteraction.cpp:99
 msgid "don't print out so much"
 msgstr "affichage moins verbeux"
 
-#: gpgkeymgr.cpp:190 gpgkeymgr.cpp:575
+#: src/gpgkeymgr.cpp:215 src/auditor.cpp:107
 msgid "expired"
 msgstr "expiré"
 
-#: gpgkeymgr.cpp:492
+#: src/copyfile.cpp:63
 msgid "failed to open file: "
 msgstr "Impossible d'ouvrir le fichier : "
 
-#: gpgkeymgr.cpp:629
+#: src/userinteraction.cpp:107 src/userinteraction.cpp:109
 msgid "file"
 msgstr "fichier"
 
-#: gpgkeymgr.cpp:233
+#: src/gpgkeymgr.cpp:109
 #, c-format
 msgid ""
 "file=%s, home=%s\n"
@@ -200,60 +200,63 @@ msgstr ""
 "fichier=%s, répertoire=%s\n"
 "\n"
 
-#: gpgkeymgr.cpp:196
+#: src/auditor.cpp:113
 msgid "listed in file"
 msgstr "indiqué dans le fichier"
 
-#: gpgkeymgr.cpp:517
+#: src/copyfile.cpp:88
 msgid "no directory"
 msgstr "pas de répertoire"
 
-#: gpgkeymgr.cpp:628
+#: src/userinteraction.cpp:106
 msgid "remove expired keys"
 msgstr "supprime les clés ayant expirés"
 
-#: gpgkeymgr.cpp:619
+#: src/userinteraction.cpp:97
 msgid "remove key already if one given criteria is maching"
 msgstr "supprime la clé si l'un des critéres est valide"
 
-#: gpgkeymgr.cpp:630
+#: src/userinteraction.cpp:108
 msgid "remove keys listed in file (uids)"
 msgstr "supprime les clés indiqués dans le fichier (uids)"
 
-#: gpgkeymgr.cpp:632
+#: src/userinteraction.cpp:112
 msgid "remove not-trusted keys"
 msgstr "supprime les clé dont la confiance n'est pas suffisante"
 
-#: gpgkeymgr.cpp:631
+#: src/userinteraction.cpp:111
 msgid "remove not-valid keys"
 msgstr "supprime les clés invalides"
 
-#: gpgkeymgr.cpp:627
+#: src/userinteraction.cpp:105
 msgid "remove revoked keys"
 msgstr "supprime les clés révoquées"
 
-#: gpgkeymgr.cpp:188 gpgkeymgr.cpp:573
+#: src/gpgkeymgr.cpp:213 src/auditor.cpp:105
 msgid "revoked"
 msgstr "révoqué"
 
-#: gpgkeymgr.cpp:599
+#: src/gpgkeymgr.cpp:239
 msgid "unknown Error occurred"
 msgstr "Oups, erreur quelque part..."
 
-#: gpgkeymgr.cpp:194
+#: src/auditor.cpp:111
 msgid "untrusted"
 msgstr "confiance insuffisante"
 
-#: gpgkeymgr.cpp:192
+#: src/auditor.cpp:109
 msgid "unvalid"
 msgstr "invalide"
 
-#: gpgkeymgr.cpp:633
+#: src/userinteraction.cpp:113
 msgid "with N you can increase the maximum level"
 msgstr "le nombre N permet d'accroitre le niveau maximum"
 
 #~ msgid "Arguments: "
 #~ msgstr "Argumente: "
+
+#~ msgid "Developement Version"
+#~ msgstr "Veersion de Développement"
 
 #~ msgid "FAILED to open "
 #~ msgstr "Öffnen der Datei fehlgeschlagen "

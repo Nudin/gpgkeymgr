@@ -34,12 +34,15 @@ using namespace std;
 auditor::auditor()
 : auditor_revoked(false), auditor_expired(false), auditor_novalid(false), 
   auditor_max_valid(0), auditor_notrust(false), auditor_max_trust(0),
-  auditor_altern(false), auditor_poslist(false)
+  auditor_altern(false), auditor_poslist(false), auditor_neglist(false)
   {}
 
+/*
+Set values of the Auditor-variables
+*/
 void auditor::setvalues (bool altern, bool revoked, bool expired, bool novalid,
 					int max_valid, bool notrust, int max_trust, bool poslist,
-				 	vector<string> list) {
+				 	vector<string> list_pos, bool neglist, vector<string> list_neg) {
    auditor_revoked   = revoked;
    auditor_expired   = expired;
    auditor_novalid   = novalid;
@@ -48,10 +51,15 @@ void auditor::setvalues (bool altern, bool revoked, bool expired, bool novalid,
    auditor_max_trust = max_trust;
    auditor_altern    = altern;
    auditor_poslist   = poslist;
-   auditor_list      = list;
+   auditor_list_pos  = list_pos;
+   auditor_neglist   = neglist;
+   auditor_list_neg  = list_neg;
 }
 
-
+/*
+Main function:
+test if a key should be deleted according to the specified options
+*/
 bool auditor::test(bool revoked, bool expired, int validity, int owner_trust, string keyid) {
          /* Test if to remove key */
          if ( auditor_altern ) { // any given criteria induce deletion
@@ -64,7 +72,7 @@ bool auditor::test(bool revoked, bool expired, int validity, int owner_trust, st
             else if ( auditor_notrust && owner_trust <= auditor_max_trust  ) 
                return true;
             else if ( auditor_poslist && 
-                        searchvector(auditor_list, shortenuid(keyid))  ) 
+                        searchvector(auditor_list_pos, shortenuid(keyid))  ) 
                return true;
          }
          else { // all given criteria together induce deletion
@@ -73,7 +81,9 @@ bool auditor::test(bool revoked, bool expired, int validity, int owner_trust, st
                  (!auditor_novalid || ( auditor_novalid && validity <= auditor_max_valid )) &&
                  (!auditor_notrust || ( auditor_notrust && owner_trust <= auditor_max_trust ))    &&
                  (!auditor_poslist || ( auditor_poslist &&
-                          searchvector(auditor_list, shortenuid(keyid))) )
+                          searchvector(auditor_list_pos, shortenuid(keyid))) ) &&
+                 (!auditor_neglist || ( auditor_neglist &&
+                          !searchvector(auditor_list_neg, shortenuid(keyid))) )
                ) {
                  return true;
                  }
@@ -81,9 +91,10 @@ bool auditor::test(bool revoked, bool expired, int validity, int owner_trust, st
          return false;
 }
 
-
+/*
+Generate a security-question
+*/
 string auditor::generatequestion() {
-   /* Generate security-question */
    string mode;
    if (auditor_altern)
       mode = _(" or ");

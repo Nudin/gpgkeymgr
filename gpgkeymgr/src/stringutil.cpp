@@ -65,7 +65,7 @@ string shortenuid(string longuid)
    else if ( longuid.size() == 8 )
       return longuid;
    else {
-      cerr << _("UID in wrong format, skipping");
+      cerr << _("UID in wrong format, skipping") << endl;
       return "";
    }
 }
