@@ -18,6 +18,7 @@
 */
 
 #include <iostream>
+#include <sstream>
 #include <libintl.h>
 
 #include "stringutil.hpp"
@@ -25,6 +26,16 @@
 using namespace std;
 
 #define _(Text) gettext(Text) // _ as short version of gettext
+
+/*
+Convert a number to a string
+*/
+string NumberToString ( int Number )
+{
+   ostringstream ss;
+   ss << Number;
+   return ss.str();
+}
 
 /*
 Replace 'search' with 'replace' ind 'input'

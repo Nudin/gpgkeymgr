@@ -19,6 +19,8 @@
 
 #include <iostream>
 #include <libintl.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 #include "auditor.hpp"
 #include "vectorutil.hpp"
@@ -93,9 +95,9 @@ string auditor::generatequestion() {
    if ( auditor_expired )
       question += _("expired")        + mode;
    if ( auditor_novalid )
-      question += _("unvalid")        + mode;
+      question += _("unvalid") + string(" (≤") + NumberToString(auditor_max_valid) + ")" + mode;
    if ( auditor_notrust )
-      question += _("untrusted")      + mode;
+      question += _("untrusted") + string(" (≤") + NumberToString(auditor_max_trust) + ")" + mode;
    if ( auditor_poslist )
       question += _("listed in file") + mode;
    // remove last 'and':

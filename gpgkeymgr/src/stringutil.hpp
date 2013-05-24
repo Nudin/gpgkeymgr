@@ -22,6 +22,7 @@
 
 using namespace std;
 
+string NumberToString ( int Number );
 string shortenuid(string longuid);
 string replace_string(string input, const string &search, const string &replace);
 
