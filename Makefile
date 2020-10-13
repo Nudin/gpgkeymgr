@@ -6,7 +6,7 @@ SRC	= src/$(NAME).cpp src/vectorutil.cpp src/stringutil.cpp src/copyfile.cpp src
 BINDIR	= /usr/bin
 FLAGS	= -D_FILE_OFFSET_BITS=64 #-DVERS=\"$(VERSION)\"
 LIBPATH	= -L/usr/include/ -L/usr/include/gpgme/ -L/usr/local/include/ -L/usr/include/gpgme/
-LIBS	= -lgpgme
+LIBS	= $(shell gpgme-config --libs --cflags)
 LOCAL	= /usr/share/locale/
 MAN	= /usr/share/man/
 
